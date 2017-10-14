@@ -1,0 +1,1003 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="100">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <logicalFolder name="HeaderFiles"
+                   displayName="Header Files"
+                   projectFiles="true">
+      <itemPath>../../2D_Laplace/2D_Laplace/BTC.h</itemPath>
+      <itemPath>../../2D_Laplace/2D_Laplace/BTCSet.h</itemPath>
+      <itemPath>../../2D_Laplace/2D_Laplace/Copula.h</itemPath>
+      <itemPath>../../2D_Laplace/2D_Laplace/Distribution.h</itemPath>
+      <itemPath>../../2D_Laplace/2D_Laplace/Grid.h</itemPath>
+      <itemPath>../../2D_Laplace/2D_Laplace/Matrix.h</itemPath>
+      <itemPath>../../2D_Laplace/2D_Laplace/Matrix_arma.h</itemPath>
+      <itemPath>../../2D_Laplace/2D_Laplace/Matrix_arma_sp.h</itemPath>
+      <itemPath>../../2D_Laplace/2D_Laplace/NormalDist.h</itemPath>
+      <itemPath>../../Qt_version/HETEVAL/HETEVAL/Pathway.h</itemPath>
+      <itemPath>../../Qt_version/HETEVAL/HETEVAL/PathwaySet.h</itemPath>
+      <itemPath>../../Qt_version/HETEVAL/HETEVAL/Position.h</itemPath>
+      <itemPath>../../2D_Laplace/2D_Laplace/QuickSort.h</itemPath>
+      <itemPath>../../Qt_version/HETEVAL/HETEVAL/Spectogram.h</itemPath>
+      <itemPath>../../2D_Laplace/2D_Laplace/StringOP.h</itemPath>
+      <itemPath>../../2D_Laplace/2D_Laplace/Vector.h</itemPath>
+      <itemPath>../../2D_Laplace/2D_Laplace/Vector_arma.h</itemPath>
+      <itemPath>../../Qt_version/HETEVAL/HETEVAL/_command.h</itemPath>
+      <itemPath>../../Qt_version/HETEVAL/HETEVAL/heteval.h</itemPath>
+      <itemPath>../../Qt_version/HETEVAL/HETEVAL/newForm.h</itemPath>
+      <itemPath>../../Qt_version/HETEVAL/HETEVAL/vtk.h</itemPath>
+    </logicalFolder>
+    <logicalFolder name="ResourceFiles"
+                   displayName="Resource Files"
+                   projectFiles="true">
+      <itemPath>../../Qt_version/HETEVAL/HETEVAL/heteval.qrc</itemPath>
+      <itemPath>../../Qt_version/HETEVAL/HETEVAL/heteval.ui</itemPath>
+      <itemPath>../../Qt_version/HETEVAL/HETEVAL/newForm.ui</itemPath>
+    </logicalFolder>
+    <logicalFolder name="SourceFiles"
+                   displayName="Source Files"
+                   projectFiles="true">
+      <logicalFolder name="HETEVAL" displayName="HETEVAL" projectFiles="true">
+        <itemPath>../../Qt_version/HETEVAL/HETEVAL/Pathway.cpp</itemPath>
+        <itemPath>../../Qt_version/HETEVAL/HETEVAL/PathwaySet.cpp</itemPath>
+        <itemPath>../../Qt_version/HETEVAL/HETEVAL/Plots.cpp</itemPath>
+        <itemPath>../../Qt_version/HETEVAL/HETEVAL/Position.cpp</itemPath>
+        <itemPath>../../Qt_version/HETEVAL/HETEVAL/PropertySheet.props</itemPath>
+        <itemPath>../../Qt_version/HETEVAL/HETEVAL/Spectogram.cpp</itemPath>
+        <itemPath>../../Qt_version/HETEVAL/HETEVAL/_command.cpp</itemPath>
+        <itemPath>../../Qt_version/HETEVAL/HETEVAL/main.cpp</itemPath>
+      </logicalFolder>
+      <itemPath>../../2D_Laplace/2D_Laplace/BTC.cpp</itemPath>
+      <itemPath>../../2D_Laplace/2D_Laplace/BTCSet.cpp</itemPath>
+      <itemPath>../../2D_Laplace/2D_Laplace/Copula.cpp</itemPath>
+      <itemPath>../../2D_Laplace/2D_Laplace/Distribution.cpp</itemPath>
+      <itemPath>../../2D_Laplace/2D_Laplace/Grid.cpp</itemPath>
+      <itemPath>../../2D_Laplace/2D_Laplace/Matrix.cpp</itemPath>
+      <itemPath>../../2D_Laplace/2D_Laplace/Matrix_arma.cpp</itemPath>
+      <itemPath>../../2D_Laplace/2D_Laplace/Matrix_arma_sp.cpp</itemPath>
+      <itemPath>../../2D_Laplace/2D_Laplace/NormalDist.cpp</itemPath>
+      <itemPath>../../2D_Laplace/2D_Laplace/QuickSort.cpp</itemPath>
+      <itemPath>../../2D_Laplace/2D_Laplace/StringOP.cpp</itemPath>
+      <itemPath>../../2D_Laplace/2D_Laplace/Vector.cpp</itemPath>
+      <itemPath>../../2D_Laplace/2D_Laplace/Vector_arma.cpp</itemPath>
+      <itemPath>../../Qt_version/HETEVAL/HETEVAL/heteval.cpp</itemPath>
+      <itemPath>../../Qt_version/HETEVAL/HETEVAL/newForm.cpp</itemPath>
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <sourceRootList>
+    <Elem>../../Qt_version/HETEVAL/HETEVAL</Elem>
+  </sourceRootList>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Debug" type="4">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <qt>
+        <modules>core gui widgets printsupport sql</modules>
+      </qt>
+      <compileType>
+        <ccTool>
+          <standard>8</standard>
+          <incDir>
+            <pElem>../../2D_Laplace/2D_Laplace/armadillo-header</pElem>
+            <pElem>../../2D_Laplace/2D_Laplace</pElem>
+            <pElem>../..</pElem>
+            <pElem>../../gsl</pElem>
+            <pElem>../../../../VTK</pElem>
+            <pElem>../../Qt_version/HETEVAL</pElem>
+            <pElem>../../Qt_version/HETEVAL/HETEVAL</pElem>
+            <pElem>../../../../VTK/Common/Core</pElem>
+            <pElem>../../../../VTK/Common/Color</pElem>
+            <pElem>../../../../VTK/Common/ComputationalGeometry</pElem>
+            <pElem>../../../../VTK/Common/DataModel</pElem>
+            <pElem>../../../../VTK/Common/ExecutionModel</pElem>
+            <pElem>../../../../VTK/Common/Math</pElem>
+            <pElem>../../../../VTK/Common/Misc</pElem>
+            <pElem>../../../../VTK/Common/System</pElem>
+            <pElem>../../../../VTK/Common/Transforms</pElem>
+            <pElem>../../../../VTK/Rendering/Core</pElem>
+            <pElem>../../../../VTK/Rendering/Annotation</pElem>
+            <pElem>../../../../VTK/Rendering/Context2D</pElem>
+            <pElem>../../../../VTK/Charts/Core</pElem>
+            <pElem>../../../../VTK/Views/Context2D</pElem>
+            <pElem>../../../../VTK/Views/Core</pElem>
+            <pElem>../../../../VTK/Interaction/Style</pElem>
+            <pElem>../../../../VTK/Filters/Modeling</pElem>
+            <pElem>../../../../VTK/Interaction/Widgets</pElem>
+            <pElem>../../../../VTK/Interaction/Image</pElem>
+            <pElem>../../../../VTK/Filters/Core</pElem>
+            <pElem>../../../../VTK/IO/XML</pElem>
+            <pElem>../../../../VTK/Filters/Sources</pElem>
+            <pElem>../../../../VTK/Filters/General</pElem>
+            <pElem>../../../../VTK/IO/Image</pElem>
+            <pElem>../../../../VTK/Imaging/Core</pElem>
+            <pElem>../../../../VTK-build/Common/Core</pElem>
+            <pElem>../../../../VTK-build/Utilities/KWIML</pElem>
+            <pElem>../../../../VTK/Utilities/KWIML/vtkkwiml/include</pElem>
+            <pElem>../../../../VTK/Utilities/KWIML</pElem>
+            <pElem>../../../../VTK-build/Rendering/Core</pElem>
+            <pElem>../../../../VTK-build/Filters/Core</pElem>
+            <pElem>../../../../VTK-build/Charts/Core</pElem>
+            <pElem>../../../../VTK-build/Filters/General</pElem>
+            <pElem>../../../../VTK-build/Rendering/Context2D</pElem>
+            <pElem>../../../../VTK-build/Common/DataModel</pElem>
+            <pElem>../../../../VTK-build/Views/Context2D</pElem>
+            <pElem>../../../../VTK-build/Views/Core</pElem>
+            <pElem>../../../../VTK-build/Interaction/Widgets</pElem>
+            <pElem>../../../../VTK-build/Interaction/Style</pElem>
+            <pElem>../../../../VTK-build/Filters/Modeling</pElem>
+            <pElem>../../../../VTK-build/Common/ExecutionModel</pElem>
+            <pElem>../../../../VTK-build/Common/Misc</pElem>
+            <pElem>../../../../VTK-build/IO/XML</pElem>
+            <pElem>../../../../VTK-build/Filters/Sources</pElem>
+            <pElem>../../../../VTK-build/IO/Image</pElem>
+            <pElem>../../../../VTK-build/Imaging/Core</pElem>
+            <pElem>../../../../Qt/5.8/gcc_64/include/QtWidgets</pElem>
+            <pElem>../../../../Qt/5.8/gcc_64/include/QtSvg</pElem>
+            <pElem>../../../../Qt/5.8/gcc_64/include</pElem>
+            <pElem>../../Qt_version/HETEVAL/HETEVAL/qwt-6.1.3/src</pElem>
+          </incDir>
+          <preprocessorList>
+            <Elem>fopenmp</Elem>
+          </preprocessorList>
+        </ccTool>
+        <linkerTool>
+          <linkerCopySharedLibs>true</linkerCopySharedLibs>
+          <linkerLibItems>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkChartsCore-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkCommonColor-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkCommonComputationalGeometry-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkCommonCore-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkCommonDataModel-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkCommonExecutionModel-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkCommonMath-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkCommonMisc-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkCommonSystem-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkCommonTransforms-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkDICOMParser-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkDomainsChemistry-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkDomainsChemistryOpenGL2-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkFiltersAMR-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkFiltersCore-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkFiltersExtraction-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkFiltersFlowPaths-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkFiltersGeneral-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkFiltersGeneric-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkFiltersGeometry-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkFiltersHybrid-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkFiltersHyperTree-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkFiltersImaging-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkFiltersModeling-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkFiltersParallel-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkFiltersParallelImaging-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkFiltersPoints-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkFiltersProgrammable-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkFiltersSMP-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkFiltersSelection-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkFiltersSources-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkFiltersStatistics-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkFiltersTexture-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkFiltersTopology-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkFiltersVerdict-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkGeovisCore-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkIOAMR-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkIOCore-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkIOEnSight-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkIOExodus-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkIOExport-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkIOExportOpenGL2-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkIOGeometry-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkIOImage-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkIOImport-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkIOInfovis-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkIOLSDyna-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkIOLegacy-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkIOMINC-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkIOMovie-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkIONetCDF-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkIOPLY-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkIOParallel-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkIOParallelXML-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkIOSQL-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkIOTecplotTable-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkIOVideo-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkIOXML-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkIOXMLParser-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkImagingColor-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkImagingCore-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkImagingFourier-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkImagingGeneral-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkImagingHybrid-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkImagingMath-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkImagingMorphological-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkImagingSources-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkImagingStatistics-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkImagingStencil-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkInfovisCore-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkInfovisLayout-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkInteractionImage-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkInteractionStyle-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkInteractionWidgets-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkNetCDF-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkParallelCore-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkRenderingAnnotation-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkRenderingContext2D-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkRenderingContextOpenGL2-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkRenderingCore-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkRenderingFreeType-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkRenderingGL2PSOpenGL2-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkRenderingImage-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkRenderingLOD-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkRenderingLabel-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkRenderingOpenGL2-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkRenderingVolume-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkRenderingVolumeOpenGL2-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkTestingGenericBridge-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkTestingIOSQL-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkTestingRendering-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkViewsContext2D-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkViewsCore-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkViewsInfovis-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkalglib-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkexoIIc-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkexpat-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkfreetype-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkgl2ps-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkglew-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkhdf5-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkhdf5_hl-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkjpeg-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkjsoncpp-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtklibharu-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtklibxml2-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtklz4-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkmetaio-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtknetcdfcpp-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkoggtheora-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkpng-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkproj4-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtksqlite-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtksys-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtktiff-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkverdict-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkzlib-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../qwt-6.1.3/lib/libqwt.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../Qt/5.8/gcc_64/lib/libQt5Widgets.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../Qt/5.8/gcc_64/lib/libQt5PrintSupport.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../Qt/5.8/gcc_64/lib/libQt5Core.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../Qt/5.8/gcc_64/lib/libQt5Gui.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../Qt/5.8/gcc_64/lib/libQt5OpenGL.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../Qt/5.8/gcc_64/lib/libQt5Svg.so</linkerLibFileItem>
+            <linkerLibLibItem>armadillo</linkerLibLibItem>
+            <linkerLibLibItem>blas</linkerLibLibItem>
+            <linkerLibLibItem>lapack</linkerLibLibItem>
+            <linkerOptionItem>-lgslcblas</linkerOptionItem>
+            <linkerOptionItem>-lgsl</linkerOptionItem>
+            <linkerLibLibItem>superlu</linkerLibLibItem>
+          </linkerLibItems>
+        </linkerTool>
+      </compileType>
+      <item path="../../2D_Laplace/2D_Laplace/BTC.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../2D_Laplace/2D_Laplace/BTC.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../2D_Laplace/2D_Laplace/BTCSet.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../2D_Laplace/2D_Laplace/BTCSet.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../2D_Laplace/2D_Laplace/Copula.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../2D_Laplace/2D_Laplace/Copula.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../2D_Laplace/2D_Laplace/Distribution.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../2D_Laplace/2D_Laplace/Distribution.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../2D_Laplace/2D_Laplace/Grid.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../2D_Laplace/2D_Laplace/Grid.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../2D_Laplace/2D_Laplace/Matrix.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../2D_Laplace/2D_Laplace/Matrix.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../2D_Laplace/2D_Laplace/Matrix_arma.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../2D_Laplace/2D_Laplace/Matrix_arma.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../2D_Laplace/2D_Laplace/Matrix_arma_sp.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../2D_Laplace/2D_Laplace/Matrix_arma_sp.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../2D_Laplace/2D_Laplace/NormalDist.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../2D_Laplace/2D_Laplace/NormalDist.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../2D_Laplace/2D_Laplace/QuickSort.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../2D_Laplace/2D_Laplace/QuickSort.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../2D_Laplace/2D_Laplace/StringOP.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../2D_Laplace/2D_Laplace/StringOP.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../2D_Laplace/2D_Laplace/Vector.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../2D_Laplace/2D_Laplace/Vector.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../2D_Laplace/2D_Laplace/Vector_arma.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../2D_Laplace/2D_Laplace/Vector_arma.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../Qt_version/HETEVAL/HETEVAL/Pathway.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../Qt_version/HETEVAL/HETEVAL/Pathway.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../Qt_version/HETEVAL/HETEVAL/PathwaySet.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../Qt_version/HETEVAL/HETEVAL/PathwaySet.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../Qt_version/HETEVAL/HETEVAL/Plots.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../Qt_version/HETEVAL/HETEVAL/Position.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../Qt_version/HETEVAL/HETEVAL/Position.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../Qt_version/HETEVAL/HETEVAL/PropertySheet.props"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../Qt_version/HETEVAL/HETEVAL/Spectogram.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../Qt_version/HETEVAL/HETEVAL/Spectogram.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../Qt_version/HETEVAL/HETEVAL/_command.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../Qt_version/HETEVAL/HETEVAL/_command.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../Qt_version/HETEVAL/HETEVAL/heteval.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../Qt_version/HETEVAL/HETEVAL/heteval.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../Qt_version/HETEVAL/HETEVAL/heteval.qrc"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../Qt_version/HETEVAL/HETEVAL/heteval.ui"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../Qt_version/HETEVAL/HETEVAL/main.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../Qt_version/HETEVAL/HETEVAL/newForm.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../Qt_version/HETEVAL/HETEVAL/newForm.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../Qt_version/HETEVAL/HETEVAL/newForm.ui"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../Qt_version/HETEVAL/HETEVAL/vtk.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+    </conf>
+    <conf name="Release" type="4">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <qt>
+        <buildMode>1</buildMode>
+        <modules>core gui widgets opengl printsupport</modules>
+      </qt>
+      <compileType>
+        <cTool>
+          <developmentMode>5</developmentMode>
+        </cTool>
+        <ccTool>
+          <developmentMode>5</developmentMode>
+          <standard>8</standard>
+          <incDir>
+            <pElem>../../2D_Laplace/2D_Laplace/armadillo-header</pElem>
+            <pElem>../../2D_Laplace/2D_Laplace</pElem>
+            <pElem>../..</pElem>
+            <pElem>../../gsl</pElem>
+            <pElem>../../../../VTK</pElem>
+            <pElem>../../Qt_version/HETEVAL</pElem>
+            <pElem>../../Qt_version/HETEVAL/HETEVAL</pElem>
+            <pElem>../../../../VTK/Common/Core</pElem>
+            <pElem>../../../../VTK/Common/Color</pElem>
+            <pElem>../../../../VTK/Common/ComputationalGeometry</pElem>
+            <pElem>../../../../VTK/Common/DataModel</pElem>
+            <pElem>../../../../VTK/Common/ExecutionModel</pElem>
+            <pElem>../../../../VTK/Common/Math</pElem>
+            <pElem>../../../../VTK/Common/Misc</pElem>
+            <pElem>../../../../VTK/Common/System</pElem>
+            <pElem>../../../../VTK/Common/Transforms</pElem>
+            <pElem>../../../../VTK/Rendering/Core</pElem>
+            <pElem>../../../../VTK/Rendering/Annotation</pElem>
+            <pElem>../../../../VTK/Rendering/Context2D</pElem>
+            <pElem>../../../../VTK/Charts/Core</pElem>
+            <pElem>../../../../VTK/Views/Context2D</pElem>
+            <pElem>../../../../VTK/Views/Core</pElem>
+            <pElem>../../../../VTK/Interaction/Style</pElem>
+            <pElem>../../../../VTK/Filters/Modeling</pElem>
+            <pElem>../../../../VTK/Interaction/Widgets</pElem>
+            <pElem>../../../../VTK/Interaction/Image</pElem>
+            <pElem>../../../../VTK/Filters/Core</pElem>
+            <pElem>../../../../VTK/IO/XML</pElem>
+            <pElem>../../../../VTK/Filters/Sources</pElem>
+            <pElem>../../../../VTK/Filters/General</pElem>
+            <pElem>../../../../VTK/IO/Image</pElem>
+            <pElem>../../../../VTK/Imaging/Core</pElem>
+            <pElem>../../../../VTK-build/Common/Core</pElem>
+            <pElem>../../../../VTK-build/Utilities/KWIML</pElem>
+            <pElem>../../../../VTK/Utilities/KWIML/vtkkwiml/include</pElem>
+            <pElem>../../../../VTK/Utilities/KWIML</pElem>
+            <pElem>../../../../VTK-build/Rendering/Core</pElem>
+            <pElem>../../../../VTK-build/Filters/Core</pElem>
+            <pElem>../../../../VTK-build/Charts/Core</pElem>
+            <pElem>../../../../VTK-build/Filters/General</pElem>
+            <pElem>../../../../VTK-build/Rendering/Context2D</pElem>
+            <pElem>../../../../VTK-build/Common/DataModel</pElem>
+            <pElem>../../../../VTK-build/Views/Context2D</pElem>
+            <pElem>../../../../VTK-build/Views/Core</pElem>
+            <pElem>../../../../VTK-build/Interaction/Widgets</pElem>
+            <pElem>../../../../VTK-build/Interaction/Style</pElem>
+            <pElem>../../../../VTK-build/Filters/Modeling</pElem>
+            <pElem>../../../../VTK-build/Common/ExecutionModel</pElem>
+            <pElem>../../../../VTK-build/Common/Misc</pElem>
+            <pElem>../../../../VTK-build/IO/XML</pElem>
+            <pElem>../../../../VTK-build/Filters/Sources</pElem>
+            <pElem>../../../../VTK-build/IO/Image</pElem>
+            <pElem>../../../../VTK-build/Imaging/Core</pElem>
+            <pElem>../../../../Qt/5.8/gcc_64/include/QtWidgets</pElem>
+            <pElem>../../../../Qt/5.8/gcc_64/include/QtSvg</pElem>
+            <pElem>../../../../Qt/5.8/gcc_64/include</pElem>
+            <pElem>../../Qt_version/HETEVAL/HETEVAL/qwt-6.1.3/src</pElem>
+          </incDir>
+        </ccTool>
+        <fortranCompilerTool>
+          <developmentMode>5</developmentMode>
+        </fortranCompilerTool>
+        <asmTool>
+          <developmentMode>5</developmentMode>
+        </asmTool>
+        <linkerTool>
+          <linkerCopySharedLibs>true</linkerCopySharedLibs>
+          <linkerLibItems>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkChartsCore-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkCommonColor-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkCommonComputationalGeometry-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkCommonCore-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkCommonDataModel-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkCommonExecutionModel-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkCommonMath-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkCommonMisc-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkCommonSystem-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkCommonTransforms-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkDICOMParser-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkDomainsChemistry-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkDomainsChemistryOpenGL2-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkFiltersAMR-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkFiltersCore-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkFiltersExtraction-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkFiltersFlowPaths-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkFiltersGeneral-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkFiltersGeneric-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkFiltersGeometry-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkFiltersHybrid-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkFiltersHyperTree-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkFiltersImaging-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkFiltersModeling-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkFiltersParallel-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkFiltersParallelImaging-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkFiltersPoints-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkFiltersProgrammable-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkFiltersSMP-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkFiltersSelection-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkFiltersSources-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkFiltersStatistics-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkFiltersTexture-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkFiltersTopology-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkFiltersVerdict-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkGeovisCore-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkIOAMR-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkIOCore-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkIOEnSight-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkIOExodus-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkIOExport-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkIOExportOpenGL2-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkIOGeometry-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkIOImage-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkIOImport-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkIOInfovis-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkIOLSDyna-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkIOLegacy-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkIOMINC-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkIOMovie-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkIONetCDF-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkIOPLY-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkIOParallel-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkIOParallelXML-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkIOSQL-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkIOTecplotTable-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkIOVideo-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkIOXML-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkIOXMLParser-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkImagingColor-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkImagingCore-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkImagingFourier-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkImagingGeneral-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkImagingHybrid-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkImagingMath-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkImagingMorphological-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkImagingSources-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkImagingStatistics-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkImagingStencil-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkInfovisCore-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkInfovisLayout-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkInteractionImage-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkInteractionStyle-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkInteractionWidgets-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkNetCDF-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkParallelCore-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkRenderingAnnotation-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkRenderingContext2D-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkRenderingContextOpenGL2-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkRenderingCore-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkRenderingFreeType-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkRenderingGL2PSOpenGL2-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkRenderingImage-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkRenderingLOD-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkRenderingLabel-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkRenderingOpenGL2-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkRenderingVolume-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkRenderingVolumeOpenGL2-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkTestingGenericBridge-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkTestingIOSQL-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkTestingRendering-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkViewsContext2D-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkViewsCore-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkViewsInfovis-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkalglib-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkexoIIc-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkexpat-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkfreetype-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkgl2ps-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkglew-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkhdf5-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkhdf5_hl-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkjpeg-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkjsoncpp-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtklibharu-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtklibxml2-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtklz4-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkmetaio-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtknetcdfcpp-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkoggtheora-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkpng-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkproj4-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtksqlite-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtksys-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtktiff-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkverdict-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../VTK-build/lib/libvtkzlib-8.1.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../qwt-6.1.3/lib/libqwt.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../Qt/5.8/gcc_64/lib/libQt5Widgets.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../Qt/5.8/gcc_64/lib/libQt5PrintSupport.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../Qt/5.8/gcc_64/lib/libQt5Core.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../Qt/5.8/gcc_64/lib/libQt5Gui.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../Qt/5.8/gcc_64/lib/libQt5OpenGL.so</linkerLibFileItem>
+            <linkerLibFileItem>../../../../Qt/5.8/gcc_64/lib/libQt5Svg.so</linkerLibFileItem>
+            <linkerLibLibItem>armadillo</linkerLibLibItem>
+            <linkerLibLibItem>blas</linkerLibLibItem>
+            <linkerLibLibItem>lapack</linkerLibLibItem>
+            <linkerOptionItem>-lgslcblas</linkerOptionItem>
+            <linkerOptionItem>-lgsl</linkerOptionItem>
+            <linkerLibLibItem>superlu</linkerLibLibItem>
+          </linkerLibItems>
+        </linkerTool>
+      </compileType>
+      <packaging>
+        <packType>Debian</packType>
+        <packFileList>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}bin/${OUTPUT_BASENAME}"
+                            from="${OUTPUT_PATH}"
+                            perm="755"
+                            owner="root"
+                            group="bin"/>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}bin/${OUTPUT_BASENAME}"
+                            from="${OUTPUT_PATH}"
+                            perm="755"
+                            owner="root"
+                            group="bin"/>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}bin/${OUTPUT_BASENAME}"
+                            from="${OUTPUT_PATH}"
+                            perm="755"
+                            owner="root"
+                            group="bin"/>
+        </packFileList>
+        <packInfoList>
+          <packInfoListElem name="Package" value="HETEVAL" mandatory="true"/>
+          <packInfoListElem name="Version" value="1.0" mandatory="true"/>
+          <packInfoListElem name="Architecture" value="amd64" mandatory="false"/>
+          <packInfoListElem name="Maintainer" value="arash" mandatory="false"/>
+          <packInfoListElem name="Description" value="..." mandatory="false"/>
+        </packInfoList>
+      </packaging>
+      <item path="../../2D_Laplace/2D_Laplace/BTC.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../2D_Laplace/2D_Laplace/BTC.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../2D_Laplace/2D_Laplace/BTCSet.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../2D_Laplace/2D_Laplace/BTCSet.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../2D_Laplace/2D_Laplace/Copula.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../2D_Laplace/2D_Laplace/Copula.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../2D_Laplace/2D_Laplace/Distribution.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../2D_Laplace/2D_Laplace/Distribution.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../2D_Laplace/2D_Laplace/Grid.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../2D_Laplace/2D_Laplace/Grid.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../2D_Laplace/2D_Laplace/Matrix.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../2D_Laplace/2D_Laplace/Matrix.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../2D_Laplace/2D_Laplace/Matrix_arma.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../2D_Laplace/2D_Laplace/Matrix_arma.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../2D_Laplace/2D_Laplace/Matrix_arma_sp.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../2D_Laplace/2D_Laplace/Matrix_arma_sp.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../2D_Laplace/2D_Laplace/NormalDist.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../2D_Laplace/2D_Laplace/NormalDist.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../2D_Laplace/2D_Laplace/QuickSort.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../2D_Laplace/2D_Laplace/QuickSort.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../2D_Laplace/2D_Laplace/StringOP.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../2D_Laplace/2D_Laplace/StringOP.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../2D_Laplace/2D_Laplace/Vector.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../2D_Laplace/2D_Laplace/Vector.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../2D_Laplace/2D_Laplace/Vector_arma.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../2D_Laplace/2D_Laplace/Vector_arma.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../Qt_version/HETEVAL/HETEVAL/Pathway.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../Qt_version/HETEVAL/HETEVAL/Pathway.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../Qt_version/HETEVAL/HETEVAL/PathwaySet.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../Qt_version/HETEVAL/HETEVAL/PathwaySet.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../Qt_version/HETEVAL/HETEVAL/Plots.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../Qt_version/HETEVAL/HETEVAL/Position.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../Qt_version/HETEVAL/HETEVAL/Position.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../Qt_version/HETEVAL/HETEVAL/PropertySheet.props"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../Qt_version/HETEVAL/HETEVAL/Spectogram.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../Qt_version/HETEVAL/HETEVAL/Spectogram.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../Qt_version/HETEVAL/HETEVAL/_command.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../Qt_version/HETEVAL/HETEVAL/_command.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../Qt_version/HETEVAL/HETEVAL/heteval.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../Qt_version/HETEVAL/HETEVAL/heteval.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../Qt_version/HETEVAL/HETEVAL/heteval.qrc"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../Qt_version/HETEVAL/HETEVAL/heteval.ui"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../Qt_version/HETEVAL/HETEVAL/main.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../Qt_version/HETEVAL/HETEVAL/newForm.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../Qt_version/HETEVAL/HETEVAL/newForm.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../Qt_version/HETEVAL/HETEVAL/newForm.ui"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../Qt_version/HETEVAL/HETEVAL/vtk.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+    </conf>
+  </confs>
+</configurationDescriptor>

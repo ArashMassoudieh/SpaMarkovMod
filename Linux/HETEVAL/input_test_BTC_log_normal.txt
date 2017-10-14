@@ -1,0 +1,37 @@
+pathout /home/arash/Projects/Upscaling_outputs/
+command create_grid nx=601 ny=101 dx=0.01 dy=0.01
+command set_marginal_k_dist dist=lognormal params=1,1,0.5
+command write_marginal_k filename=K_CDF.txt x0=0.001 x1=100 log_inc=0.1
+command create_inverse_marginal_k ninc=1000
+command write_inverse_marginal_k filename=marginal_k_dist_5.txt
+command generate_k_field n_neighbors=10 corr_length_scale_x=1 corr_length_scale_y=0.1
+command write_k_field filename=K_test_5.txt
+command renormalize_k
+command write_k_field filename=K_test_rn_5.txt
+command solve_hydro l_boundary=6 r_boundary=0
+command write_h_field filename=H_test_5.txt
+command write_v_field filename_x=vx_test_5.txt filename_y=vy_test_5.txt
+command initialize_trajectories n=10000 x_0=0.01
+command create_trajectories_fix_dx dx=0.001 x_end=6
+command write_trajectories filename=traj_test_5.txt interval=1
+command get_velocity_dist nbins=40
+command write_velocity_dist filename_x=vx_dist_test_5.txt filename_y=vy_dist_test_5.txt
+command get_velocity_dist_at_sects nbins=40 x=1
+command get_velocity_dist_at_sects nbins=40 x=2
+command get_velocity_dist_at_sects nbins=40 x=3
+command get_velocity_dist_at_sects nbins=40 x=4
+command get_velocity_dist_at_sects nbins=40 x=5
+command write_velocities_at_sects filename=v_dist_sects_test_5.txt
+//command read_k_field filename=k.txt nx=601 ny=101 nx_data=1001 ny_data=101
+command save_k_field_into_vtp filename=surface_5.vtp z_factor=1
+command make_paths_uniform dx=0.02
+command write_trajectories filename=traj_test_uniform_5.txt interval=1
+command save_trajs_into_vtp filename=trajs_c_log_5.vtp z_factor=0.2 offset=0.2 log=1 color=0
+command save_solution_into_vtp filename=solution_5.vtp z_factor=0.02 log=1 color=0
+command extract_pairs filename=pairs_2_3.txt increment=1 n=10000 dist_filename=dist_vel_fluxw_2_5.txt ranks_filename=ranks_2_5.txt nbins=100 normal_filename=normals_2_5.txt OU_parameters_filename=OU_params_2_5.txt
+command extract_pairs filename=pairs_5_3.txt increment=2 n=10000 dist_filename=dist_vel_fluxw_4_5.txt ranks_filename=ranks_4_5.txt nbins=100 normal_filename=normals_4_5.txt OU_parameters_filename=OU_params_4_5.txt
+command extract_pairs filename=pairs_8_3.txt increment=4 n=10000 dist_filename=dist_vel_fluxw_8_5.txt ranks_filename=ranks_8_5.txt nbins=100 normal_filename=normals_8_5.txt OU_parameters_filename=OU_params_8_5.txt
+command extract_pairs filename=pairs_16_3.txt increment=8 n=10000 dist_filename=dist_vel_fluxw_16_5.txt ranks_filename=ranks_16_5.txt nbins=100 normal_filename=normals_16_5.txt OU_parameters_filename=OU_params_16_5.txt
+command write_breakthrough_curve x=1 nbins=40 filename=btc_1_5.txt
+command write_breakthrough_curve x=5.9 nbins=40 filename=btc_6_5.txt
+command write_breakthrough_curve x=2.95 nbins=40 filename=btc_3_5.txt
