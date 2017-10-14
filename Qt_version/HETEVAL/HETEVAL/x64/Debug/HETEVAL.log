@@ -1,0 +1,133 @@
+﻿  Grid.cpp
+c:\users\arash-home\dropbox\2d_laplace\2d_laplace\2d_laplace\grid.cpp(1054): warning C4715: 'avg': not all control paths return a value
+  HETEVAL.vcxproj -> C:\Users\Arash-Home\Dropbox\2D_Laplace\Qt_version\HETEVAL\x64\Debug\HETEVAL.exe
+  HETEVAL.vcxproj -> C:\Users\Arash-Home\Dropbox\2D_Laplace\Qt_version\HETEVAL\x64\Debug\HETEVAL.pdb (Full PDB)
+  C:\Users\Arash-Home\Dropbox\2D_Laplace\2D_Laplace\2D_Laplace\lapack-blas_lib_win64\blas_win64_MT.dll
+  C:\Users\Arash-Home\Dropbox\2D_Laplace\2D_Laplace\2D_Laplace\lapack-blas_lib_win64\lapack_win64_MT.dll
+          2 file(s) copied.
+  E:\qwt-6.1.3\\qwt-6.1.3\lib\qwt.dll
+  E:\qwt-6.1.3\\qwt-6.1.3\lib\qwtd.dll
+          2 file(s) copied.
+  E:\Projects\\VTK-bin2\bin\Debug\vtkalglib-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkChartsCore-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkCommonColor-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkCommonComputationalGeometry-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkCommonCore-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkCommonDataModel-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkCommonExecutionModel-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkCommonMath-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkCommonMisc-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkCommonSystem-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkCommonTransforms-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkDICOMParser-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkDomainsChemistry-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkDomainsChemistryOpenGL2-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkexoIIc-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkexpat-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkFiltersAMR-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkFiltersCore-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkFiltersExtraction-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkFiltersFlowPaths-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkFiltersGeneral-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkFiltersGeneric-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkFiltersGeometry-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkFiltersHybrid-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkFiltersHyperTree-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkFiltersImaging-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkFiltersModeling-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkFiltersParallel-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkFiltersParallelImaging-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkFiltersPoints-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkFiltersProgrammable-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkFiltersSelection-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkFiltersSMP-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkFiltersSources-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkFiltersStatistics-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkFiltersTexture-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkFiltersTopology-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkFiltersVerdict-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkfreetype-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkGeovisCore-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkgl2ps-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkglew-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkhdf5-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkhdf5_hl-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkImagingColor-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkImagingCore-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkImagingFourier-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkImagingGeneral-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkImagingHybrid-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkImagingMath-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkImagingMorphological-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkImagingSources-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkImagingStatistics-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkImagingStencil-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkInfovisCore-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkInfovisLayout-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkInteractionImage-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkInteractionStyle-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkInteractionWidgets-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkIOAMR-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkIOCore-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkIOEnSight-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkIOExodus-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkIOExport-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkIOExportOpenGL2-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkIOGeometry-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkIOImage-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkIOImport-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkIOInfovis-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkIOLegacy-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkIOLSDyna-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkIOMINC-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkIOMovie-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkIONetCDF-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkIOParallel-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkIOParallelXML-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkIOPLY-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkIOSQL-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkIOTecplotTable-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkIOVideo-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkIOXML-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkIOXMLParser-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkjpeg-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkjsoncpp-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtklibharu-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtklibxml2-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtklz4-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkmetaio-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkNetCDF-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtknetcdf_c++.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkoggtheora-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkParallelCore-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkpng-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkproj4-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkRenderingAnnotation-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkRenderingContext2D-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkRenderingContextOpenGL2-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkRenderingCore-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkRenderingFreeType-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkRenderingGL2PSOpenGL2-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkRenderingImage-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkRenderingLabel-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkRenderingLOD-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkRenderingOpenGL2-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkRenderingVolume-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkRenderingVolumeOpenGL2-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtksys-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkTestingGenericBridge-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkTestingIOSQL-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkTestingRendering-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtktiff-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkverdict-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkViewsContext2D-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkViewsCore-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkViewsInfovis-8.1.dll
+  E:\Projects\\VTK-bin2\bin\Debug\vtkzlib-8.1.dll
+        116 file(s) copied.
+          1 file(s) copied.
+          1 file(s) copied.
+          1 file(s) copied.
+          1 file(s) copied.
+          1 file(s) copied.
+          1 file(s) copied.
