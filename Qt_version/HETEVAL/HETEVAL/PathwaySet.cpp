@@ -11,6 +11,8 @@ CPathwaySet::CPathwaySet()
 CPathwaySet::CPathwaySet(const CPathwaySet & P)
 {
 	paths = P.paths;
+        weighted = P.weighted;
+             
 }
 
 CPathwaySet &CPathwaySet::operator=(const CPathwaySet & P)
@@ -48,9 +50,9 @@ void CPathwaySet::write(string filename)
 file.close();
 }
 
-void CPathwaySet::append(const CPathway & P)
+void CPathwaySet::append(const CPathway & P, double weight)
 {
-	paths.push_back(P);
+   paths.push_back(P);
 }
 
 int CPathwaySet::max_num_points()
@@ -62,13 +64,14 @@ int CPathwaySet::max_num_points()
 	return max_np; 
 }
 
-void CPathwaySet::create(int n, CDistribution * dist, double x_min, double x_max, double kappa, double dx)
+void CPathwaySet::create(int n, CDistribution * dist, double x_min, double x_max, double kappa, double dx, double weight)
 {
 	for (int i = 0; i < n; i++)
 	{
-		CPathway P;
-		P.create(dist, x_min, x_max, kappa, dx);
-		append(P);
+            CPathway P;
+            P.create(dist, x_min, x_max, kappa, dx);
+            P.weight = weight; 
+            append(P);
 	}
 }
 
@@ -116,18 +119,18 @@ vtkSmartPointer<vtkPolyDataMapper> CPathwaySet::pathways_vtk_pdt_vtp(double z_fa
 
 CPathway CPathwaySet::snapshotattime(double t)
 {
-	CPathway Ptwy;
-	for (int i = 0; i < paths.size(); i++)
-		Ptwy.append(paths[i].get_position_at_t(t));
+    CPathway Ptwy;
+    for (int i = 0; i < paths.size(); i++)
+	Ptwy.append(paths[i].get_position_at_t(t));
 
-	return Ptwy;
+    return Ptwy;
 }
 
 CPathway CPathwaySet::snapshotatlocation(double x)
 {
 	CPathway Ptwy;
 	for (int i = 0; i < paths.size(); i++)
-		Ptwy.append(paths[i].get_position_at_x(x));
+            Ptwy.append(paths[i].get_position_at_x(x));
 
 	return Ptwy;
 }
@@ -173,7 +176,7 @@ CBTC CPathwaySet::get_BTC(double x, int n_bins)
 {
 	CBTC BTC;
 	for (int i = 0; i < paths.size(); i++)
-		BTC.append(i, paths[i].get_cross_time(x));
+		BTC.append(i, paths[i].get_cross_time(x),paths[i].weight);
 	
 	return BTC.distribution(n_bins,0);
 
@@ -183,7 +186,7 @@ CBTC CPathwaySet::get_BTC_points(double x)
 {
 	CBTC BTC;
 	for (int i = 0; i < paths.size(); i++)
-		BTC.append(i, paths[i].get_cross_time(x));
+		BTC.append(i, paths[i].get_cross_time(x),paths[i].weight);
 
 	return BTC; 
 

@@ -33,13 +33,14 @@ public:
 	double maxt = -0.1234567;
 	double mint = -0.1234567;
 	void write(string filename);
-	void create(CDistribution *dist, double x_min, double x_max, double kappa, double dx);
+	void create(CDistribution *dist, double x_min, double x_max, double kappa, double dx, double weight=1);
 	vtkSmartPointer<vtkPolyData> pathway_vtk_pdt_vtp(double z_factor = 1, double offset = 0);
 	CBTCSet get_distribution(bool _log, int n_bins);
 	CBTC& get_distribution(string var, bool _log = false, int nbins = 100);
 	vector<double> minmax(string var);
 	bool uniform = false;
 	double get_cross_time(double x);
+        double weight = 1; 
 
 };
 

@@ -14,6 +14,7 @@ CPathway::CPathway(const CPathway &P)
 	maxx = P.maxx;
 	minx = P.minx;
 	positions = P.positions;
+        weight = P.weight;
 }
 
 void CPathway::create_range_x(double x_min, double x_max, double dx)
@@ -27,7 +28,7 @@ CPathway& CPathway::operator=(const CPathway &P)
 	maxx = P.maxx;
 	minx = P.minx;
 	positions = P.positions;
-
+        weight = P.weight; 
 	return *this; 
 }
 
@@ -89,6 +90,7 @@ CPathway CPathway::make_uniform_x(double dx)
 {
 	CPathway pathout;
 	pathout.uniform = true; 
+        pathout.weight = weight; 
 	double x = positions[0].x;
 	pathout.append(positions[0]);
 	x += dx;
@@ -110,6 +112,7 @@ CPathway CPathway::make_uniform_t(double dt)
 {
 	CPathway pathout;
 	double t = positions[0].t;
+        pathout.weight = weight; 
 	pathout.positions[0] = positions[0];
 	t += dt;
 	for (int i = 1; i < int(positions.size()); i++)
@@ -174,9 +177,10 @@ void CPathway::write(string filename)
 
 }
 
-void CPathway::create(CDistribution *dist, double x_min, double x_max, double kappa, double dx)
+void CPathway::create(CDistribution *dist, double x_min, double x_max, double kappa, double dx, double _weight)
 {
 	CPosition p;
+        weight = _weight; 
 	p.u = unitrandom();
 	p.z = gsl_cdf_gaussian_Pinv(p.u,1);
 	p.v[0] = dist->inverseCDF(p.u);
