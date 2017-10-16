@@ -174,21 +174,40 @@ CBTCSet CPathwaySet::get_pair_v(int increment, int n)
 
 CBTC CPathwaySet::get_BTC(double x, int n_bins)
 {
-	CBTC BTC;
-	for (int i = 0; i < paths.size(); i++)
-		BTC.append(i, paths[i].get_cross_time(x),paths[i].weight);
-	
-	return BTC.distribution(n_bins,0);
+    CBTC BTC;
+    if (weighted)
+    {    
+        BTC.weighted = true; 
+        for (int i = 0; i < paths.size(); i++)
+           BTC.append(i, paths[i].get_cross_time(x),paths[i].weight);
+    }
+    else
+    {    
+        BTC.weighted = false; 
+        for (int i = 0; i < paths.size(); i++)
+           BTC.append(i, paths[i].get_cross_time(x));
+    }
+
+    return BTC.distribution(n_bins,0);
 
 }
 
 CBTC CPathwaySet::get_BTC_points(double x)
 {
-	CBTC BTC;
-	for (int i = 0; i < paths.size(); i++)
-		BTC.append(i, paths[i].get_cross_time(x),paths[i].weight);
+    CBTC BTC;
+    if (weighted)
+    {   BTC.weighted = true; 
+        for (int i = 0; i < paths.size(); i++)
+            BTC.append(i, paths[i].get_cross_time(x),paths[i].weight);
+    }
+    else
+    {   BTC.weighted = false; 
+        for (int i = 0; i < paths.size(); i++)
+            BTC.append(i, paths[i].get_cross_time(x));
+    }
+        
 
-	return BTC; 
+    return BTC; 
 
 }
 	

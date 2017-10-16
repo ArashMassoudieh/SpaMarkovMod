@@ -384,27 +384,27 @@ vector<double> CPathway::minmax(string var)
 
 double CPathway::get_cross_time(double xx)
 {
-	if (uniform)
-	{
-		double dx = positions[1].x - positions[0].x;
-		int i = int(xx / dx);
-		if (i < positions.size() - 1)
-			return positions[i].t + (positions[i + 1].t - positions[i].t) / dx*(xx - positions[i].x);
-		else
-			return positions[positions.size()-2].t + (positions[positions.size() - 1].t - positions[positions.size() - 2].t) / dx*(xx - positions[positions.size() - 2].x);
-	}
-	else
-	{
-		for (int i = 0; i < positions.size()-1; i++)
-		{
-			if (xx < positions[i + 1].x && xx >= positions[i].x)
-			{
-				return positions[i].t + (positions[i + 1].t - positions[i].t) / (positions[i+1].x-positions[i].x)*(xx - positions[i].x);
-			}
-		}
-		if (xx > positions[positions.size() - 1].x)
-		{
-			return positions[positions.size() - 2].t + (positions[positions.size() - 1].t - positions[positions.size() - 2].t) / (positions[positions.size() - 1].x - positions[positions.size() - 2].x)*(xx - positions[positions.size() - 2].x);
-		}
-	}
+    if (uniform)
+    {
+        double dx = positions[1].x - positions[0].x;
+        int i = int(xx / dx);
+        if (i < positions.size() - 1)
+            return positions[i].t + (positions[i + 1].t - positions[i].t) / dx*(xx - positions[i].x);
+        else
+            return positions[positions.size()-2].t + (positions[positions.size() - 1].t - positions[positions.size() - 2].t) / dx*(xx - positions[positions.size() - 2].x);
+}
+    else
+    {
+        for (int i = 0; i < positions.size()-1; i++)
+        {
+            if (xx < positions[i + 1].x && xx >= positions[i].x)
+            {
+                return positions[i].t + (positions[i + 1].t - positions[i].t) / (positions[i+1].x-positions[i].x)*(xx - positions[i].x);
+            }
+        }
+        if (xx > positions[positions.size() - 1].x)
+        {
+            return positions[positions.size() - 2].t + (positions[positions.size() - 1].t - positions[positions.size() - 2].t) / (positions[positions.size() - 1].x - positions[positions.size() - 2].x)*(xx - positions[positions.size() - 2].x);
+        }
+    }
 }
