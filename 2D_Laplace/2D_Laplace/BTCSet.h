@@ -58,7 +58,7 @@ public:
 	vector<double> getrow(int a);
 	void setname(int i, string name);
         void append(string name, double time, double c);
-	CVector get_kappa_gamma();
+	CVector get_kappa_gamma(double delta_x);
 
 	//Sassan
 	bool file_not_found=false;
