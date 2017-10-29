@@ -288,7 +288,8 @@ CBTCSet::CBTCSet(string filename, bool varytime)
 		file_not_found = true;
 		return;
 	}
-	if (varytime == false)
+
+        if (varytime == false)
 		while (file.eof() == false)
 		{
 			s = getline(file);
@@ -346,8 +347,10 @@ CBTCSet::CBTCSet(string filename, bool varytime)
 				}
 			}
 		}
-	file.close();
+	
 
+        
+        file.close();
 	for (int i = 0; i < min(int(names.size()), nvars); i++)
 		BTC[i].name = names[i];
 
@@ -679,14 +682,14 @@ CVector norm2dif(CBTCSet &A, CBTCSet &B)
 
 }
 
-void CBTCSet::append(double t, vector<double> c)
-{	
-	for (int i=0; i<min(int(c.size()), nvars); i++)
-	{	BTC[i].structured = true;
-		BTC[i].append(t,c[i]);
-		if (BTC[i].n>2)
-			if ((BTC[i].t[BTC[i].n-1]-BTC[i].t[BTC[i].n-2]) != (BTC[i].t[BTC[i].n-2]-BTC[i].t[BTC[i].n-3]))
-				BTC[i].structured = false;
+void CBTCSet::append(double t, vector<double> c, double weight)
+{
+    for (int i=0; i<min(int(c.size()), nvars); i++)
+    {   BTC[i].structured = true;
+        BTC[i].append(t,c[i],weight);
+        if (BTC[i].n>2)
+            if ((BTC[i].t[BTC[i].n-1]-BTC[i].t[BTC[i].n-2]) != (BTC[i].t[BTC[i].n-2]-BTC[i].t[BTC[i].n-3]))
+                BTC[i].structured = false;
 	}
 }
 
@@ -1058,8 +1061,8 @@ CVector CBTCSet::get_kappa_gamma(double delta_x)
 	double sum_2 = 0; 
 	for (int i=0; i<BTC[0].n; i++)
 	{
-            sum_prod += BTC[0].C[i] * BTC[1].C[i];
-            sum_2 += (pow(BTC[0].C[i], 2) + pow(BTC[1].C[i], 2))*0.5;
+            sum_prod += BTC[0].C[i] * BTC[1].C[i]*BTC[0].weight[i];
+            sum_2 += (pow(BTC[0].C[i], 2) + pow(BTC[1].C[i], 2))*0.5*BTC[0].weight[i];
 	}
 	X[0] = (1.0-sum_prod / sum_2)/delta_x;
 	double err = 0;
@@ -1072,15 +1075,15 @@ CVector CBTCSet::get_kappa_gamma(double delta_x)
 	return X; 
 }
 
-void CBTCSet::append(string name, double t, double c)
+void CBTCSet::append(string name, double t, double c, double weight)
 {
     if (lookup(name)!=-1)
-        BTC[lookup(name)].append(t,c);
+        BTC[lookup(name)].append(t,c,weight);
     else
     {
         CBTC BTC;
         BTC.name = name;
-        BTC.append(t,c);
+        BTC.append(t,c,weight);
         append(BTC,name);
     }
 }
