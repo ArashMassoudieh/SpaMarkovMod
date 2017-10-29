@@ -400,22 +400,23 @@ int quan(string S)
 
 vector<string> getline(ifstream& file)
 {
-	string line;
-	
-	vector<string> s;
-	while (file.good())
-	{
-		std::getline(file, line);
-		vector<string> s1 = split(line,' ');
-		for (int i = 0; i < int(s1.size()); i++)
-			if (s1[i] != ""){
-                            s1[i].erase( std::remove(s1[i].begin(), s1[i].end(), '\r'), s1[i].end() );
-                            s.push_back(s1[i]);
-                        }
-		return s;
-	}
-	vector<string> x;
-	return x;
+
+    string line;
+
+    vector<string> s;
+    while (file.good())
+    {
+            std::getline(file, line);
+            vector<string> s1 = split(line,' ');
+            for (int i = 0; i < int(s1.size()); i++)
+                    if (s1[i] != ""){
+                        s1[i].erase( std::remove(s1[i].begin(), s1[i].end(), '\r'), s1[i].end() );
+                        s.push_back(s1[i]);
+                    }
+            return s;
+    }
+    vector<string> x;
+    return x;
 }
 
 vector<vector<string>> getline_op(ifstream& file,char del1)
