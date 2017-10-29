@@ -94,25 +94,25 @@ vector<ijval> CGrid::get_closest_K_dets(int i, int j, int n)
 				{
 					if ((dist2 < max_dist) || (int(out.size()) < n))
 					{
-						ijval pp;
-						pp.i = ii;
-						pp.j = jj;
-						pp.val = sqrt(dist2);
-						out.push_back(pp);
-						max_dist = max(dist2, max_dist);
+                                            ijval pp;
+                                            pp.i = ii;
+                                            pp.j = jj;
+                                            pp.val = sqrt(dist2);
+                                            out.push_back(pp);
+                                            max_dist = max(dist2, max_dist);
 					}
 				}
 
 			}
 		if ((int(out.size()) >= n) && min_dist > max_dist)
 		{
-			k = max(GP.nx, GP.ny);
-			ijval pp;
-			pp.i = i;
-			pp.j = j;
-			pp.val = 0;
-			out.push_back(pp);
-			return out;
+                    k = max(GP.nx, GP.ny);
+                    ijval pp;
+                    pp.i = i;
+                    pp.j = j;
+                    pp.val = 0;
+                    out.push_back(pp);
+                    return out;
 		}
 	}
 	ijval pp;
@@ -344,66 +344,66 @@ CGrid::CGrid(string filename)
 			if (tolower(s[0]) == "endfor")
 			{
 				
-				_command command;
-				command.command = "clear_all";
-				commands.push_back(command);
-				int end_for_location = commands.size();
-				for (int i = 0; i < n_for-1; i++)
-				{
-					_command write_commend; 
-					write_commend.command = "write";
-					write_commend.parameters["content"] = "starting realization " + numbertostring(i + 1);
-					commands.push_back(write_commend);
-					for (int j = last_for_location; j < end_for_location; j++)
-					{
-						_command new_command = commands[j];
-						if (new_command.parameters["filename"].size() > 0)
-							new_command.parameters["filename"] = insert_counter_in_file_name(new_command.parameters["filename"], i+1);
-						if (new_command.parameters["filename_x"].size() > 0)
-							new_command.parameters["filename_x"] = insert_counter_in_file_name(new_command.parameters["filename_x"], i+1);
-						if (new_command.parameters["filename_y"].size() > 0)
-							new_command.parameters["filename_y"] = insert_counter_in_file_name(new_command.parameters["filename_y"], i+1);
-                                                if (new_command.parameters["filename_mag"].size() > 0)
-							new_command.parameters["filename_mag"] = insert_counter_in_file_name(new_command.parameters["filename_mag"], i+1);
-						if (new_command.parameters["dist_filename"].size() > 0)
-							new_command.parameters["dist_filename"] = insert_counter_in_file_name(new_command.parameters["dist_filename"], i+1);
-						if (new_command.parameters["ranks_filename"].size() > 0)
-							new_command.parameters["ranks_filename"] = insert_counter_in_file_name(new_command.parameters["ranks_filename"], i+1);
-						if (new_command.parameters["ranks_filename"].size() > 0)
-							new_command.parameters["ranks_filename"] = insert_counter_in_file_name(new_command.parameters["normal_filename"], i+1);
-						if (new_command.parameters["OU_parameters_filename"].size() > 0)
-							new_command.parameters["OU_parameters_filename"] = insert_counter_in_file_name(new_command.parameters["OU_parameters_filename"], i+1);
-							
-						commands.push_back(new_command);
+                            _command command;
+                            command.command = "clear_all";
+                            commands.push_back(command);
+                            int end_for_location = commands.size();
+                            for (int i = 0; i < n_for-1; i++)
+                            {
+                                _command write_commend; 
+                                write_commend.command = "write";
+                                write_commend.parameters["content"] = "starting realization " + numbertostring(i + 1);
+                                commands.push_back(write_commend);
+                                for (int j = last_for_location; j < end_for_location; j++)
+                                {
+                                    _command new_command = commands[j];
+                                    if (new_command.parameters["filename"].size() > 0)
+                                            new_command.parameters["filename"] = insert_counter_in_file_name(new_command.parameters["filename"], i+1);
+                                    if (new_command.parameters["filename_x"].size() > 0)
+                                            new_command.parameters["filename_x"] = insert_counter_in_file_name(new_command.parameters["filename_x"], i+1);
+                                    if (new_command.parameters["filename_y"].size() > 0)
+                                            new_command.parameters["filename_y"] = insert_counter_in_file_name(new_command.parameters["filename_y"], i+1);
+                                    if (new_command.parameters["filename_mag"].size() > 0)
+                                            new_command.parameters["filename_mag"] = insert_counter_in_file_name(new_command.parameters["filename_mag"], i+1);
+                                    if (new_command.parameters["dist_filename"].size() > 0)
+                                            new_command.parameters["dist_filename"] = insert_counter_in_file_name(new_command.parameters["dist_filename"], i+1);
+                                    if (new_command.parameters["ranks_filename"].size() > 0)
+                                            new_command.parameters["ranks_filename"] = insert_counter_in_file_name(new_command.parameters["ranks_filename"], i+1);
+                                    if (new_command.parameters["ranks_filename"].size() > 0)
+                                            new_command.parameters["ranks_filename"] = insert_counter_in_file_name(new_command.parameters["normal_filename"], i+1);
+                                    if (new_command.parameters["OU_parameters_filename"].size() > 0)
+                                            new_command.parameters["OU_parameters_filename"] = insert_counter_in_file_name(new_command.parameters["OU_parameters_filename"], i+1);
 
-					}
-					_command command; 
-					command.command = "clear_all";
-					commands.push_back(command);
-					
-				}
-				n_for = 1;
-				
-			}
-			if (tolower(s[0]) == "k_dist")
-			{
-				marginal_K_dist_type = s[1];
-				for (int j = 2; j < s.size(); j++)
-					marginal_K_dist_params.push_back(atof(s[j].c_str()));
-			}
-			if (tolower(s[0]) == "command")
-			{
-				_command command;
-				command.command = tolower(s[1]);
-				for (int j = 2; j < s.size(); j++)
-                                {   if (split(s[j], '=').size()>1) 
-                                        command.parameters[split(s[j], '=')[0]] = split(s[j], '=')[1];
-                                
+                                    commands.push_back(new_command);
+
                                 }
+                                _command command; 
+                                command.command = "clear_all";
+                                commands.push_back(command);
 
-				commands.push_back(command);
-			}
-			if (tolower(s[0]) == "x0_trajs") trajectory_params.x0_trajs = atof(s[1].c_str());
+                            }
+                            n_for = 1;
+
+                    }
+                    if (tolower(s[0]) == "k_dist")
+                    {
+                            marginal_K_dist_type = s[1];
+                            for (int j = 2; j < s.size(); j++)
+                                    marginal_K_dist_params.push_back(atof(s[j].c_str()));
+                    }
+                    if (tolower(s[0]) == "command")
+                    {
+                            _command command;
+                            command.command = tolower(s[1]);
+                            for (int j = 2; j < s.size(); j++)
+                            {   if (split(s[j], '=').size()>1) 
+                                    command.parameters[split(s[j], '=')[0]] = split(s[j], '=')[1];
+
+                            }
+
+                            commands.push_back(command);
+                    }
+                    if (tolower(s[0]) == "x0_trajs") trajectory_params.x0_trajs = atof(s[1].c_str());
 		}
 	}
 	
@@ -1214,11 +1214,57 @@ void CGrid::runcommands_qt()
             main_window->setCursor(Qt::WaitCursor);
             QApplication::processEvents();
             qDebug() << QString::fromStdString(commands[i].command) << endl;
+            if (commands[i].command == "get_all_btc_points")
+            {
+                show_in_window("Getting all btc points");
+                All_Breakthroughpoints.getfromfile(pathout + commands[i].parameters["filename"],1);
+            }
+            
+            if (commands[i].command == "get_points_v_eulerian")
+            {
+                show_in_window("Getting all Eulerian velocities");
+                Allpoints_velocities_eulerian.getfromfile(pathout + commands[i].parameters["filename"],1);
+            }
+            if (commands[i].command == "get_points_v_from_traj")
+            {
+                show_in_window("Getting all Lagrangian velocities");
+                velocity_samples_from_trajs.getfromfile(pathout + commands[i].parameters["filename"],1);
+            }
+            if (commands[i].command == "get_ou_params")
+            {
+                show_in_window("Getting all OU parameters");
+                extracted_OU_parameters.getfromfile(pathout + commands[i].parameters["filename"],1);
+            }
+            
+            
+            if (commands[i].command == "write_all_btc_points")
+            {
+                show_in_window("Writing all btc points");
+                All_Breakthroughpoints.writetofile(pathout + commands[i].parameters["filename"]);
+            }
+            
+            if (commands[i].command == "write_points_v_eulerian")
+            {
+                show_in_window("Writing all Eulerian velocities");
+                Allpoints_velocities_eulerian.writetofile(pathout + commands[i].parameters["filename"]);
+            }
+            if (commands[i].command == "write_points_v_from_traj")
+            {
+                show_in_window("Writing all Lagrangian velocities");
+                velocity_samples_from_trajs.writetofile(pathout + commands[i].parameters["filename"]);
+            }
+            if (commands[i].command == "write_ou_params")
+            {
+                 show_in_window("Writing all OU parameters");
+                extracted_OU_parameters.writetofile(pathout + commands[i].parameters["filename"]);
+            }
+            
+            
             if (commands[i].command == "generate_k_field")
             {
                     clear_contents(); 
                     show_in_window("Assigning K...,");
-
+                       
                     //cout << "Assigning K..." << endl;
                     field_gen.max_correl_n = atoi(commands[i].parameters["n_neighbors"].c_str());
                     field_gen.k_correlation_lenght_scale_x = atof(commands[i].parameters["corr_length_scale_x"].c_str());
