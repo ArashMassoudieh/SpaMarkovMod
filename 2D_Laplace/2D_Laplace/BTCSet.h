@@ -38,7 +38,7 @@ public:
 	vector<double> percentile(double x, int limit);
 	vector<double> percentile(double x, int limit, vector<int> index);
 	vector<double> getrandom(int burnin);
-	void append(double t, vector<double> c);
+	void append(double t, vector<double> c, double weight=1);
 	CBTC add(vector<int> ii);
 	CBTC add_mult(vector<int> ii, vector<double> mult);
 	CBTC add_mult(vector<int> ii, CBTCSet &mult);
@@ -57,7 +57,7 @@ public:
 	int lookup(string S);
 	vector<double> getrow(int a);
 	void setname(int i, string name);
-        void append(string name, double time, double c);
+        void append(string name, double time, double c, double weight=1);
 	CVector get_kappa_gamma(double delta_x);
 
 	//Sassan
