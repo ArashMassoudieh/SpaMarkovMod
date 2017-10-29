@@ -150,14 +150,15 @@ void CPathwaySet::make_uniform_at_t(double dt)
 
 
 
-vector<double> CPathwaySet::get_pair_v(int increment)
+CPosition CPathwaySet::get_pair_v(int increment)
 {
-	vector<double> v(2);
-	int i = int(unitrandom()*paths.size());
-	int j = int((paths[i].positions.size()- increment)*unitrandom());
-	v[0] = paths[i].positions[j].v[0];
-	v[1] = paths[i].positions[j + increment].v[0];
-	return v;
+    CPosition p; 
+    int i = int(unitrandom()*paths.size());
+    int j = int((paths[i].positions.size()- increment)*unitrandom());
+    p.v[0] = paths[i].positions[j].v[0];
+    p.v[1] = paths[i].positions[j + increment].v[0];
+    p.weight = paths[i].weight;
+    return p;
 }
 
 CBTCSet CPathwaySet::get_pair_v(int increment, int n)
@@ -165,8 +166,8 @@ CBTCSet CPathwaySet::get_pair_v(int increment, int n)
 	CBTCSet out(2);
 	for (int i = 0; i < n; i++)
 	{
-		vector<double> v = get_pair_v(increment);
-		out.append(double(i), v);
+		CPosition p = get_pair_v(increment);
+		out.append(double(i), p.v.vec, p.weight);
 	}
 	return out; 
 

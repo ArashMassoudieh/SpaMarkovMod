@@ -2,7 +2,7 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <data xmlns="http://www.netbeans.org/ns/make-project-private/1">
         <activeConfTypeElem>4</activeConfTypeElem>
-        <activeConfIndexElem>1</activeConfIndexElem>
+        <activeConfIndexElem>0</activeConfIndexElem>
     </data>
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
@@ -19,6 +19,7 @@
             <file>file:/home/arash/Projects/2D_Laplace/Qt_version/HETEVAL/HETEVAL/Pathway.h</file>
             <file>file:/home/arash/Projects/2D_Laplace/2D_Laplace/2D_Laplace/Distribution.h</file>
             <file>file:/home/arash/Projects/2D_Laplace/Qt_version/HETEVAL/HETEVAL/Pathway.cpp</file>
+            <file>file:/home/arash/Projects/2D_Laplace/Linux/HETEVAL/Makefile</file>
             <file>file:/home/arash/Projects/2D_Laplace/2D_Laplace/2D_Laplace/BTCSet.cpp</file>
             <file>file:/home/arash/Projects/2D_Laplace/Qt_version/HETEVAL/HETEVAL/Position.cpp</file>
         </group>

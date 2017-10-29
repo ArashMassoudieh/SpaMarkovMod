@@ -23,7 +23,7 @@ public:
     CPathway snapshotatlocation(double x);
     void make_uniform_at_x(double dx);
     void make_uniform_at_t(double dt);
-    vector<double> get_pair_v(int increment);
+    CPosition get_pair_v(int increment);
     CBTCSet get_pair_v(int increment, int n);
     CBTC get_BTC(double x, int n_bins);
     CBTC get_BTC_points(double x);

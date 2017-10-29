@@ -10,6 +10,7 @@ CPosition::CPosition()
 	t = 0;
 	u = 0; 
 	z = 0; 
+        weight = 1; 
 }
 
 CPosition::CPosition(const CPosition & P)
@@ -20,6 +21,7 @@ CPosition::CPosition(const CPosition & P)
 	u = P.u;
 	z = P.z;
 	v = P.v;
+        weight = P.weight;
 }
 
 
@@ -31,6 +33,7 @@ CPosition& CPosition::operator=(const CPosition & P)
 	u = P.u;
 	z = P.z;
 	v = P.v;
+        weight = P.weight; 
 	return *this;
 }
 
@@ -49,6 +52,7 @@ double CPosition::getvar(string var)
 	if (var == "vy") return v[1];
 	if (var == "v_eff") if (t > 0) return x / t; else return 0;
 	if (var == "t_eff") if (x > 0) return t / x; else return 0;
+        if (var == "weight") return weight; 
 	return 0;
 }
 
@@ -61,19 +65,21 @@ CPosition operator+(const CPosition p1, const CPosition p2)
 	p.z = p1.z + p2.z;
 	p.x = p1.x + p2.x;
 	p.t = p1.t + p2.t;
+        p.weight = (p1.weight + p2.weight)/2.0;
 	return p;
 }
 
 CPosition operator-(const CPosition p1, const CPosition p2)
 {
-	CPosition p;
-	p.v = p1.v - p2.v;
-	p.y = p1.y - p2.y;
-	p.u = p1.u - p2.u;
-	p.z = p1.z - p2.z;
-	p.x = p1.x - p2.x;
-	p.t = p1.t - p2.t;
-	return p;
+    CPosition p;
+    p.v = p1.v - p2.v;
+    p.y = p1.y - p2.y;
+    p.u = p1.u - p2.u;
+    p.z = p1.z - p2.z;
+    p.x = p1.x - p2.x;
+    p.t = p1.t - p2.t;
+    p.weight = (p1.weight + p2.weight)/2.0;
+    return p;
 }
 
 CPosition operator*(double d, CPosition p1)
@@ -85,6 +91,7 @@ CPosition operator*(double d, CPosition p1)
 	p.z = d*p1.z;
 	p.x = d*p1.x;
 	p.t = d*p1.t;
+        p.weight = p1.weight;
 	return p;
 }
 
