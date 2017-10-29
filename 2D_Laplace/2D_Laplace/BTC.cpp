@@ -71,7 +71,7 @@ CBTC CBTC::rank_bd(int nintervals)
 	CBTC X = dist.uniform_cummulative(nintervals);
 	CBTC out; 
 	for (int i = 0; i < n; i++)
-		out.append(double(i), X.interpol(C[i]));
+           out.append(double(i), X.interpol(C[i]),weight[i]);
 
 	return out;
 }
@@ -81,7 +81,7 @@ CBTC CBTC::map_to_standard_normal(int nintervals)
     CBTC X = dist.uniform_cummulative(nintervals);
     CBTC out;
     for (int i = 0; i < n; i++)
-    	out.append(double(i), stdnormal_inv(X.interpol(C[i])));
+    	out.append(double(i), stdnormal_inv(X.interpol(C[i])),weight[i]);
 
     return out;
 }
