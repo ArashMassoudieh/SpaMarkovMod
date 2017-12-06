@@ -458,7 +458,11 @@ CVector CGrid::getvelocity(point pp)
 {
 	int i_floar = int(pp.x / GP.dx);
 	int j_floar = int(pp.y / GP.dy);
-	if ((i_floar > GP.nx - 2) || (j_floar>GP.ny - 2) || (i_floar<0) || (j_floar<0)) return CVector();
+	if ((i_floar > GP.nx - 2) || (j_floar>GP.ny - 2) || (i_floar<0) || (j_floar<0))
+        {   qDebug() << "Empty CVector returned";
+            return CVector();
+        
+        }
 	CVector V1 = p[i_floar][j_floar].V + (1.0 / GP.dx*(pp.x - GP.dx*i_floar))*(p[i_floar + 1][j_floar].V - p[i_floar][j_floar].V);
 	CVector V2 = p[i_floar][j_floar+1].V + (1.0 / GP.dx*(pp.x - GP.dx*i_floar))*(p[i_floar + 1][j_floar+1].V - p[i_floar][j_floar+1].V);
 	CVector V = V1 + (1.0 / GP.dy*(pp.y - GP.dy*j_floar))*(V2 - V1);
@@ -597,7 +601,7 @@ void CGrid::initialize(int numpoints,double x_0,bool _weighted)
     weighted = _weighted; 
     if (!_weighted)
     {
-        int burnout = 1000;
+        int burnout = 10000;
         double y_0 = unitrandom();
         point pt_0; pt_0.x = x_0; pt_0.y = y_0;
         double v_x = getvelocity(pt_0)[0];
@@ -1404,9 +1408,9 @@ void CGrid::runcommands_qt()
                 show_in_window("Writing trajectories ...");
                 cout << "Writing trajectories ..." << endl;
                 if (commands[i].parameters.count("interval")>0)
-                        Traj.write(pathout+commands[i].parameters["filename"]);
+                    Traj.write(pathout+commands[i].parameters["filename"]);
                 else
-                        Traj.write(pathout+commands[i].parameters["filename"]);
+                    Traj.write(pathout+commands[i].parameters["filename"]);
             }
 
             if (commands[i].command == "get_velocity_dist")
