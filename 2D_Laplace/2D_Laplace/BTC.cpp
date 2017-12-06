@@ -70,6 +70,7 @@ CBTC CBTC::rank_bd(int nintervals)
 	CBTC dist = distribution(nintervals, 0);
 	CBTC X = dist.uniform_cummulative(nintervals);
 	CBTC out; 
+        out.weighted = true; 
 	for (int i = 0; i < n; i++)
            out.append(double(i), X.interpol(C[i]),weight[i]);
 
@@ -80,10 +81,11 @@ CBTC CBTC::map_to_standard_normal(int nintervals)
     CBTC dist = distribution(nintervals, 0);
     CBTC X = dist.uniform_cummulative(nintervals);
     CBTC out;
+    out.weighted = true; 
     for (int i = 0; i < n; i++)
     	out.append(double(i), stdnormal_inv(X.interpol(C[i])),weight[i]);
 
-    return out;
+    return out.standardize();
 }
 
 CBTC CBTC::uniform_cummulative(int nintervals)
@@ -711,6 +713,32 @@ CBTC operator*(CBTC CBTC_T, double alpha)
     {
 	//S.t[i] = CBTC_T.t[i];
 	S.C[i] = alpha*CBTC_T.C[i];
+    }
+
+
+    return S;
+}
+
+CBTC operator+(CBTC CBTC_T, double alpha)
+{
+    CBTC S = CBTC_T;
+    for (int i=0; i<CBTC_T.n; i++)
+    {
+	//S.t[i] = CBTC_T.t[i];
+	S.C[i] = alpha+CBTC_T.C[i];
+    }
+
+
+    return S;
+}
+
+CBTC operator-(CBTC CBTC_T, double alpha)
+{
+    CBTC S = CBTC_T;
+    for (int i=0; i<CBTC_T.n; i++)
+    {
+	//S.t[i] = CBTC_T.t[i];
+	S.C[i] = CBTC_T.C[i] - alpha;
     }
 
 
@@ -1499,6 +1527,14 @@ CBTC CBTC::distribution_log(int n_bins, int limit)
 	}
 
 	return out;
+}
+
+CBTC CBTC::standardize()
+{
+    double _std = std();
+    double _mean = mean();
+    CBTC out = (*this - _mean)/_std; 
+    return out; 
 }
 
 
