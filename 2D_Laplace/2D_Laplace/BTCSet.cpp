@@ -412,15 +412,16 @@ void CBTCSet::getfromfile(string filename, bool varytime)
 	else
 		while (file.eof()== false)
 		{
-			s = getline(file);
+			s = getline(file,'\t');
 			if (s.size() > 0)
 			{
 				if (s[0] == "names")
 					for (int i = 1; i < int(s.size()); i++) names.push_back(s[i]);
+                                if (trim(s[0]).substr(0,1)=="#")
+                                    for (int i=1; i<int(s.size()); i+=2) names.push_back(trim(s[i]));
 				if (s[0] == "units")
 					for (int i = 1; i < int(s.size()); i++) units.push_back(s[i]);
-				if ((s[0].substr(0, 2) != "//") && (s[0] != "names") && (s[0] != "units"))
-				{
+				if ((s[0].substr(0, 2) != "//") && (s[0] != "names") && (s[0] != "units") && (trim(s[0]).substr(0,1)!="#"))			{
 					if (nvars == 0) { nvars = s.size() / 2; BTC.resize(nvars); for (int i = 0; i < nvars; i++) BTC[i].structured = true; }
 
 					int n_line = s.size() / 2;
@@ -686,11 +687,12 @@ void CBTCSet::append(double t, vector<double> c, double weight)
 {
     for (int i=0; i<min(int(c.size()), nvars); i++)
     {   BTC[i].structured = true;
+        if (weight!=1.0) BTC[i].weighted = true; 
         BTC[i].append(t,c[i],weight);
         if (BTC[i].n>2)
             if ((BTC[i].t[BTC[i].n-1]-BTC[i].t[BTC[i].n-2]) != (BTC[i].t[BTC[i].n-2]-BTC[i].t[BTC[i].n-3]))
                 BTC[i].structured = false;
-	}
+    }
 }
 
 CBTC CBTCSet::add(vector<int> ii)
@@ -1066,11 +1068,13 @@ CVector CBTCSet::get_kappa_gamma(double delta_x)
 	}
 	X[0] = (1.0-sum_prod / sum_2)/delta_x;
 	double err = 0;
+        double sum_weight = 0; 
 	for (int i = 0; i<BTC[0].n; i++)
 	{
-            err += pow(BTC[0].C[i] - (sum_prod / sum_2) * BTC[1].C[i], 2);
+            err += (pow(BTC[0].C[i] - (sum_prod / sum_2) * BTC[1].C[i], 2)+pow(BTC[1].C[i] - (sum_prod / sum_2) * BTC[0].C[i], 2))*BTC[0].weight[i]*0.5;
+            sum_weight += BTC[0].weight[i];
 	}
-	X[1] = err / BTC[0].n/(2.0*delta_x);
+	X[1] = err /(2.0*delta_x)/sum_weight;
 	cout << "OU_params" << X[0] << "  " << X[1] << endl; 
 	return X; 
 }
@@ -1078,11 +1082,15 @@ CVector CBTCSet::get_kappa_gamma(double delta_x)
 void CBTCSet::append(string name, double t, double c, double weight)
 {
     if (lookup(name)!=-1)
+    {   if (weight!=1.0) BTC[lookup(name)].weighted = true; 
         BTC[lookup(name)].append(t,c,weight);
+    
+    }
     else
     {
         CBTC BTC;
         BTC.name = name;
+        if (weight!=1.0) BTC.weighted = true; 
         BTC.append(t,c,weight);
         append(BTC,name);
     }
