@@ -398,7 +398,7 @@ int quan(string S)
 	return -1;
 }
 
-vector<string> getline(ifstream& file)
+vector<string> getline(ifstream& file, char del1) 
 {
 
     string line;
@@ -407,7 +407,7 @@ vector<string> getline(ifstream& file)
     while (file.good())
     {
             std::getline(file, line);
-            vector<string> s1 = split(line,' ');
+            vector<string> s1 = split(line,del1);
             for (int i = 0; i < int(s1.size()); i++)
                     if (s1[i] != ""){
                         s1[i].erase( std::remove(s1[i].begin(), s1[i].end(), '\r'), s1[i].end() );
