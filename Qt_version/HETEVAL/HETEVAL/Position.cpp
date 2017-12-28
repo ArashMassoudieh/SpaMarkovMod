@@ -50,8 +50,8 @@ double CPosition::getvar(string var)
 	if (var == "y") return y;
 	if (var == "vx") return v[0];
 	if (var == "vy") return v[1];
-	if (var == "v_eff") if (t > 0) return x / t; else return 0;
-	if (var == "t_eff") if (x > 0) return t / x; else return 0;
+	if (var == "v_eff") {if (t > 0) return x / t; else return 0;};
+	if (var == "t_eff") {if (x > 0) return t / x; else return 0;};
         if (var == "weight") return weight; 
 	return 0;
 }

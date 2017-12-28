@@ -49,6 +49,8 @@ MKDIR=mkdir
 CP=cp
 CCADMIN=CCadmin
 
+export vtk_build:=../../../../VTK-build
+export vtk:=../../../../VTK
 
 # build
 build: .build-post
