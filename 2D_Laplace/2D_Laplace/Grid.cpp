@@ -1650,7 +1650,7 @@ void CGrid::runcommands_qt()
                 pset.create(atoi(commands[i].parameters["n"].c_str()), &dist, atof(commands[i].parameters["x_min"].c_str()), atof(commands[i].parameters["x_max"].c_str()), atof(commands[i].parameters["kappa"].c_str()), atof(commands[i].parameters["dx"].c_str()));
 
             }
-
+            
             if (commands[i].command == "write_pathways")
             {
                 show_in_window("Writing pathways ...");
@@ -1723,7 +1723,16 @@ void CGrid::runcommands_qt()
             if (commands[i].command == "extract_pairs")
             {
                 show_in_window("Extracting pairs ... ");
-                CBTCSet pairs = Traj.get_pair_v(atoi(commands[i].parameters["increment"].c_str()), atoi(commands[i].parameters["n"].c_str()));
+                CBTCSet pairs;
+                if (Traj.paths.size())
+                    pairs = Traj.get_pair_v(atoi(commands[i].parameters["increment"].c_str()), atoi(commands[i].parameters["n"].c_str()));
+                else if (pset.paths.size())
+                    pairs = pset.get_pair_v(atoi(commands[i].parameters["increment"].c_str()), atoi(commands[i].parameters["n"].c_str()));
+                else
+                {
+                    show_in_window("No trajectories has been initialized!");
+                    return;         
+                }
                 pairs.writetofile(pathout+commands[i].parameters["filename"]);
                 if (commands[i].parameters.count("dist_filename") > 0)
                 {
@@ -1731,6 +1740,7 @@ void CGrid::runcommands_qt()
                 }
                 if (commands[i].parameters.count("ranks_filename") > 0)
                 {
+                    show_in_window("Writing ranks");
                     CBTCSet ranks(2);
                     ranks.BTC[0] = pairs.BTC[0].rank_bd(atoi(commands[i].parameters["nbins"].c_str()));
                     ranks.BTC[1] = pairs.BTC[1].rank_bd(atoi(commands[i].parameters["nbins"].c_str()));
@@ -1738,16 +1748,23 @@ void CGrid::runcommands_qt()
                 }
                 if (commands[i].parameters.count("normal_filename") > 0)
                 {
+                    show_in_window("Writing normals");
                     CBTCSet normals(2);
                     normals.BTC[0] = pairs.BTC[0].map_to_standard_normal(atoi(commands[i].parameters["nbins"].c_str()));
                     normals.BTC[1] = pairs.BTC[1].map_to_standard_normal(atoi(commands[i].parameters["nbins"].c_str()));
                     normals.writetofile(pathout + commands[i].parameters["normal_filename"]);
                     if (commands[i].parameters.count("OU_parameters_filename") > 0)
                     {
-                        CVector X = normals.get_kappa_gamma(atof(commands[i].parameters["delta_x"].c_str()));
+                        show_in_window("Writing OU params");
+                        CTimeSeries residuals(); 
+                        CVector X = normals.get_kappa_gamma(atof(commands[i].parameters["delta_x"].c_str()),residuals);
                         extracted_OU_parameters.append("p1_"+commands[i].parameters["increment"], atoi(commands[i].parameters["increment"].c_str()), X[0]);
                         extracted_OU_parameters.append("p2_"+commands[i].parameters["increment"], atoi(commands[i].parameters["increment"].c_str()), X[1]);
                         X.writetofile(pathout + commands[i].parameters["OU_parameters_filename"]);
+                        if (commands[i].parameters.count("residuals_filename") > 0) 
+                            residuals.writefile(pathout+commands[i].parameters["residuals_filename"]);
+                        
+                        
                     }
                 }
             }
@@ -2319,8 +2336,9 @@ void CGrid::renormalize_k()
 
 void CGrid::show_in_window(string s)
 {
-	main_window->get_ui()->ShowOutput->append(QString::fromStdString(s));
-	QApplication::processEvents();
+    qDebug()<<QString::fromStdString(s);
+    main_window->get_ui()->ShowOutput->append(QString::fromStdString(s));
+    QApplication::processEvents();
 }
 
 void CGrid::set_progress_value(double s)
