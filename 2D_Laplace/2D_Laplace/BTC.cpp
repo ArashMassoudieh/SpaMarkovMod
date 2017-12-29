@@ -1,4 +1,4 @@
-// BTC.cpp: implementation of the CBTC class.
+// BTC.cpp: implementation of the CTimeSeries class.
 //
 //////////////////////////////////////////////////////////////////////
 
@@ -9,6 +9,7 @@
 #include <fstream>
 #include "StringOP.h"
 #include "NormalDist.h"
+#include <qdebug.h>
 
 #define GNUplot 
 
@@ -18,7 +19,7 @@ using namespace std;
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CBTC::CBTC()
+CTimeSeries::CTimeSeries()
 {
 	n = 0;
 	structured = true;
@@ -26,7 +27,7 @@ CBTC::CBTC()
         
 }
 
-CBTC::CBTC(int n1)
+CTimeSeries::CTimeSeries(int n1)
 {
 	n=n1;
 	t.resize(n);
@@ -36,7 +37,7 @@ CBTC::CBTC(int n1)
 	max_fabs = 0;
 }
 
-CBTC::CBTC(vector<double> &data, int writeInterval)
+CTimeSeries::CTimeSeries(vector<double> &data, int writeInterval)
 {
     n = 0;
     structured = 0;
@@ -49,7 +50,7 @@ CBTC::CBTC(vector<double> &data, int writeInterval)
             weight.push_back(1.0);
 	}
 }
-double CBTC::rank(int ii)
+double CTimeSeries::rank(int ii)
 {
 	int xx = 0;
 	for (int i = 0; i < n; i++)
@@ -57,44 +58,55 @@ double CBTC::rank(int ii)
 	return double(xx / double(n));
 
 }
-CBTC CBTC::rank()
+CTimeSeries CTimeSeries::rank()
 {
-	CBTC out;
+	CTimeSeries out;
 	for (int i = 0; i < n; i++)
 		out.append(t[i], rank(i));
 
 	return out; 
 }
-CBTC CBTC::rank_bd(int nintervals)
+CTimeSeries CTimeSeries::rank_bd(int nintervals)
 {
-	CBTC dist = distribution(nintervals, 0);
-	CBTC X = dist.uniform_cummulative(nintervals);
-	CBTC out; 
+	CTimeSeries dist = distribution(nintervals, 0);
+	CTimeSeries X = dist.uniform_cummulative(nintervals);
+	CTimeSeries out; 
         out.weighted = true; 
-	for (int i = 0; i < n; i++)
-           out.append(double(i), X.interpol(C[i]),weight[i]);
-
+	if (weight.size())
+            for (int i = 0; i < n; i++)
+            {   qDebug()<<i<<"    "<< C[i] << "    " << weight[i];
+                out.append(double(i), X.interpol(C[i]),weight[i]);
+            }
+        else
+            for (int i = 0; i < n; i++)
+            {   qDebug()<<i<<"    "<< C[i];
+                out.append(double(i), X.interpol(C[i]),1);
+            }
 	return out;
 }
-CBTC CBTC::map_to_standard_normal(int nintervals)
+CTimeSeries CTimeSeries::map_to_standard_normal(int nintervals)
 {
-    CBTC dist = distribution(nintervals, 0);
-    CBTC X = dist.uniform_cummulative(nintervals);
-    CBTC out;
+    CTimeSeries dist = distribution(nintervals, 0);
+    CTimeSeries X = dist.uniform_cummulative(nintervals);
+    CTimeSeries out;
     out.weighted = true; 
-    for (int i = 0; i < n; i++)
-    	out.append(double(i), stdnormal_inv(X.interpol(C[i])),weight[i]);
-
+    if (weight.size())
+        for (int i = 0; i < n; i++)
+            out.append(double(i), stdnormal_inv(X.interpol(C[i])),weight[i]);
+    else
+        for (int i = 0; i < n; i++)
+            out.append(double(i), stdnormal_inv(X.interpol(C[i])),1);
+    
     return out.standardize();
 }
 
-CBTC CBTC::uniform_cummulative(int nintervals)
+CTimeSeries CTimeSeries::uniform_cummulative(int nintervals)
 {
-    CBTC X = getcummulative();
+    CTimeSeries X = getcummulative();
     return X.make_uniform(t[n - 1] / double(nintervals));
 
 }
-void CBTC::setnumpoints(int n1)
+void CTimeSeries::setnumpoints(int n1)
 {
     n = n1;
     t.resize(n);
@@ -102,12 +114,12 @@ void CBTC::setnumpoints(int n1)
     weight.resize(n);
 }
 
-CBTC::~CBTC()
+CTimeSeries::~CTimeSeries()
 {
 	
 }
 
-CBTC::CBTC(const CBTC &CC)
+CTimeSeries::CTimeSeries(const CTimeSeries &CC)
 {
 	n=CC.n;
 	t = CC.t;
@@ -123,7 +135,7 @@ CBTC::CBTC(const CBTC &CC)
 	error = CC.error;
 }
 
-CBTC::CBTC(string Filename)
+CTimeSeries::CTimeSeries(string Filename)
 {
 	n = 0;
 	t.clear();
@@ -165,7 +177,7 @@ CBTC::CBTC(string Filename)
 	file.close();	
 }
 
-/*CBTC CBTC::operator = (const CBTC &CC)
+/*CTimeSeries CTimeSeries::operator = (const CTimeSeries &CC)
 {
 	n=CC.n;
 	t = new double[n];
@@ -179,7 +191,7 @@ CBTC::CBTC(string Filename)
 	return *this;
 }*/
 
-CBTC& CBTC::operator = (const CBTC &CC)
+CTimeSeries& CTimeSeries::operator = (const CTimeSeries &CC)
 {
 	n=CC.n;
 	t = CC.t;
@@ -197,9 +209,9 @@ CBTC& CBTC::operator = (const CBTC &CC)
 	return *this;
 }
 
-CBTC CBTC::Log()
+CTimeSeries CTimeSeries::Log()
 {
-    CBTC _BTC;
+    CTimeSeries _BTC;
     _BTC.weighted = weighted;
     for (int i=0; i<n; i++)
     {
@@ -210,9 +222,9 @@ CBTC CBTC::Log()
     return _BTC;
 }
 
-CBTC CBTC::Log(double m)
+CTimeSeries CTimeSeries::Log(double m)
 {
-	CBTC _BTC(n);
+	CTimeSeries _BTC(n);
         _BTC.weighted = weighted;
 	for (int i=0; i<n; i++)
 	{
@@ -223,7 +235,7 @@ CBTC CBTC::Log(double m)
 }
 
 
-double CBTC::interpol(double x)
+double CTimeSeries::interpol(double x)
 {
     double r=0;
     if (n>1)
@@ -255,7 +267,7 @@ double CBTC::interpol(double x)
 
 }
 
-double CBTC::interpol_D(double x)
+double CTimeSeries::interpol_D(double x)
 {
     double r=0;
     if (n>1)
@@ -285,25 +297,25 @@ double CBTC::interpol_D(double x)
 
 }
 
-CBTC CBTC::interpol(vector<double> x)
+CTimeSeries CTimeSeries::interpol(vector<double> x)
 {
-    CBTC BTCout;
+    CTimeSeries BTCout;
     for (int i=0; i<int(x.size()); i++)
         BTCout.append(x[i],interpol(x[i]));
     return BTCout;
 
 }
 
-CBTC CBTC::interpol(CBTC &x)
+CTimeSeries CTimeSeries::interpol(CTimeSeries &x)
 {
-    CBTC BTCout;
+    CTimeSeries BTCout;
     for (int i=0; i<x.n; i++)
             BTCout.append(x.t[i],interpol(x.t[i]));
     return BTCout;
 
 }
 
-double ADD(CBTC &BTC_p, CBTC &BTC_d)
+double ADD(CTimeSeries &BTC_p, CTimeSeries &BTC_d)
 {
     double sum = 0;	
     for (int i=0; i<BTC_d.n; i++)
@@ -315,7 +327,7 @@ double ADD(CBTC &BTC_p, CBTC &BTC_d)
     return sum/BTC_d.n;
 }
 
-double diff_relative(CBTC &BTC_A, CBTC &BTC_B, double m)
+double diff_relative(CTimeSeries &BTC_A, CTimeSeries &BTC_B, double m)
 {
     double sum = 0;	
     for (int i=0; i<min(BTC_A.n,BTC_B.n); i++)
@@ -328,7 +340,7 @@ double diff_relative(CBTC &BTC_A, CBTC &BTC_B, double m)
 }
 
 
-double diff(CBTC BTC_p, CBTC BTC_d, int scale)
+double diff(CTimeSeries BTC_p, CTimeSeries BTC_d, int scale)
 {
     double sum = 0;
     for (int i=0; i<BTC_d.n; i++)
@@ -341,7 +353,7 @@ double diff(CBTC BTC_p, CBTC BTC_d, int scale)
     return sum;
 }
 
-double diff(CBTC &BTC_p, CBTC &BTC_d)
+double diff(CTimeSeries &BTC_p, CTimeSeries &BTC_d)
 {
     double sum = 0;
     double a;
@@ -354,7 +366,7 @@ double diff(CBTC &BTC_p, CBTC &BTC_d)
     return sum;
 }
 
-double diff_abs(CBTC &BTC_p, CBTC &BTC_d)
+double diff_abs(CTimeSeries &BTC_p, CTimeSeries &BTC_d)
 {
     double sum = 0;
 
@@ -366,7 +378,7 @@ double diff_abs(CBTC &BTC_p, CBTC &BTC_d)
     return sum;
 }
 
-double diff_log(CBTC &BTC_p, CBTC &BTC_d, double lowlim)
+double diff_log(CTimeSeries &BTC_p, CTimeSeries &BTC_d, double lowlim)
 {
     double sum = 0;
     double a;
@@ -381,7 +393,7 @@ double diff_log(CBTC &BTC_p, CBTC &BTC_d, double lowlim)
 }
 
 
-double diff2(CBTC BTC_p, CBTC BTC_d)
+double diff2(CTimeSeries BTC_p, CTimeSeries BTC_d)
 {
     double sum = 0;
     double sumvar1 = 0;
@@ -395,7 +407,7 @@ double diff2(CBTC BTC_p, CBTC BTC_d)
 }
 
 
-double R2(CBTC BTC_p, CBTC BTC_d)
+double R2(CTimeSeries BTC_p, CTimeSeries BTC_d)
 {
     double sumcov = 0;
     double sumvar1 = 0;
@@ -415,7 +427,7 @@ double R2(CBTC BTC_p, CBTC BTC_d)
     return pow(sumcov-sum1*sum2,2)/(sumvar1-sum1*sum1)/(sumvar2-sum2*sum2);
 }
 
-double R(CBTC BTC_p, CBTC BTC_d, int nlimit)
+double R(CTimeSeries BTC_p, CTimeSeries BTC_d, int nlimit)
 {
     double sumcov = 0;
     double sumvar1 = 0;
@@ -440,7 +452,7 @@ double R(CBTC BTC_p, CBTC BTC_d, int nlimit)
     return R_x1x2;
 }
 
-double XYbar(CBTC BTC_p, CBTC BTC_d)
+double XYbar(CTimeSeries BTC_p, CTimeSeries BTC_d)
 {
     double sumcov = 0;
     double sumvar1 = 0;
@@ -460,7 +472,7 @@ double XYbar(CBTC BTC_p, CBTC BTC_d)
     return sumcov;
 }
 
-double X2bar(CBTC BTC_p, CBTC BTC_d)
+double X2bar(CTimeSeries BTC_p, CTimeSeries BTC_d)
 {
     double sumcov = 0;
     double sumvar1 = 0;
@@ -480,7 +492,7 @@ double X2bar(CBTC BTC_p, CBTC BTC_d)
     return sumvar1;
 }
 
-double Y2bar(CBTC BTC_p, CBTC BTC_d)
+double Y2bar(CTimeSeries BTC_p, CTimeSeries BTC_d)
 {
     double sumcov = 0;
     double sumvar1 = 0;
@@ -500,7 +512,7 @@ double Y2bar(CBTC BTC_p, CBTC BTC_d)
     return sumvar2;
 }
 
-double Ybar(CBTC BTC_p, CBTC BTC_d)
+double Ybar(CTimeSeries BTC_p, CTimeSeries BTC_d)
 {
     double sumcov = 0;
     double sumvar1 = 0;
@@ -520,7 +532,7 @@ double Ybar(CBTC BTC_p, CBTC BTC_d)
     return sum2;
 }
 
-double Xbar(CBTC BTC_p, CBTC BTC_d)
+double Xbar(CTimeSeries BTC_p, CTimeSeries BTC_d)
 {
     double sumcov = 0;
     double sumvar1 = 0;
@@ -540,7 +552,7 @@ double Xbar(CBTC BTC_p, CBTC BTC_d)
     return sum1;
 }
 
-double diff_norm(CBTC &BTC_p, CBTC &BTC_d)
+double diff_norm(CTimeSeries &BTC_p, CTimeSeries &BTC_d)
 {
     double sum = 0;
     double sumvar1 = 0;
@@ -559,7 +571,7 @@ double diff_norm(CBTC &BTC_p, CBTC &BTC_d)
 }
 
 
-double diff(CBTC BTC_p, CBTC BTC_d, CBTC Q)
+double diff(CTimeSeries BTC_p, CTimeSeries BTC_d, CTimeSeries Q)
 {
     double sum = 0;
     for (int i=0; i<BTC_d.n; i++)
@@ -569,7 +581,7 @@ double diff(CBTC BTC_p, CBTC BTC_d, CBTC Q)
     return sum;
 }
 
-void CBTC::readfile(string Filename)
+void CTimeSeries::readfile(string Filename)
 {
     ifstream file(Filename.c_str());
     vector<string> s;
@@ -599,7 +611,7 @@ void CBTC::readfile(string Filename)
 
 }
 
-/*void CBTC::readfile(CString Filename)
+/*void CTimeSeries::readfile(CString Filename)
 {
 	FILE *FILEBTC;
 	FILEBTC = fopen(Filename, "r");
@@ -630,7 +642,7 @@ void CBTC::readfile(string Filename)
 
 }*/
 
-void CBTC::writefile(string Filename)
+void CTimeSeries::writefile(string Filename)
 {
     FILE *FILEBTC;
     FILEBTC = fopen(Filename.c_str(), "w");
@@ -656,7 +668,7 @@ void CBTC::writefile(string Filename)
 
 }
 
-/*void CBTC::writefile(CString Filename)
+/*void CTimeSeries::writefile(CString Filename)
 {
 	FILE *FILEBTC;
 	FILEBTC = fopen(Filename, "w");
@@ -667,7 +679,7 @@ void CBTC::writefile(string Filename)
 
 }*/
 
-/*double CBTC::GetS0(CBTC &M)
+/*double CTimeSeries::GetS0(CTimeSeries &M)
 {
 	double sumprod = 0;
 	double sumsqr = 0;
@@ -680,7 +692,7 @@ void CBTC::writefile(string Filename)
 	return S0;
 }
 
-double CBTC::GetS0(CBTC &M, CBTC &Q)
+double CTimeSeries::GetS0(CTimeSeries &M, CTimeSeries &Q)
 {
 	double sumprod = 0;
 	double sumsqr = 0;
@@ -693,61 +705,61 @@ double CBTC::GetS0(CBTC &M, CBTC &Q)
 	return S0;
 }*/
 
-CBTC operator*(double alpha, CBTC CBTC_T)
+CTimeSeries operator*(double alpha, CTimeSeries CTimeSeries_T)
 {
-    CBTC S(CBTC_T.n);
-    for (int i=0; i<CBTC_T.n; i++)
+    CTimeSeries S(CTimeSeries_T.n);
+    for (int i=0; i<CTimeSeries_T.n; i++)
     {
-        S.t[i] = CBTC_T.t[i];
-        S.C[i] = alpha*CBTC_T.C[i];
-        S.weight[i] = CBTC_T.weight[i];
+        S.t[i] = CTimeSeries_T.t[i];
+        S.C[i] = alpha*CTimeSeries_T.C[i];
+        S.weight[i] = CTimeSeries_T.weight[i];
     }
 
     return S;
 }
 
-CBTC operator*(CBTC CBTC_T, double alpha)
+CTimeSeries operator*(CTimeSeries CTimeSeries_T, double alpha)
 {
-    CBTC S = CBTC_T;
-    for (int i=0; i<CBTC_T.n; i++)
+    CTimeSeries S = CTimeSeries_T;
+    for (int i=0; i<CTimeSeries_T.n; i++)
     {
-	//S.t[i] = CBTC_T.t[i];
-	S.C[i] = alpha*CBTC_T.C[i];
-    }
-
-
-    return S;
-}
-
-CBTC operator+(CBTC CBTC_T, double alpha)
-{
-    CBTC S = CBTC_T;
-    for (int i=0; i<CBTC_T.n; i++)
-    {
-	//S.t[i] = CBTC_T.t[i];
-	S.C[i] = alpha+CBTC_T.C[i];
+	//S.t[i] = CTimeSeries_T.t[i];
+	S.C[i] = alpha*CTimeSeries_T.C[i];
     }
 
 
     return S;
 }
 
-CBTC operator-(CBTC CBTC_T, double alpha)
+CTimeSeries operator+(CTimeSeries CTimeSeries_T, double alpha)
 {
-    CBTC S = CBTC_T;
-    for (int i=0; i<CBTC_T.n; i++)
+    CTimeSeries S = CTimeSeries_T;
+    for (int i=0; i<CTimeSeries_T.n; i++)
     {
-	//S.t[i] = CBTC_T.t[i];
-	S.C[i] = CBTC_T.C[i] - alpha;
+	//S.t[i] = CTimeSeries_T.t[i];
+	S.C[i] = alpha+CTimeSeries_T.C[i];
     }
 
 
     return S;
 }
 
-CBTC operator/(CBTC BTC1, CBTC BTC2)
+CTimeSeries operator-(CTimeSeries CTimeSeries_T, double alpha)
 {
-    CBTC S = BTC1;
+    CTimeSeries S = CTimeSeries_T;
+    for (int i=0; i<CTimeSeries_T.n; i++)
+    {
+	//S.t[i] = CTimeSeries_T.t[i];
+	S.C[i] = CTimeSeries_T.C[i] - alpha;
+    }
+
+
+    return S;
+}
+
+CTimeSeries operator/(CTimeSeries BTC1, CTimeSeries BTC2)
+{
+    CTimeSeries S = BTC1;
     for (int i=0; i<BTC1.n; i++)
         S.C[i] = BTC1.C[i]/BTC2.interpol(BTC1.t[i]);
 
@@ -755,9 +767,9 @@ CBTC operator/(CBTC BTC1, CBTC BTC2)
 
 }
 
-CBTC operator/(CBTC BTC1, double x)
+CTimeSeries operator/(CTimeSeries BTC1, double x)
 {
-    CBTC S = BTC1;
+    CTimeSeries S = BTC1;
     for (int i=0; i<BTC1.n; i++)
         S.C[i] = BTC1.C[i]/x;
 
@@ -765,9 +777,9 @@ CBTC operator/(CBTC BTC1, double x)
 
 }
 
-CBTC operator-(CBTC BTC1, CBTC BTC2)
+CTimeSeries operator-(CTimeSeries BTC1, CTimeSeries BTC2)
 {
-    CBTC S = BTC1;
+    CTimeSeries S = BTC1;
     for (int i=0; i<BTC1.n; i++)
         S.C[i] = BTC1.C[i]-BTC2.interpol(BTC1.t[i]);
 
@@ -775,26 +787,26 @@ CBTC operator-(CBTC BTC1, CBTC BTC2)
 }
 
 
-CBTC operator*(CBTC &BTC1, CBTC &BTC2)
+CTimeSeries operator*(CTimeSeries &BTC1, CTimeSeries &BTC2)
 {
-    CBTC S = BTC1;
+    CTimeSeries S = BTC1;
     for (int i=0; i<BTC1.n; i++)
         S.C[i] = BTC1.C[i]*BTC2.interpol(BTC1.t[i]);
 
     return S;
 }
 
-CBTC operator%(CBTC BTC1, CBTC BTC2)
+CTimeSeries operator%(CTimeSeries BTC1, CTimeSeries BTC2)
 {
-    CBTC S = BTC1;
+    CTimeSeries S = BTC1;
     for (int i=0; i<BTC1.n; i++)
         S.C[i] = BTC1.C[i]/BTC2.C[i];
 
     return S;
 }
-CBTC operator&(CBTC BTC1, CBTC BTC2)
+CTimeSeries operator&(CTimeSeries BTC1, CTimeSeries BTC2)
 {
-    CBTC S = BTC1;
+    CTimeSeries S = BTC1;
     for (int i=0; i<BTC1.n; i++)
         S.C[i] = BTC1.C[i]+BTC2.C[i];
 
@@ -803,7 +815,7 @@ CBTC operator&(CBTC BTC1, CBTC BTC2)
 
 }
 
-/*double CBTC::EMC(CBTC &M)
+/*double CTimeSeries::EMC(CTimeSeries &M)
 {
 	double sum = 0;
 	double sumflow = 0;
@@ -818,7 +830,7 @@ CBTC operator&(CBTC BTC1, CBTC BTC2)
 		return sum/sumflow;
 }
 
-double CBTC::Calculate_load(CBTC &M)
+double CTimeSeries::Calculate_load(CTimeSeries &M)
 {
 	double sum = 0;
 	double sumflow = 0;
@@ -831,7 +843,7 @@ double CBTC::Calculate_load(CBTC &M)
 	return sum;
 }*/
 
-double CBTC::maxC()
+double CTimeSeries::maxC()
 {
     double max = -1e32;
     for (int i=0; i<n; i++)
@@ -841,7 +853,7 @@ double CBTC::maxC()
     return max;
 }
 
-double CBTC::maxfabs()
+double CTimeSeries::maxfabs()
 {
     if (max_fabs>0)
             return max_fabs;
@@ -857,7 +869,7 @@ double CBTC::maxfabs()
 	
 }
 
-double CBTC::minC()
+double CTimeSeries::minC()
 {
     double min = 1e32;
     for (int i=0; i<n; i++)
@@ -867,7 +879,7 @@ double CBTC::minC()
     return min;
 }
 
-double CBTC::std()
+double CTimeSeries::std()
 {
     double sum = 0;
     double m = mean();
@@ -877,7 +889,7 @@ double CBTC::std()
     return sqrt(sum/n);
 }
 
-double CBTC::std(int nlimit)
+double CTimeSeries::std(int nlimit)
 {
     double sum = 0;
     double m = mean(nlimit);
@@ -887,7 +899,7 @@ double CBTC::std(int nlimit)
     return sqrt(sum/n);
 }
 
-double CBTC::mean()
+double CTimeSeries::mean()
 {
     double sum = 0;
     for (int i=0; i<n; i++)
@@ -900,7 +912,7 @@ double CBTC::mean()
         return 0;
 }
 
-double CBTC::integrate()
+double CTimeSeries::integrate()
 {
     double sum = 0;
     for (int i=1; i<n; i++)
@@ -909,7 +921,7 @@ double CBTC::integrate()
     return sum;
 }
 
-double CBTC::integrate(double tt)
+double CTimeSeries::integrate(double tt)
 {
     double sum = 0;
     for (int i = 1; i<n; i++)
@@ -918,7 +930,7 @@ double CBTC::integrate(double tt)
     return sum;
 }
 
-double CBTC::integrate(double t1, double t2)
+double CTimeSeries::integrate(double t1, double t2)
 {
     if (structured)
     {
@@ -935,7 +947,7 @@ double CBTC::integrate(double t1, double t2)
     }
 }
 
-int CBTC::lookupt(double _t)
+int CTimeSeries::lookupt(double _t)
 {
 	for (int i = 0; i < n - 1; i++)
 		if ((t[i]<_t) && (t[i + 1]>_t))
@@ -943,7 +955,7 @@ int CBTC::lookupt(double _t)
         return -1;
 }
 
-double CBTC::average()
+double CTimeSeries::average()
 {
 	if (n>0)
 		return integrate()/(t[n-1]-t[0]);
@@ -951,7 +963,7 @@ double CBTC::average()
 		return 0;
 }
 
-double CBTC::average(double tt)
+double CTimeSeries::average(double tt)
 {
 	if (n>0)
 		return integrate(tt) / (max(tt,t[n - 1]) - t[0]);
@@ -959,7 +971,7 @@ double CBTC::average(double tt)
 		return 0;
 }
 
-double CBTC::slope(double tt)
+double CTimeSeries::slope(double tt)
 {
     double ttt = tt; 
     return (C[n - 1] - C[n - 2]) / (t[n - 1] - t[n - 2]);
@@ -967,7 +979,7 @@ double CBTC::slope(double tt)
 
 
 
-double CBTC::percentile(double x)
+double CTimeSeries::percentile(double x)
 {
 	vector<double> X = QSort(C);
 	int i = int(x*X.size());
@@ -975,7 +987,7 @@ double CBTC::percentile(double x)
 
 }
 
-double CBTC::percentile(double x, int limit)
+double CTimeSeries::percentile(double x, int limit)
 {
 	vector<double> C1(C.size()-limit);
 	for (int i=0; i<int(C1.size()); i++)
@@ -988,7 +1000,7 @@ double CBTC::percentile(double x, int limit)
 
 }
 
-double CBTC::mean(int limit)
+double CTimeSeries::mean(int limit)
 {
 	double sum = 0;
 	for (int i=limit; i<n; i++)
@@ -996,7 +1008,7 @@ double CBTC::mean(int limit)
 	return sum/double(n-limit);
 }
 
-double CBTC::mean_log(int limit)
+double CTimeSeries::mean_log(int limit)
 {
 	double sum = 0;
 	for (int i=limit; i<n; i++)
@@ -1004,7 +1016,7 @@ double CBTC::mean_log(int limit)
 	return sum/double(n-limit);
 }
 
-void CBTC::append(double x)
+void CTimeSeries::append(double x)
 {
 	n++;
 	t.push_back(0);
@@ -1013,7 +1025,7 @@ void CBTC::append(double x)
 
 }
 
-void CBTC::append(double tt, double xx, double _weight)
+void CTimeSeries::append(double tt, double xx, double _weight)
 {
     n++;
     t.push_back(tt);
@@ -1027,7 +1039,7 @@ void CBTC::append(double tt, double xx, double _weight)
             structured = false;
     max_fabs = max(max_fabs,std::fabs(xx));
 }
-void CBTC::append(CBTC &CC)
+void CTimeSeries::append(CTimeSeries &CC)
 {
     if (!CC.weighted)
         for (int i = 0; i<CC.n; i++) append(CC.t[i], CC.C[i]);
@@ -1035,14 +1047,14 @@ void CBTC::append(CBTC &CC)
         for (int i = 0; i<CC.n; i++) append(CC.t[i], CC.C[i], CC.weight[i]);
 }
 
-CBTC& CBTC::operator+=(CBTC &v)
+CTimeSeries& CTimeSeries::operator+=(CTimeSeries &v)
 {
 	for (int i=0; i<n; ++i)
 		C[i] += v.interpol(t[i]);
 	return *this;
 }
 
-CBTC& CBTC::operator%=(CBTC &v)
+CTimeSeries& CTimeSeries::operator%=(CTimeSeries &v)
 {
 	for (int i=0; i<n; ++i)
 		C[i] += v.C[i];
@@ -1050,14 +1062,14 @@ CBTC& CBTC::operator%=(CBTC &v)
 
 }
 
-CBTC operator+(CBTC v1, CBTC v2) 
+CTimeSeries operator+(CTimeSeries v1, CTimeSeries v2) 
 {
 	return v1 += v2;
 }
 
-CBTC CBTC::make_uniform(double increment)
+CTimeSeries CTimeSeries::make_uniform(double increment)
 {
-	CBTC out;
+	CTimeSeries out;
 	assign_D();
         
 	if (t.size() >1 && C.size() > 1)
@@ -1106,9 +1118,9 @@ vector<double> prcntl(vector<double> C, vector<double> x)
 	return Xout;
 }
 
-CBTC CBTC::extract(double t1, double t2)
+CTimeSeries CTimeSeries::extract(double t1, double t2)
 {
-	CBTC out;
+	CTimeSeries out;
 	for (int i=0; i<n; i++)
 		if ((t[i]>=t1) && (t[i]<=t2))
 			out.append(t[i], C[i]);
@@ -1117,9 +1129,9 @@ CBTC CBTC::extract(double t1, double t2)
 }
 
 
-CBTC CBTC::distribution(int n_bins, int limit)
+CTimeSeries CTimeSeries::distribution(int n_bins, int limit)
 {
-    CBTC out(n_bins+2);
+    CTimeSeries out(n_bins+2);
 
     CVector C1(C.size()-limit);
     for (int i=0; i<C1.num; i++)
@@ -1151,7 +1163,7 @@ CBTC CBTC::distribution(int n_bins, int limit)
 
 }
 
-vector<double> CBTC::trend()
+vector<double> CTimeSeries::trend()
 {
 	double x_bar = mean_t();
 	double y_bar = mean();
@@ -1169,7 +1181,7 @@ vector<double> CBTC::trend()
 
 }
 
-double CBTC::mean_t()
+double CTimeSeries::mean_t()
 {
 	double sum = 0;
 	for (int i=0; i<n; i++)
@@ -1186,9 +1198,9 @@ double sgn(double val) {
     return double(double(0) < val) - (val < double(0));
 }
 
-CBTC CBTC::add_noise(double std, bool logd)
+CTimeSeries CTimeSeries::add_noise(double std, bool logd)
 {
-	CBTC X(n);
+	CTimeSeries X(n);
 	for (int i=0; i<n; i++)
 	{
 		X.t[i] = t[i];
@@ -1201,7 +1213,7 @@ CBTC CBTC::add_noise(double std, bool logd)
 
 }
 
-double sum_interpolate(vector<CBTC> BTC, double t)
+double sum_interpolate(vector<CTimeSeries> BTC, double t)
 {
 	double sum=0;
 	for (int i=0; i<int(BTC.size()); i++)
@@ -1212,7 +1224,7 @@ double sum_interpolate(vector<CBTC> BTC, double t)
 }
 
 
-void CBTC::assign_D()
+void CTimeSeries::assign_D()
 {
 	for (int i = 0; i<n; i++)
 	{
@@ -1226,7 +1238,7 @@ void CBTC::assign_D()
 	}
 }
 
-void CBTC::clear()
+void CTimeSeries::clear()
 {
 	C.clear();
 	t.clear();
@@ -1234,7 +1246,7 @@ void CBTC::clear()
 	n = 0;
 }
 
-double CBTC::wiggle()
+double CTimeSeries::wiggle()
 {
 	if (n>2)
 		return 3*(std::fabs(C[n-1])*(t[n-2]-t[n-3])-std::fabs(C[n-2])*(t[n-1]-t[n-3])+std::fabs(C[n-3])*(t[n-1]-t[n-2]))/(t[n-1]-t[n-3])/max(maxfabs(),1e-7);
@@ -1243,7 +1255,7 @@ double CBTC::wiggle()
 
 }
 
-double CBTC::wiggle_corr(int _n)
+double CTimeSeries::wiggle_corr(int _n)
 {
 	if (n < _n) return 0; 
 	double sum=0;
@@ -1267,7 +1279,7 @@ double CBTC::wiggle_corr(int _n)
 		return sum / var;
 }
 
-bool CBTC::wiggle_sl(double tol)
+bool CTimeSeries::wiggle_sl(double tol)
 {
 	if (n < 4) return false;
 	double mean = std::fabs(C[n - 1] + C[n - 2] + C[n - 3] + C[n - 4]) / 4.0+tol/100;
@@ -1281,7 +1293,7 @@ bool CBTC::wiggle_sl(double tol)
 		return false; 
 }
 
-void CBTC::knock_out(double tt)
+void CTimeSeries::knock_out(double tt)
 {
 	int i=n-1;
 	if (n>0)
@@ -1296,7 +1308,7 @@ void CBTC::knock_out(double tt)
         }
 }
 
-double CBTC::AutoCor1(int k)
+double CTimeSeries::AutoCor1(int k)
 {
 	if (k == 0) k = n;
 	double sum_product = 0;
@@ -1311,7 +1323,7 @@ double CBTC::AutoCor1(int k)
 
 }
 /*
-vector<double> CBTC::trend()
+vector<double> CTimeSeries::trend()
 {
 	double x_bar = mean_t();
 	double y_bar = mean();
@@ -1330,9 +1342,9 @@ vector<double> CBTC::trend()
 }
 */
 
-CBTC CBTC::getcummulative()
+CTimeSeries CTimeSeries::getcummulative()
 {
-	CBTC X(n);
+	CTimeSeries X(n);
 	X.t = t;
 	X.C[0] = 0;
 	for (int i = 1; i<n; i++)
@@ -1340,9 +1352,9 @@ CBTC CBTC::getcummulative()
 
 	return X;
 }
-CBTC CBTC::Exp()
+CTimeSeries CTimeSeries::Exp()
 {
-	CBTC BTC(n);
+	CTimeSeries BTC(n);
 	for (int i = 0; i<n; i++)
 	{
 		BTC.t[i] = t[i];
@@ -1351,9 +1363,9 @@ CBTC CBTC::Exp()
 	return BTC;
 }
 
-CBTC CBTC::fabs()
+CTimeSeries CTimeSeries::fabs()
 {
-	CBTC BTC = CBTC(n);
+	CTimeSeries BTC = CTimeSeries(n);
 	for (int i = 0; i<n; i++)
 	{
 		BTC.t[i] = t[i];
@@ -1362,9 +1374,9 @@ CBTC CBTC::fabs()
 	return BTC;
 }
 
-CBTC CBTC::derivative()
+CTimeSeries CTimeSeries::derivative()
 {
-	CBTC out; 
+	CTimeSeries out; 
 	for (int i = 0; i < n - 1; i++)
 	{
 		out.C.push_back((C[i + 1] - C[i]) / (t[i + 1] - t[i]));
@@ -1375,7 +1387,7 @@ CBTC CBTC::derivative()
 	return out; 
 }
 
-double R2_c(CBTC BTC_p, CBTC BTC_d)
+double R2_c(CTimeSeries BTC_p, CTimeSeries BTC_d)
 {
 	double sumcov = 0;
 	double sumvar1 = 0;
@@ -1394,7 +1406,7 @@ double R2_c(CBTC BTC_p, CBTC BTC_d)
 
 	return pow(sumcov - sum1*sum2, 2) / (sumvar1 - sum1*sum1) / (sumvar2 - sum2*sum2);
 }
-double norm2(CBTC BTC1)
+double norm2(CTimeSeries BTC1)
 {
 	double sum = 0;
 	for (int i = 0; i<BTC1.n; i++)
@@ -1402,9 +1414,9 @@ double norm2(CBTC BTC1)
 
 	return sum;
 }
-CBTC max(CBTC A, double b)
+CTimeSeries max(CTimeSeries A, double b)
 {
-	CBTC S = A;
+	CTimeSeries S = A;
 	for (int i = 0; i<A.n; i++)
 		S.C[i] = max(A.C[i], b);
 	return S;
@@ -1417,18 +1429,18 @@ double neg(double x)
 {
 	return pos(-x);
 }
-CBTC operator>(CBTC BTC1, CBTC BTC2)
+CTimeSeries operator>(CTimeSeries BTC1, CTimeSeries BTC2)
 {
-	CBTC S = BTC1;
+	CTimeSeries S = BTC1;
 	for (int i = 0; i<min(BTC1.n, BTC2.n); i++)
 		S.C[i] = BTC1.C[i] - BTC2.C[i];
 
 	return S;
 }
 
-CBTC CBTC::unlog()
+CTimeSeries CTimeSeries::unlog()
 {
-	CBTC out(n); 
+	CTimeSeries out(n); 
 	for (int i = 0; i < n; i++)
 	{
 		out.C[i] = C[i] / exp(t[i]);
@@ -1438,9 +1450,9 @@ CBTC CBTC::unlog()
 
 }
 
-CBTC CBTC::distribution_fw(int n_bins, int limit, string s)
+CTimeSeries CTimeSeries::distribution_fw(int n_bins, int limit, string s)
 {
-	CBTC out(n_bins + 2);
+	CTimeSeries out(n_bins + 2);
 
 	CVector C1(C.size() - limit);
 	for (int i = 0; i<C1.num; i++)
@@ -1483,9 +1495,9 @@ CBTC CBTC::distribution_fw(int n_bins, int limit, string s)
 		return (1 / C1.sum())*out;
 }
 
-CBTC CBTC::make_flux_weighted(string log)
+CTimeSeries CTimeSeries::make_flux_weighted(string log)
 {
-	CBTC out(n);
+	CTimeSeries out(n);
 	for (int i = 0; i < n; i++)
 	{
 		if (log=="log")
@@ -1498,9 +1510,9 @@ CBTC CBTC::make_flux_weighted(string log)
 	return (1.0/out.integrate())*out;
 }
 
-CBTC CBTC::distribution_log(int n_bins, int limit)
+CTimeSeries CTimeSeries::distribution_log(int n_bins, int limit)
 {
-	CBTC out(n_bins + 2);
+	CTimeSeries out(n_bins + 2);
 
 	CVector C1;
 	for (int i = 0; i<C.size()-limit; i++)
@@ -1529,12 +1541,24 @@ CBTC CBTC::distribution_log(int n_bins, int limit)
 	return out;
 }
 
-CBTC CBTC::standardize()
+CTimeSeries CTimeSeries::standardize()
 {
     double _std = std();
     double _mean = mean();
-    CBTC out = (*this - _mean)/_std; 
+    CTimeSeries out = (*this - _mean)/_std; 
     return out; 
+}
+
+double CTimeSeries::autocorrelation()
+{
+    double sum2=0; 
+    double sumprod=0; 
+    for (int i=1; i<n-1; i++)
+    {
+        sum2+=0.5*(pow(C[i],2)+pow(C[i+1],2));
+        sumprod += C[i]*C[i+1];
+    }
+    return sumprod/sum2; 
 }
 
 
