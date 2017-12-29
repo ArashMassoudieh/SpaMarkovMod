@@ -3,20 +3,22 @@
 #include <vector>
 #include "Vector.h"
 
-class CBTCSet
+#define CBTCSet CTimeSeriesSet
+
+class CTimeSeriesSet
 {
 public:
-	CBTCSet(void);
-	CBTCSet(int n);
-	CBTCSet(int numberofBTCs, int sizeofBTCvector);
-	CBTCSet(const CBTCSet &BTC);
-	CBTCSet(const CBTC &BTC);
-	CBTCSet(string filename, bool varytime);
+	CTimeSeriesSet(void);
+	CTimeSeriesSet(int n);
+	CTimeSeriesSet(int numberofBTCs, int sizeofBTCvector);
+	CTimeSeriesSet(const CTimeSeriesSet &BTC);
+	CTimeSeriesSet(const CBTC &BTC);
+	CTimeSeriesSet(string filename, bool varytime);
 	int nvars;
-	vector<CBTC> BTC;
+	vector<CTimeSeries> BTC;
 	void writetofile(char outputfile[]);
 	int maxnumpoints();
-	CBTCSet& operator = (const CBTCSet &C);
+	CTimeSeriesSet& operator = (const CTimeSeriesSet &C);
 	vector<string> names;
 	bool unif;
 	void writetofile(string outputfile, bool writeColumnHeaders = false);
@@ -41,18 +43,18 @@ public:
 	void append(double t, vector<double> c, double weight=1);
 	CBTC add(vector<int> ii);
 	CBTC add_mult(vector<int> ii, vector<double> mult);
-	CBTC add_mult(vector<int> ii, CBTCSet &mult);
+	CBTC add_mult(vector<int> ii, CTimeSeriesSet &mult);
 	CBTC divide(int ii, int jj);
-	CBTCSet make_uniform(double increment);
-	CBTCSet getpercentiles(vector<double> percents);
+	CTimeSeriesSet make_uniform(double increment);
+	CTimeSeriesSet getpercentiles(vector<double> percents);
 	CVector out_of_limit(double limit);
-	CBTCSet distribution(int n_bins, int n_columns, int limit);
-	CBTCSet add_noise(vector<double> std, bool logd);
+	CTimeSeriesSet distribution(int n_bins, int n_columns, int limit);
+	CTimeSeriesSet add_noise(vector<double> std, bool logd);
 	void clear();
 	vector<double> max_wiggle();
 	vector<double> max_wiggle_corr(int _n = 10);
 	vector<int> max_wiggle_sl(int ii, double tol);
-	CBTCSet getflow (double A);
+	CTimeSeriesSet getflow (double A);
 	void knockout(double t);
 	int lookup(string S);
 	vector<double> getrow(int a);
@@ -65,20 +67,20 @@ public:
 	CBTC &operator[](int index);
 	CBTC &operator[](string BTCName);
 	
-	CBTCSet(vector < vector<double> > &, int writeInterval = 1);
+	CTimeSeriesSet(vector < vector<double> > &, int writeInterval = 1);
 	int indexOf(const string& name) const;
 	void pushBackName(string name);
 	void append(CBTC &BTC, string name = "");
-	CBTCSet sort(int burnOut = 0);
-	CBTCSet detivative(); 
-	~CBTCSet(void);
+	CTimeSeriesSet sort(int burnOut = 0);
+	CTimeSeriesSet detivative(); 
+	~CTimeSeriesSet(void);
 };
 
-double diff(CBTCSet B1, CBTCSet B2);
-CBTCSet operator * (const CBTCSet &BTC, const double &C);
-CVector norm2dif(CBTCSet &A, CBTCSet &B);
-CBTCSet merge(CBTCSet A, const CBTCSet &B);
-CBTCSet merge(vector<CBTCSet> &A);
-CVector sum_interpolate(vector<CBTCSet> &BTC, double t);
-double sum_interpolate(vector<CBTCSet> &BTC, double t, string name);
-int max_n_vars(vector<CBTCSet> &BTC);
+double diff(CTimeSeriesSet B1, CTimeSeriesSet B2);
+CTimeSeriesSet operator * (const CTimeSeriesSet &BTC, const double &C);
+CVector norm2dif(CTimeSeriesSet &A, CTimeSeriesSet &B);
+CTimeSeriesSet merge(CTimeSeriesSet A, const CTimeSeriesSet &B);
+CTimeSeriesSet merge(vector<CTimeSeriesSet> &A);
+CVector sum_interpolate(vector<CTimeSeriesSet> &BTC, double t);
+double sum_interpolate(vector<CTimeSeriesSet> &BTC, double t, string name);
+int max_n_vars(vector<CTimeSeriesSet> &BTC);
