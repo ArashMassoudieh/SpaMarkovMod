@@ -1756,15 +1756,11 @@ void CGrid::runcommands_qt()
                     if (commands[i].parameters.count("OU_parameters_filename") > 0)
                     {
                         show_in_window("Writing OU params");
-                        CTimeSeries residuals(); 
-                        CVector X = normals.get_kappa_gamma(atof(commands[i].parameters["delta_x"].c_str()),residuals);
+                        
+                        CVector X = normals.get_kappa_gamma(atof(commands[i].parameters["delta_x"].c_str()));
                         extracted_OU_parameters.append("p1_"+commands[i].parameters["increment"], atoi(commands[i].parameters["increment"].c_str()), X[0]);
                         extracted_OU_parameters.append("p2_"+commands[i].parameters["increment"], atoi(commands[i].parameters["increment"].c_str()), X[1]);
                         X.writetofile(pathout + commands[i].parameters["OU_parameters_filename"]);
-                        if (commands[i].parameters.count("residuals_filename") > 0) 
-                            residuals.writefile(pathout+commands[i].parameters["residuals_filename"]);
-                        
-                        
                     }
                 }
             }
