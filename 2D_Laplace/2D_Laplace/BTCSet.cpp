@@ -1057,9 +1057,9 @@ void CTimeSeriesSet::setname(int index, string name)
 
 }
 
-CVector CTimeSeriesSet::get_kappa_gamma(double delta_x, CTimeSeries &residuals)
+CVector CTimeSeriesSet::get_kappa_gamma(double delta_x)
 {
-	CVector X(3);
+	CVector X(2);
 	double sum_prod = 0;
 	double sum_2 = 0; 
 	for (int i=0; i<BTC[0].n; i++)
@@ -1070,16 +1070,16 @@ CVector CTimeSeriesSet::get_kappa_gamma(double delta_x, CTimeSeries &residuals)
 	X[0] = (1.0-sum_prod / sum_2)/delta_x;
 	double err = 0;
         double sum_weight = 0; 
-	for (int i = 0; i<BTC[0].n; i++)
+	/*for (int i = 0; i<BTC[0].n; i++)
 	{
             double res = BTC[0].C[i] - (sum_prod / sum_2) * BTC[1].C[i];
             residuals.append(i,res);
             err += (pow(BTC[0].C[i] - (sum_prod / sum_2) * BTC[1].C[i], 2)+pow(BTC[1].C[i] - (sum_prod / sum_2) * BTC[0].C[i], 2))*BTC[0].weight[i]*0.5;
             sum_weight += BTC[0].weight[i];
-	}
+	}*/
 	X[1] = err /(2.0*delta_x)/sum_weight;
-        X[2] = residuals.autocorrelation();
-	qDebug() << "OU_params: " << X[0] << "  " << X[1] << "   " << X[2] << endl; 
+        //X[2] = residuals.autocorrelation();
+	qDebug() << "OU_params: " << X[0] << "  " << X[1] << endl; 
 	return X; 
 }
 
