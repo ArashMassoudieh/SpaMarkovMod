@@ -49,8 +49,11 @@ MKDIR=mkdir
 CP=cp
 CCADMIN=CCadmin
 
-export vtk_build:=../../../../VTK-build
-export vtk:=../../../../VTK
+export vtk_build:=~/VTK-8.1-build/
+export vtk:=~/VTK
+export Qt_dir:=~/Qt5.8.0
+	
+export LD_LIBRARY_PATH=~/VTK-8.1-build/lib/
 
 # build
 build: .build-post

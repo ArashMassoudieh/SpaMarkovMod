@@ -145,9 +145,9 @@
             <pElem>${vtk_build}/Filters/Sources</pElem>
             <pElem>${vtk_build}/IO/Image</pElem>
             <pElem>${vtk_build}/Imaging/Core</pElem>
-            <pElem>../../../../Qt/5.8/gcc_64/include/QtWidgets</pElem>
-            <pElem>../../../../Qt/5.8/gcc_64/include/QtSvg</pElem>
-            <pElem>../../../../Qt/5.8/gcc_64/include</pElem>
+            <pElem>${Qt_dir}/5.8/gcc_64/include/QtWidgets</pElem>
+            <pElem>${Qt_dir}/5.8/gcc_64/include/QtSvg</pElem>
+            <pElem>${Qt_dir}/5.8/gcc_64/include</pElem>
             <pElem>../../Qt_version/HETEVAL/HETEVAL/qwt-6.1.3/src</pElem>
           </incDir>
           <preprocessorList>
@@ -155,6 +155,9 @@
           </preprocessorList>
         </ccTool>
         <linkerTool>
+          <linkerDynSerch>
+            <pElem>${Qt_dir}/5.8/gcc_64/lib</pElem>
+          </linkerDynSerch>
           <linkerCopySharedLibs>true</linkerCopySharedLibs>
           <linkerLibItems>
             <linkerLibFileItem>${vtk_build}/lib/libvtkChartsCore-8.1.so</linkerLibFileItem>
@@ -245,9 +248,6 @@
             <linkerLibFileItem>${vtk_build}/lib/libvtkRenderingOpenGL2-8.1.so</linkerLibFileItem>
             <linkerLibFileItem>${vtk_build}/lib/libvtkRenderingVolume-8.1.so</linkerLibFileItem>
             <linkerLibFileItem>${vtk_build}/lib/libvtkRenderingVolumeOpenGL2-8.1.so</linkerLibFileItem>
-            <linkerLibFileItem>${vtk_build}/lib/libvtkTestingGenericBridge-8.1.so</linkerLibFileItem>
-            <linkerLibFileItem>${vtk_build}/lib/libvtkTestingIOSQL-8.1.so</linkerLibFileItem>
-            <linkerLibFileItem>${vtk_build}/lib/libvtkTestingRendering-8.1.so</linkerLibFileItem>
             <linkerLibFileItem>${vtk_build}/lib/libvtkViewsContext2D-8.1.so</linkerLibFileItem>
             <linkerLibFileItem>${vtk_build}/lib/libvtkViewsCore-8.1.so</linkerLibFileItem>
             <linkerLibFileItem>${vtk_build}/lib/libvtkViewsInfovis-8.1.so</linkerLibFileItem>
@@ -275,18 +275,13 @@
             <linkerLibFileItem>${vtk_build}/lib/libvtkverdict-8.1.so</linkerLibFileItem>
             <linkerLibFileItem>${vtk_build}/lib/libvtkzlib-8.1.so</linkerLibFileItem>
             <linkerLibFileItem>../../../../qwt-6.1.3/lib/libqwt.so</linkerLibFileItem>
-            <linkerLibFileItem>../../../../Qt/5.8/gcc_64/lib/libQt5Widgets.so</linkerLibFileItem>
-            <linkerLibFileItem>../../../../Qt/5.8/gcc_64/lib/libQt5PrintSupport.so</linkerLibFileItem>
-            <linkerLibFileItem>../../../../Qt/5.8/gcc_64/lib/libQt5Core.so</linkerLibFileItem>
-            <linkerLibFileItem>../../../../Qt/5.8/gcc_64/lib/libQt5Gui.so</linkerLibFileItem>
-            <linkerLibFileItem>../../../../Qt/5.8/gcc_64/lib/libQt5OpenGL.so</linkerLibFileItem>
-            <linkerLibFileItem>../../../../Qt/5.8/gcc_64/lib/libQt5Svg.so</linkerLibFileItem>
             <linkerLibLibItem>armadillo</linkerLibLibItem>
             <linkerLibLibItem>blas</linkerLibLibItem>
             <linkerLibLibItem>lapack</linkerLibLibItem>
             <linkerOptionItem>-lgslcblas</linkerOptionItem>
             <linkerOptionItem>-lgsl</linkerOptionItem>
             <linkerLibLibItem>superlu</linkerLibLibItem>
+            <linkerOptionItem>-licuuc</linkerOptionItem>
           </linkerLibItems>
         </linkerTool>
       </compileType>
@@ -694,9 +689,6 @@
             <linkerLibFileItem>${vtk_build}/lib/libvtkRenderingOpenGL2-8.1.so</linkerLibFileItem>
             <linkerLibFileItem>${vtk_build}/lib/libvtkRenderingVolume-8.1.so</linkerLibFileItem>
             <linkerLibFileItem>${vtk_build}/lib/libvtkRenderingVolumeOpenGL2-8.1.so</linkerLibFileItem>
-            <linkerLibFileItem>${vtk_build}/lib/libvtkTestingGenericBridge-8.1.so</linkerLibFileItem>
-            <linkerLibFileItem>${vtk_build}/lib/libvtkTestingIOSQL-8.1.so</linkerLibFileItem>
-            <linkerLibFileItem>${vtk_build}/lib/libvtkTestingRendering-8.1.so</linkerLibFileItem>
             <linkerLibFileItem>${vtk_build}/lib/libvtkViewsContext2D-8.1.so</linkerLibFileItem>
             <linkerLibFileItem>${vtk_build}/lib/libvtkViewsCore-8.1.so</linkerLibFileItem>
             <linkerLibFileItem>${vtk_build}/lib/libvtkViewsInfovis-8.1.so</linkerLibFileItem>
@@ -724,12 +716,6 @@
             <linkerLibFileItem>${vtk_build}/lib/libvtkverdict-8.1.so</linkerLibFileItem>
             <linkerLibFileItem>${vtk_build}/lib/libvtkzlib-8.1.so</linkerLibFileItem>
             <linkerLibFileItem>../../../../qwt-6.1.3/lib/libqwt.so</linkerLibFileItem>
-            <linkerLibFileItem>../../../../Qt/5.8/gcc_64/lib/libQt5Widgets.so</linkerLibFileItem>
-            <linkerLibFileItem>../../../../Qt/5.8/gcc_64/lib/libQt5PrintSupport.so</linkerLibFileItem>
-            <linkerLibFileItem>../../../../Qt/5.8/gcc_64/lib/libQt5Core.so</linkerLibFileItem>
-            <linkerLibFileItem>../../../../Qt/5.8/gcc_64/lib/libQt5Gui.so</linkerLibFileItem>
-            <linkerLibFileItem>../../../../Qt/5.8/gcc_64/lib/libQt5OpenGL.so</linkerLibFileItem>
-            <linkerLibFileItem>../../../../Qt/5.8/gcc_64/lib/libQt5Svg.so</linkerLibFileItem>
             <linkerLibLibItem>armadillo</linkerLibLibItem>
             <linkerLibLibItem>blas</linkerLibLibItem>
             <linkerLibLibItem>lapack</linkerLibLibItem>
@@ -742,6 +728,12 @@
       <packaging>
         <packType>Debian</packType>
         <packFileList>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}bin/${OUTPUT_BASENAME}"
+                            from="${OUTPUT_PATH}"
+                            perm="755"
+                            owner="root"
+                            group="bin"/>
           <packFileListElem type="File"
                             to="${PACKAGE_TOP_DIR}bin/${OUTPUT_BASENAME}"
                             from="${OUTPUT_PATH}"
