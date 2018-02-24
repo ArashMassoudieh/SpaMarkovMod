@@ -1,6 +1,5 @@
 #include "Grid.h"
 
-
 #ifdef Qt_version
 #include <qapplication.h>
 #include <qmainwindow.h>
@@ -8,10 +7,10 @@
 #include <qtoolbutton.h>
 #include <qwt_plot.h>
 #include <qdebug.h>
+#include "heteval.h"
 #endif // Qt_version
 #include "Spectogram.h"
 #include "vtk.h"
-#include "heteval.h"
 #include "Pathway.h"
 #include "StringOP.h"
 

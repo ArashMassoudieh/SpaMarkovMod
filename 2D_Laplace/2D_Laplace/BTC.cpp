@@ -1562,7 +1562,7 @@ double CTimeSeries::autocorrelation()
     return sumprod/sum2;
 }
 
-double correlation(const CTimeSeries &TS1, const CTimeSeries &TS2)
+double TS::correlation(const CTimeSeries &TS1, const CTimeSeries &TS2)
 {
     double sum2=0;
     double sumprod=0;
