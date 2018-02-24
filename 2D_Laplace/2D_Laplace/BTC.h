@@ -16,7 +16,7 @@
 using namespace std;
 
 
-class CTimeSeries  
+class CTimeSeries
 {
 public:
     bool structured;
@@ -85,8 +85,8 @@ public:
     CTimeSeries getcummulative();
     CTimeSeries Exp();
     CTimeSeries fabs();
-    CTimeSeries derivative(); 
-    //GUI 
+    CTimeSeries derivative();
+    //GUI
     //QList <QMap <QVariant, QVariant>> CTimeSeries::compact() const;
 
     CTimeSeries(double a, double b, const vector<double>&x);
@@ -104,10 +104,10 @@ public:
     CTimeSeries make_flux_weighted(string log);
     CTimeSeries distribution_log(int n_bins, int limit);
     CTimeSeries standardize();
-    vector<double> weight; 
-    bool weighted = false; 
+    vector<double> weight;
+    bool weighted = false;
     double autocorrelation();
-	
+
 };
 
 double diff(CTimeSeries &BTC_p, CTimeSeries &BTC_d);
@@ -139,7 +139,7 @@ double X2bar(CTimeSeries BTC_p, CTimeSeries BTC_d);
 double Y2bar(CTimeSeries BTC_p, CTimeSeries BTC_d);
 double Ybar(CTimeSeries BTC_p, CTimeSeries BTC_d);
 double Xbar(CTimeSeries BTC_p, CTimeSeries BTC_d);
-CTimeSeries operator+(CTimeSeries v1, CTimeSeries v2); 
+CTimeSeries operator+(CTimeSeries v1, CTimeSeries v2);
 double prcntl(vector<double> C, double x);
 vector<double> prcntl(vector<double> C, vector<double> x);
 double sgn(double val);
@@ -150,4 +150,8 @@ double norm2(CTimeSeries BTC1);
 CTimeSeries max(CTimeSeries A, double b);
 double pos(double x);
 double neg(double x);
+namespace TS {
+    double correlation(const CTimeSeries &TS1, const CTimeSeries &TS2);
+}
+
 

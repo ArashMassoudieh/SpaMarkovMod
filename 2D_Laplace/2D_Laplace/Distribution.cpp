@@ -209,7 +209,7 @@ double std_normal_phi_inv(double u)
 {
 	double u1 = gsl_cdf_ugaussian_Pinv(u);
 	double out = 1.0 / sqrt(2.0 * 4.0 * atan(1.0))*exp(-0.5*pow(u1, 2.0));
-	return out; 
+	return out;
 }
 
 

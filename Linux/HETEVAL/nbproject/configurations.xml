@@ -90,7 +90,7 @@
       </qt>
       <compileType>
         <ccTool>
-          <standard>8</standard>
+          <standard>11</standard>
           <incDir>
             <pElem>../../2D_Laplace/2D_Laplace/armadillo-header</pElem>
             <pElem>../../2D_Laplace/2D_Laplace</pElem>

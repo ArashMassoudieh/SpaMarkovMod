@@ -13,6 +13,17 @@ CPosition::CPosition()
         weight = 1; 
 }
 
+CPosition::CPosition(int n_coor)
+{
+	v = CVector(n_coor);
+	y = 0; 
+	x = 0;
+	t = 0;
+	u = 0; 
+	z = 0; 
+        weight = 1; 
+}
+
 CPosition::CPosition(const CPosition & P)
 {
 	t = P.t;

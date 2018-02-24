@@ -1,13 +1,17 @@
 #include "Grid.h"
 #include "StringOP.h"
 #include "NormalDist.h"
+#ifdef QT_version
 #include <qtextbrowser.h>
 #include "heteval.h"
 #include "qdebug.h"
-#include <sys/resource.h>
 #include <QCursor>
+#endif // Qt_version
 
-#define Qt_version
+
+#include <sys/resource.h>
+
+//#define Qt_version
 
 CGrid::CGrid()
 {
@@ -155,11 +159,11 @@ correl_mat_vec CGrid::get_correll_matrix_vec(int i, int j)
 
 void CGrid::assign_K_gauss(int i, int j)
 {
-	CNormalDist ND; 
+	CNormalDist ND;
 	correl_mat_vec M = get_correll_matrix_vec(i, j);
 	double mu;
 	double sigma;
-	if (M.V_RHS.num == 0) 
+	if (M.V_RHS.num == 0)
 	{
 		mu = 0;
 		sigma = 1;
@@ -170,7 +174,7 @@ void CGrid::assign_K_gauss(int i, int j)
             mu = dotproduct(M_inv*M.V_21, M.V_RHS);
             sigma = 1.0 - dotproduct(M_inv*M.V_21, M.V_21);
 	}
-	
+
 	double K_gauss = getnormalrand(mu, sigma);
 	p[i][j].k_det = true;
 	n_k_dets++;
@@ -199,7 +203,7 @@ void CGrid::assign_K_gauss()
 
 bool CGrid::getfromfile(string filename, int _nx, int _ny)
 {
-	
+
         bool file_not_found;
 	GP.nx = _nx;
 	GP.ny = _ny;
@@ -224,7 +228,7 @@ bool CGrid::getfromfile(string filename, int _nx, int _ny)
 		for (int j = 0; j < GP.ny; j++)
 			for (int i = 0; i < GP.nx; i++)
 			{
-				
+
 				s = getline(file);
 				if ((i == 0) && (j == 0))
 				{
@@ -241,7 +245,7 @@ bool CGrid::getfromfile(string filename, int _nx, int _ny)
 				p[i][j].V[1] = atof(s[3].c_str());
 			}
 	file.close();
-	return true; 
+	return true;
 
 }
 
@@ -312,7 +316,7 @@ bool CGrid::createuniform(double K, int _nx, int _ny)
 		}
 
 	}
-	
+
 	return false;
 }
 
@@ -323,34 +327,34 @@ CGrid::CGrid(string filename)
 {
 	ifstream file(filename);
 	vector<string> s;
-	
+
 	int n_for = 1;
-	int last_for_location = 0; 
+	int last_for_location = 0;
 	while (!file.eof())
 	{
 		s = getline(file);
 		if (s.size())
 		{
-		
-			if (tolower(s[0]) == "pathout") 
+
+			if (tolower(s[0]) == "pathout")
                         {   pathout = s[1].c_str();
                             pathout.erase( std::remove(pathout.begin(), pathout.end(), '\r'), pathout.end() );
                         }
 			if (tolower(s[0]) == "for")
 			{
 				n_for = atoi(s[1].c_str());
-				last_for_location = commands.size(); 
+				last_for_location = commands.size();
 			}
 			if (tolower(s[0]) == "endfor")
 			{
-				
+
                             _command command;
                             command.command = "clear_all";
                             commands.push_back(command);
                             int end_for_location = commands.size();
                             for (int i = 0; i < n_for-1; i++)
                             {
-                                _command write_commend; 
+                                _command write_commend;
                                 write_commend.command = "write";
                                 write_commend.parameters["content"] = "starting realization " + numbertostring(i + 1);
                                 commands.push_back(write_commend);
@@ -377,7 +381,7 @@ CGrid::CGrid(string filename)
                                     commands.push_back(new_command);
 
                                 }
-                                _command command; 
+                                _command command;
                                 command.command = "clear_all";
                                 commands.push_back(command);
 
@@ -396,7 +400,7 @@ CGrid::CGrid(string filename)
                             _command command;
                             command.command = tolower(s[1]);
                             for (int j = 2; j < s.size(); j++)
-                            {   if (split(s[j], '=').size()>1) 
+                            {   if (split(s[j], '=').size()>1)
                                     command.parameters[split(s[j], '=')[0]] = split(s[j], '=')[1];
 
                             }
@@ -406,8 +410,8 @@ CGrid::CGrid(string filename)
                     if (tolower(s[0]) == "x0_trajs") trajectory_params.x0_trajs = atof(s[1].c_str());
 		}
 	}
-	
-		
+
+
 }
 
 void CGrid::creategrid(int _nx, int _ny, double _dx, double _dy)
@@ -439,7 +443,7 @@ void CGrid::writeasmatrix(string filename, int component)
 			file << p[i][j].V[component]<<",";
 		file << endl;
 	}
-	
+
 
 }
 
@@ -459,9 +463,9 @@ CVector CGrid::getvelocity(point pp)
 	int i_floar = int(pp.x / GP.dx);
 	int j_floar = int(pp.y / GP.dy);
 	if ((i_floar > GP.nx - 2) || (j_floar>GP.ny - 2) || (i_floar<0) || (j_floar<0))
-        {   qDebug() << "Empty CVector returned";
+        {   //qDebug() << "Empty CVector returned";
             return CVector();
-        
+
         }
 	CVector V1 = p[i_floar][j_floar].V + (1.0 / GP.dx*(pp.x - GP.dx*i_floar))*(p[i_floar + 1][j_floar].V - p[i_floar][j_floar].V);
 	CVector V2 = p[i_floar][j_floar+1].V + (1.0 / GP.dx*(pp.x - GP.dx*i_floar))*(p[i_floar + 1][j_floar+1].V - p[i_floar][j_floar+1].V);
@@ -493,19 +497,19 @@ vector<double> CGrid::interpolate_V(double x, double y)
 
 CPathway CGrid::gettrajectory(point pp, double dt, double t_end)
 {
-	point pt = pp; 
+	point pt = pp;
 	CPathway Trajectory;
         Trajectory.weight = getvelocity(pt)[0];
 	double t = 0;
-	
+
 	while (t < t_end)
 	{
             CVector V = getvelocity(pt);
             if (V.getsize() == 0) return Trajectory;
-            CPosition ps; 
+            CPosition ps;
             ps.x = pt.x;
             ps.y = pt.y;
-            ps.t = t; 
+            ps.t = t;
             ps.v = V;
             Trajectory.append(ps);
             pt.x += V[0] * dt;
@@ -542,7 +546,7 @@ CPathway CGrid::gettrajectory_fix_dx(point pp, double dx, double x_end)
             pt.y += V[1] * dt;
             t += dt;
         }
-        else ex = true; 
+        else ex = true;
     }
 
     return Trajectory;
@@ -572,13 +576,13 @@ CPathwaySet CGrid::gettrajectories(double dt, double t_end)
 
 CPathwaySet CGrid::gettrajectories_fixed_dx(double dx, double x_end)
 {
-    qDebug() << "Simulating trajectories"<<endl;
-    
+    //qDebug() << "Simulating trajectories"<<endl;
+
     CPathwaySet X;
     for (int i = 0; i < int(pts.size()); i++)
     {
-	qDebug() << i << endl; 
-        
+//	qDebug() << i << endl;
+
 	CPathway X1 = gettrajectory_fix_dx(pts[i], dx, x_end);
         cout << i << "  " << X1.weight<< endl;
 	if (weighted)
@@ -598,7 +602,7 @@ CPathwaySet CGrid::gettrajectories_fixed_dx(double dx, double x_end)
 
 void CGrid::initialize(int numpoints,double x_0,bool _weighted)
 {
-    weighted = _weighted; 
+    weighted = _weighted;
     if (!_weighted)
     {
         int burnout = 10000;
@@ -608,7 +612,7 @@ void CGrid::initialize(int numpoints,double x_0,bool _weighted)
         pts.push_back(pt_0);
         for (int i = 1; i < burnout+numpoints; i++)
         {
-            bool accepted = false; 
+            bool accepted = false;
             while (!accepted)
             {
                 y_0 = unitrandom()*GP.dy*(GP.ny-1);
@@ -637,16 +641,16 @@ void CGrid::initialize(int numpoints,double x_0,bool _weighted)
             pts.push_back(pt_0);
             set_progress_value(double(i) / double(numpoints));
         }
-    }    
-	
+    }
+
 }
 
 CMatrix_arma_sp CGrid::create_stiffness_matrix_arma()
 {
 	string averaging = "arithmetic";
-	qDebug() << "Creating stiffness matrix" << endl;
+//	qDebug() << "Creating stiffness matrix" << endl;
         CMatrix_arma_sp K((GP.nx+1)*(GP.ny+1), (GP.nx + 1)*(GP.ny + 1));
-	qDebug() << "Stiffness matrix created" << endl;
+//	qDebug() << "Stiffness matrix created" << endl;
 	for (int i = 1; i < GP.nx; i++)
 	{
 		for (int j = 1; j < GP.ny; j++)
@@ -663,7 +667,7 @@ CMatrix_arma_sp CGrid::create_stiffness_matrix_arma()
 		int j = GP.ny;
 		K.matr(get_cell_no(i, j), get_cell_no(i, j - 1)) = 1;
 		K.matr(get_cell_no(i, j), get_cell_no(i, j)) = -1;
-		
+
 		// bottom boundary
 		j = 0;
 		K.matr(get_cell_no(i, j), get_cell_no(i, j + 1)) = 1;
@@ -676,7 +680,7 @@ CMatrix_arma_sp CGrid::create_stiffness_matrix_arma()
 	{
 		K.matr(get_cell_no(i, j), get_cell_no(i, j)) = 1;
 		K.matr(get_cell_no(i, j), get_cell_no(i+1, j)) = 1;
-	
+
 	}
 
 	//right boundary
@@ -686,7 +690,7 @@ CMatrix_arma_sp CGrid::create_stiffness_matrix_arma()
 		K.matr(get_cell_no(i, j), get_cell_no(i, j)) = 1;
 		K.matr(get_cell_no(i, j), get_cell_no(i - 1, j)) = 1;
 		}
-	
+
 	return K;
 
 }
@@ -743,18 +747,18 @@ CMatrix CGrid::create_stiffness_matrix()
 CVector_arma CGrid::create_RHS_arma()
 {
 	CVector_arma V((GP.nx + 1)*(GP.ny + 1));
-	
+
 	//left boundary
 	int i = 0;
 	for (int j = 0; j < GP.ny + 1; j++)
 		V[get_cell_no(i, j)] = 2*leftboundary_h;
-	
+
 
 	//right boundary
 	i = GP.nx;
 	for (int j = 0; j < GP.ny + 1; j++)
 		V[get_cell_no(i, j)] = 2*rightboundary_h;
-	
+
 
 	return V;
 }
@@ -792,12 +796,12 @@ int CGrid::get_cell_no_OU(int i, int j)
 
 CMatrix CGrid::solve()
 {
-    set_progress_value(0);	
+    set_progress_value(0);
     CMatrix_arma_sp K = create_stiffness_matrix_arma();
     CVector_arma V = create_RHS_arma();
-    qDebug() << "Solving the system of equations"<< endl;
+ //   qDebug() << "Solving the system of equations"<< endl;
     CVector_arma S = solve_ar(K, V);
-    qDebug() << "Solved"<< endl;
+//    qDebug() << "Solved"<< endl;
     H = CMatrix(GP.nx+1,GP.ny+1);
     vx = CMatrix(GP.nx, GP.ny - 1);
     vy = CMatrix(GP.nx - 1, GP.ny);
@@ -815,7 +819,7 @@ CMatrix CGrid::solve()
             p[i][j].V[0] = -(0.5*Kx1 * (H[i + 1][j] - H[i][j]) / GP.dx + 0.5*Kx2 * (H[i + 1][j+1] - H[i][j+1]) / GP.dx);
             p[i][j].V[1] = -(0.5*Ky1 * (H[i][j+1] - H[i][j]) / GP.dx + 0.5*Ky2 * (H[i + 1][j + 1] - H[i+1][j]) / GP.dx);
 	}
-	
+
 	for (int i=0; i<GP.nx; i++)
 		for (int j = 0; j < GP.ny - 1; j++)
 		{
@@ -836,7 +840,7 @@ CMatrix CGrid::solve()
 	max_v_x = max_vx();
 	min_v_x = min_vx();
 	return H;
-	
+
 }
 
 vector<int> CGrid::get_ij(int k)
@@ -844,7 +848,7 @@ vector<int> CGrid::get_ij(int k)
 	vector<int> out(2);
 	out[0] = k / (GP.ny + 1);
 	out[1] = k % (GP.ny + 1);
-	return out; 
+	return out;
 
 }
 
@@ -893,7 +897,7 @@ CBTC CGrid::get_v_btc(double x, int k)
 		for (int j = 0; j < GP.ny; j++)
 			out.append(i + j * 10000, p[i][j].V[k]);
 	return out;
-	
+
 }
 
 void CGrid::runcommands()
@@ -923,7 +927,7 @@ void CGrid::runcommands()
 			CMatrix H = solve();
 		}
 
-		
+
 		if (commands[i].command == "write_h_field")
 		{
 			cout << "Writing hydro output ..." << endl;
@@ -973,9 +977,9 @@ void CGrid::runcommands()
 			vx_dist = vx.distribution(atoi(commands[i].parameters["nbins"].c_str()),0);
 			vy_dist = vy.distribution(atoi(commands[i].parameters["nbins"].c_str()),0);
 		}
-		
+
 		if (commands[i].command == "write_velocity_dist")
-		{ 
+		{
 			cout << "Writing velocities into vectors" << endl;
 			vx_dist.writefile(pathout+commands[i].parameters["filename_x"]);
 			vy_dist.writefile(pathout+commands[i].parameters["filename_y"]);
@@ -984,14 +988,14 @@ void CGrid::runcommands()
 		if (commands[i].command == "get_velocity_dist_at_sects")
 		{
 			cout << "Get Velocities distributions at cross-sections ..." << endl;
-			
+
 			CBTC vx = get_v_btc(atof(commands[i].parameters["x"].c_str()), 0);
 			CBTC vy = get_v_btc(atof(commands[i].parameters["x"].c_str()), 1);
 			vx_dist = vx.distribution(atoi(commands[i].parameters["nbins"].c_str()), 0);
 			vy_dist = vy.distribution(atoi(commands[i].parameters["nbins"].c_str()), 0);
 			sect_dist.append(vx_dist, "x=" + commands[i].parameters["x"]);
 			sect_dist.append(vy_dist, "y=" + commands[i].parameters["x"]);
-			
+
 		}
 
 		if (commands[i].command == "write_velocities_at_sects")
@@ -1015,7 +1019,7 @@ void CGrid::runcommands()
 		if (commands[i].command == "write_marginal_k")
 		{
 			cout << "Write marginal hydraulic conductivity ..." << endl;
-			CBTC K = get_K_CDF(atof(commands[i].parameters["x0"].c_str()), atof(commands[i].parameters["x1"].c_str()), atof(commands[i].parameters["log_inc"].c_str())); 
+			CBTC K = get_K_CDF(atof(commands[i].parameters["x0"].c_str()), atof(commands[i].parameters["x1"].c_str()), atof(commands[i].parameters["log_inc"].c_str()));
 			K.writefile(commands[i].parameters[0]);
 		}
 
@@ -1038,7 +1042,7 @@ void CGrid::set_inv_K_dist(int ninc)
 {
 	inv_K_dist.clear();
 	double epsilon = 1e-8;
-	
+
 	for (int i = 0; i < ninc+1; i++)
 	{
 		double u = double(i) / double(ninc)*(1 - 2 * epsilon) + epsilon;
@@ -1061,12 +1065,12 @@ double CGrid::K_CDF(double x)
 	if (marginal_K_dist_type == "lognormal")
 	{
 		int n = marginal_K_dist_params.size() / 3.0;
-		
+
 		for (int i = 0; i < n; i++)
 			out += marginal_K_dist_params[3 * i] * 0.5*(1.0 + erf((log(x) - log(marginal_K_dist_params[3 * i + 1])) / (sqrt(2.0)*marginal_K_dist_params[3 * i + 2])));
 	}
 	return out;
-	
+
 }
 
 
@@ -1091,7 +1095,7 @@ double CGrid::inv_function(double u, double guess)
 			err = err_p;
 		}
 		else lambda = min(lambda*1.3, 1.0);
-		
+
 	}
 	return x;
 }
@@ -1114,7 +1118,7 @@ double CGrid::inv_function_s(double u)
 		x2 *= 2;
 		err2 = K_CDF(x2) - u;
 	}
-	
+
 	while (min(fabs(err1),fabs(err2)) > tol && fabs(x1-x2)>tol)
 	{
 		double slope = (err2 - err1) / (log(x2) - log(x1));
@@ -1147,7 +1151,7 @@ CBTC CGrid::get_K_CDF(double x0, double x1, double log_inc)
 		out.append(x, K_CDF(x));
 	}
 
-	return out; 
+	return out;
 }
 
 CBTC CGrid::get_margina_traj_v_dist(double vmin, double vmax, double nbins, string val)
@@ -1160,7 +1164,7 @@ CBTC CGrid::get_margina_traj_v_dist(double vmin, double vmax, double nbins, stri
 			out.C[int((Traj.paths[i].positions[j].getvar(val) - vmin) / nbins)] += 1;
 		count += 1;
 	}
-	out = out/count; 
+	out = out/count;
 	return out;
 }
 
@@ -1175,7 +1179,7 @@ double avg(double x, double y, string type)
             return (2.0*x*y / (x + y));
         else
             return 0.5*(x + y);
-            
+
 }
 
 vector<ijval> get_top_n(vector<ijval> vec, int n)
@@ -1184,7 +1188,7 @@ vector<ijval> get_top_n(vector<ijval> vec, int n)
 	vector<bool> extracted(vec.size());
 	for (int i = 0; i < int(vec.size()); i++) extracted[i] = false;
 	int smallest_dist = -1;
-	
+
 	for (int i = 0; i < n; i++)
 	{
 		double min_dist = 1e12;
@@ -1201,18 +1205,18 @@ vector<ijval> get_top_n(vector<ijval> vec, int n)
 	return out;
 }
 
-#ifdef Qt_version
+#ifdef QT_version
 
 void CGrid::runcommands_qt()
 {
-	
+
 	set_progress_value(0);
 	vector<vtkSmartPointer<vtkActor>> actors;
 	CBTCSet All_Breakthroughpoints;
-	CBTCSet Allpoints_velocities_eulerian(3); 
+	CBTCSet Allpoints_velocities_eulerian(3);
 	CBTCSet velocity_samples_from_trajs(3);
 	CBTCSet extracted_OU_parameters;
-	
+
 	for (int i = 0; i < commands.size(); i++)
 	{
             main_window->setCursor(Qt::WaitCursor);
@@ -1223,7 +1227,7 @@ void CGrid::runcommands_qt()
                 show_in_window("Getting all btc points");
                 All_Breakthroughpoints.getfromfile(pathout + commands[i].parameters["filename"],1);
             }
-            
+
             if (commands[i].command == "get_points_v_eulerian")
             {
                 show_in_window("Getting all Eulerian velocities");
@@ -1239,14 +1243,14 @@ void CGrid::runcommands_qt()
                 show_in_window("Getting all OU parameters");
                 extracted_OU_parameters.getfromfile(pathout + commands[i].parameters["filename"],1);
             }
-            
-            
+
+
             if (commands[i].command == "write_all_btc_points")
             {
                 show_in_window("Writing all btc points");
                 All_Breakthroughpoints.writetofile(pathout + commands[i].parameters["filename"]);
             }
-            
+
             if (commands[i].command == "write_points_v_eulerian")
             {
                 show_in_window("Writing all Eulerian velocities");
@@ -1262,13 +1266,13 @@ void CGrid::runcommands_qt()
                  show_in_window("Writing all OU parameters");
                 extracted_OU_parameters.writetofile(pathout + commands[i].parameters["filename"]);
             }
-            
-            
+
+
             if (commands[i].command == "generate_k_field")
             {
-                    clear_contents(); 
+                    clear_contents();
                     show_in_window("Assigning K...,");
-                       
+
                     //cout << "Assigning K..." << endl;
                     field_gen.max_correl_n = atoi(commands[i].parameters["n_neighbors"].c_str());
                     field_gen.k_correlation_lenght_scale_x = atof(commands[i].parameters["corr_length_scale_x"].c_str());
@@ -1336,7 +1340,7 @@ void CGrid::runcommands_qt()
                 leftboundary_C = 1;
                 D = atof(commands[i].parameters["diffusion"].c_str());
 
-                solve_transport_laplace(main_window->get_ui()->ShowOutput, atof(commands[i].parameters["s"].c_str())); 
+                solve_transport_laplace(main_window->get_ui()->ShowOutput, atof(commands[i].parameters["s"].c_str()));
             }
 
             if (commands[i].command == "write_h_field")
@@ -1384,7 +1388,7 @@ void CGrid::runcommands_qt()
                 show_in_window("Get breakthrough curve at x = " + commands[i].parameters["x"]);
                 CBTC Breakthroughcurve_from_trajs = Traj.get_BTC(atof(commands[i].parameters["x"].c_str()), atoi(commands[i].parameters["nbins"].c_str()));
                 if (All_Breakthroughpoints.lookup("x=" + commands[i].parameters["x"]) == -1)
-                {	
+                {
                     CBTC BTC = Traj.get_BTC_points(atof(commands[i].parameters["x"].c_str()));
                     All_Breakthroughpoints.append(BTC, "x=" + commands[i].parameters["x"]);
                 }
@@ -1463,9 +1467,9 @@ void CGrid::runcommands_qt()
                     {
                         vx_dist_all_log.unlog().writefile(pathout + commands[i].parameters["filename_log_int"]);
                     }
-                    qDebug() << "Calculating log-transformed distributions for velocity magnitude" << endl;    
+                    qDebug() << "Calculating log-transformed distributions for velocity magnitude" << endl;
                     CBTC v_mag_dist_all_log = Allpoints_velocities_eulerian.BTC[2].Log().distribution(atoi(commands[i].parameters["nbins"].c_str()), 0);
-                    qDebug() << "Calculating log-transformed distributions for velocity magnitude, Done!" << endl;    
+                    qDebug() << "Calculating log-transformed distributions for velocity magnitude, Done!" << endl;
                     v_mag_dist_all_log.writefile(pathout + commands[i].parameters["filename_mag_log"]);
                     if (commands[i].parameters.count("filename_log_int_mag") > 0)
                     {
@@ -1556,7 +1560,7 @@ void CGrid::runcommands_qt()
                 show_in_window("Renormalizing hydraulic conductivity ...");
 
                 //cout << "Renormalizing hydraulic conductivity ..." << endl;
-                renormalize_k(); 
+                renormalize_k();
             }
 
             if (commands[i].command == "show_k_field")
@@ -1650,7 +1654,7 @@ void CGrid::runcommands_qt()
                 pset.create(atoi(commands[i].parameters["n"].c_str()), &dist, atof(commands[i].parameters["x_min"].c_str()), atof(commands[i].parameters["x_max"].c_str()), atof(commands[i].parameters["kappa"].c_str()), atof(commands[i].parameters["dx"].c_str()));
 
             }
-            
+
             if (commands[i].command == "write_pathways")
             {
                 show_in_window("Writing pathways ...");
@@ -1660,7 +1664,7 @@ void CGrid::runcommands_qt()
             if (commands[i].command == "write_pathways_vtp")
             {
                 show_in_window("Writing pathways to vtp ...");
-                vtkSmartPointer<vtkPolyDataMapper> mapper; 
+                vtkSmartPointer<vtkPolyDataMapper> mapper;
                 mapper = pset.pathways_vtk_pdt_vtp(atof(commands[i].parameters["z_factor"].c_str()), atof(commands[i].parameters["offset"].c_str()));
                 pset.write_vtk(mapper, pathout+commands[i].parameters["filename"]);
             }
@@ -1724,14 +1728,16 @@ void CGrid::runcommands_qt()
             {
                 show_in_window("Extracting pairs ... ");
                 CBTCSet pairs;
+                if (!commands[i].parameters.count("nsequence"))
+                    commands[i].parameters["nsequence"] = "2";
                 if (Traj.paths.size())
-                    pairs = Traj.get_pair_v(atoi(commands[i].parameters["increment"].c_str()), atoi(commands[i].parameters["n"].c_str()));
+                    pairs = Traj.get_pair_v(atoi(commands[i].parameters["increment"].c_str()), atoi(commands[i].parameters["n"].c_str()),atoi(commands[i].parameters["nsequence"].c_str()));
                 else if (pset.paths.size())
-                    pairs = pset.get_pair_v(atoi(commands[i].parameters["increment"].c_str()), atoi(commands[i].parameters["n"].c_str()));
+                    pairs = pset.get_pair_v(atoi(commands[i].parameters["increment"].c_str()), atoi(commands[i].parameters["n"].c_str()),atoi(commands[i].parameters["nsequence"].c_str()));
                 else
                 {
                     show_in_window("No trajectories has been initialized!");
-                    return;         
+                    return;
                 }
                 pairs.writetofile(pathout+commands[i].parameters["filename"]);
                 if (commands[i].parameters.count("dist_filename") > 0)
@@ -1741,22 +1747,24 @@ void CGrid::runcommands_qt()
                 if (commands[i].parameters.count("ranks_filename") > 0)
                 {
                     show_in_window("Writing ranks");
-                    CBTCSet ranks(2);
-                    ranks.BTC[0] = pairs.BTC[0].rank_bd(atoi(commands[i].parameters["nbins"].c_str()));
-                    ranks.BTC[1] = pairs.BTC[1].rank_bd(atoi(commands[i].parameters["nbins"].c_str()));
+                    CBTCSet ranks(atoi(commands[i].parameters["nsequence"]));
+                    for (int ii=0; i<atoi(commands[i].parameters["nsequence"]); i++)
+                        ranks.BTC[ii] = pairs.BTC[ii].rank_bd(atoi(commands[i].parameters["nbins"].c_str()));
+
                     ranks.writetofile(pathout+commands[i].parameters["ranks_filename"]);
                 }
                 if (commands[i].parameters.count("normal_filename") > 0)
                 {
                     show_in_window("Writing normals");
-                    CBTCSet normals(2);
-                    normals.BTC[0] = pairs.BTC[0].map_to_standard_normal(atoi(commands[i].parameters["nbins"].c_str()));
-                    normals.BTC[1] = pairs.BTC[1].map_to_standard_normal(atoi(commands[i].parameters["nbins"].c_str()));
+                    CBTCSet normals(atoi(commands[i].parameters["nsequence"]));
+                    for (int ii=0; i<atoi(commands[i].parameters["nsequence"]); i++)
+                        normals.BTC[ii] = pairs.BTC[ii].map_to_standard_normal(atoi(commands[i].parameters["nbins"].c_str()));
+
                     normals.writetofile(pathout + commands[i].parameters["normal_filename"]);
                     if (commands[i].parameters.count("OU_parameters_filename") > 0)
                     {
                         show_in_window("Writing OU params");
-                        
+
                         CVector X = normals.get_kappa_gamma(atof(commands[i].parameters["delta_x"].c_str()));
                         extracted_OU_parameters.append("p1_"+commands[i].parameters["increment"], atoi(commands[i].parameters["increment"].c_str()), X[0]);
                         extracted_OU_parameters.append("p2_"+commands[i].parameters["increment"], atoi(commands[i].parameters["increment"].c_str()), X[1]);
@@ -1793,8 +1801,8 @@ void CGrid::runcommands_qt()
                 clear();
                 trajectories.clear();
                 Traj.paths.clear();
-                sect_dist.clear(); 
-                pts.clear(); 
+                sect_dist.clear();
+                pts.clear();
             }
 
             if (commands[i].command == "write")
@@ -1878,11 +1886,11 @@ void CGrid::set_K_transport(double dt, double D, double weight)
 			Kv.matr(get_cell_no(i, j), get_cell_no(i - 1, j)) += -weight*pos(vx[i-1][j-1]) / (GP.dx);
 			Kv.matr(get_cell_no(i, j), get_cell_no(i, j)) += weight*(neg(vx[i-1][j-1])/GP.dx + pos(vx[i][j-1])/GP.dx);
 			Kv.matr(get_cell_no(i, j), get_cell_no(i + 1, j)) += -weight*neg(vx[i][j - 1]) / (GP.dx);
-			
+
 			Kv.matr(get_cell_no(i, j), get_cell_no(i, j-1)) += -weight*pos(vy[i - 1][j - 1]) / GP.dy;
 			Kv.matr(get_cell_no(i, j), get_cell_no(i, j)) += weight*(neg(vy[i - 1][j - 1]) / GP.dy + pos(vy[i-1][j]) / GP.dy);
 			Kv.matr(get_cell_no(i, j), get_cell_no(i, j-1)) += -weight*neg(vy[i-1][j]) / GP.dy;
-			
+
 			KD.matr(get_cell_no(i, j), get_cell_no(i - 1, j)) += -weight*D / (GP.dx*GP.dx);
 			KD.matr(get_cell_no(i, j), get_cell_no(i, j)) += 2*weight*D / (GP.dx*GP.dx);
 			KD.matr(get_cell_no(i, j), get_cell_no(i + 1, j)) += -weight*D / (GP.dx*GP.dx);
@@ -1892,7 +1900,7 @@ void CGrid::set_K_transport(double dt, double D, double weight)
 			KD.matr(get_cell_no(i, j), get_cell_no(i, j+1)) += -weight*D / (GP.dy*GP.dy);
 
 			Kt.matr(get_cell_no(i, j), get_cell_no(i, j)) += 1.0 / dt;
-		
+
 		}
 		// top boundary
 		int j = GP.ny;
@@ -1921,7 +1929,7 @@ void CGrid::set_K_transport(double dt, double D, double weight)
 		Kt.matr(get_cell_no(i, j), get_cell_no(i - 1, j)) = -1;
 	}
 
-	
+
 }
 
 CVector_arma CGrid::create_RHS_transport(double dt, double weight,double D)
@@ -1954,19 +1962,19 @@ CVector_arma CGrid::create_RHS_transport(double dt, double weight,double D)
 		// top boundary
 		int j = GP.ny;
 		RHS[get_cell_no(i, j)] = 0;
-	
+
 
 		// bottom boundary
 		j = 0;
 		RHS[get_cell_no(i, j)] = 0;
-		
+
 	}
 
 	//left boundary
 	int i = 0;
 	for (int j = 0; j < GP.ny + 1; j++)
 		RHS[get_cell_no(i, j)] = 2*leftboundary_C;
-	
+
 
 	//right boundary
 	i = GP.nx;
@@ -2008,11 +2016,11 @@ CVector_arma CGrid::create_RHS_transport_laplace(double weight, double D, double
 
 }
 
-void CGrid::solve_transport(double t_end,QTextBrowser *tbrowse)
+void CGrid::solve_transport(double t_end)
 {
 	set_K_transport(dt, D, time_weight);
 	C = CMatrix(GP.nx + 1, GP.ny + 1);// = leftboundary_C;
-	CMatrix_arma_sp K = KD + Kt + Kv; 
+	CMatrix_arma_sp K = KD + Kt + Kv;
 	Kt.writetofile(pathout + "Kt_matrix.txt");
 	KD.writetofile(pathout + "KD_matrix.txt");
 	Kv.writetofile(pathout + "Kv_matrix.txt");
@@ -2020,9 +2028,9 @@ void CGrid::solve_transport(double t_end,QTextBrowser *tbrowse)
 	set_progress_value(0);
         for (double t = 0; t < t_end; t += dt)
 	{
-		CVector_arma RHS = create_RHS_transport(dt, time_weight, D); 
+		CVector_arma RHS = create_RHS_transport(dt, time_weight, D);
 		CVector_arma S = solve_ar(K, RHS);
-		
+
 		for (int i=0; i<GP.nx+1; i++)
 			for (int j=0; j<GP.ny+1; j++)
 				C[i][j] = S[get_cell_no(i, j)];
@@ -2031,20 +2039,20 @@ void CGrid::solve_transport(double t_end,QTextBrowser *tbrowse)
 			for (int j = 0; j < GP.ny; j++)
 				p[i][j].C.push_back(0.25*(C[i][j] + C[i + 1][j] + C[i][j + 1] + C[i + 1][j + 1]));
 
-		set_progress_value(t / t_end);
-                tbrowse->append("t = " + QString::number(t));
+//		set_progress_value(t / t_end);
+//                tbrowse->append("t = " + QString::number(t));
 
 	}
 
 }
 
-void CGrid::solve_transport_laplace(QTextBrowser *tbrowse, double s)
+void CGrid::solve_transport_laplace(double s)
 {
 	set_K_transport_laplace(D, s);
 	C = CMatrix(GP.nx + 1, GP.ny + 1);// = leftboundary_C;
 	CMatrix_arma_sp K = KD + Kt + Kv;
-	
-	
+
+
 	CVector_arma RHS = create_RHS_transport_laplace(dt, time_weight, D);
 	CVector_arma S = solve_ar(K, RHS);
 
@@ -2087,7 +2095,7 @@ void CGrid::set_K_transport_laplace(double D, double s)
 			KD.matr(get_cell_no(i, j), get_cell_no(i, j)) += 2 * D / (GP.dy*GP.dy);
 			KD.matr(get_cell_no(i, j), get_cell_no(i, j+1)) += -D / (GP.dy*GP.dy);
 
-			Kt.matr(get_cell_no(i, j), get_cell_no(i, j)) += s; 
+			Kt.matr(get_cell_no(i, j), get_cell_no(i, j)) += s;
 
 		}
 		// top boundary
@@ -2172,7 +2180,7 @@ void CGrid::create_inverse_K_OU(double dt)
 
 			}
 		}
-		
+
 	}
 
 	int i = 0;
@@ -2255,7 +2263,7 @@ CVector_arma CGrid::create_RHS_OU(double dt)
 				RHS[get_cell_no_OU(i, j)] += (1 - time_weight)*OU.FinvU[j] *OU.kappa*pow(std_normal_phi_inv((double(j))*GP.dy), 2)*C[i][j - 1] / pow(GP.dy, 2);
 			}
 		}
-		
+
 	}
 
 	int i = 0;
@@ -2273,7 +2281,7 @@ CVector_arma CGrid::create_RHS_OU(double dt)
 
 }
 
-void CGrid::solve_transport_OU(double t_end, QTextBrowser *tbrowse)
+void CGrid::solve_transport_OU(double t_end)
 {
 	create_f_inv_u();
 	create_inverse_K_OU(dt);
@@ -2299,7 +2307,7 @@ void CGrid::solve_transport_OU(double t_end, QTextBrowser *tbrowse)
 		{
 			double sum = 0;
 			double sum_fw = 0;
-			
+
 			for (int j = 0; j < GP.ny; j++)
 			{
 				C[i][j] = S[get_cell_no_OU(i, j)];
@@ -2311,8 +2319,13 @@ void CGrid::solve_transport_OU(double t_end, QTextBrowser *tbrowse)
 			OU.BTC_normal.BTC[i].append((t + dt)/((i-0.5)*GP.dx), sum);
 			OU.BTC_normal_fw.BTC[i].append((t + dt) / ((i - 0.5)*GP.dx), sum_fw);
 		}
+
+        #if QT_version
                 set_progress_value(t / t_end);
 		tbrowse->append("t = " + QString::number(t));
+		#else
+		cout<<"t = " <<t <<endl;
+		#endif // QT_version
 
 	}
 
@@ -2332,20 +2345,26 @@ void CGrid::renormalize_k()
 
 void CGrid::show_in_window(string s)
 {
+    #ifdef QT_version
     qDebug()<<QString::fromStdString(s);
     main_window->get_ui()->ShowOutput->append(QString::fromStdString(s));
     QApplication::processEvents();
+    #else
+    cout<<s<<endl;
+    #endif // Qt_version
 }
 
 void CGrid::set_progress_value(double s)
 {
+#ifdef QT_version
 	main_window->get_ui()->progressBar->setValue(s*100);
 	QApplication::processEvents();
+#endif // QT_version
 }
 
 void CGrid::clear_contents()
 {
-	this->n_k_dets = 0; 
+	this->n_k_dets = 0;
 	p.resize(GP.nx);
 	for (int i = 0; i < GP.nx; i++)
 	{

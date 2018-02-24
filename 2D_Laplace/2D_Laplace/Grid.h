@@ -10,7 +10,9 @@
 #include "vtk.h"
 #include "PathwaySet.h"
 #include "_command.h"
+#ifdef Qt_version
 #include "qtextbrowser.h"
+#endif // Qt_version
 
 
 #define arma
@@ -25,16 +27,16 @@ struct point
 	double x;
 	double y;
 	CVector v;
-	double t; 
+	double t;
 };
 
 struct prop
 {
 	CVector K;
 	CVector K_gauss;
-	CVector V; 
+	CVector V;
 	bool k_det = false;
-	vector<double> C; 
+	vector<double> C;
 };
 
 struct prop_cell
@@ -136,17 +138,17 @@ public:
 	bool createuniform(double K, int _nx, int _ny);
 	CGrid(string filename);
 	void creategrid(int nx, int ny, double dx, double dy);
-	vector<CBTCSet> trajectories; 
+	vector<CBTCSet> trajectories;
 	CGrid(string filename_V, string filename_K, int _nx, int _ny);
 	void writeasmatrix(string filename, int);
 	void writeasmatrixK(string filename, int component);
-	CVector getvelocity(point pp); 
+	CVector getvelocity(point pp);
 	CPathway gettrajectory(point pp, double dt, double t_end);
 	CPathway gettrajectory_fix_dx(point pp, double dt, double t_end);
 	CPathwaySet gettrajectories(double dt, double t_end);
 	CPathwaySet gettrajectories_fixed_dx(double dt, double x_end);
 	vector<point> pts;
-        bool weighted; 
+        bool weighted;
 	void initialize(int numpoints, double x_0, bool weighted=false);
 	CMatrix_arma_sp create_stiffness_matrix_arma();
 	CVector_arma create_RHS_arma();
@@ -169,7 +171,7 @@ public:
 	void runcommands();
 	CBTC vx_dist;
 	CBTC vy_dist;
-        CBTC v_dist; 
+        CBTC v_dist;
 	CBTCSet sect_dist;
 	vector<double> marginal_K_dist_params;
 	void set_inv_K_dist(int ninc);
@@ -193,13 +195,13 @@ public:
 	void set_K_transport(double dt, double D=0, double weight=0.5);
 	CVector_arma create_RHS_transport(double dt, double weight=0.5, double D=0);
 	CVector_arma create_RHS_transport_laplace(double weight, double D, double s);
-	void solve_transport(double t_end, QTextBrowser * tbrowse);
-	void solve_transport_laplace(QTextBrowser * tbrowse, double s);
+	void solve_transport(double t_end);
+	void solve_transport_laplace(double s);
 	void set_K_transport_laplace(double D, double s);
 	void create_f_inv_u();
 	CVector_arma create_RHS_OU(double dt);
-	void solve_transport_OU(double t_end, QTextBrowser * tbrowse);
-	double time_weight; 
+	void solve_transport_OU(double t_end);
+	double time_weight;
 #ifdef Qt_version
 	void show_K_field();
 	void show_K_field_vtk(double z_factor = 0.5);
@@ -210,7 +212,7 @@ public:
 	vtkSmartPointer<vtkPolyData> traj_vtk_pdt_vtp(int trajno, double z_factor=0.5, double offset=0, bool _log = false, bool _color = true);
 	vector<vtkSmartPointer<vtkActor>> trajs_vtk_pdt(double z_factor=0.5, double offset = 0);
 	void trajs_vtk_pdt_to_vtp(string filename = "paths.vtp", double z_factor = 0.5, double offset = 0, bool _log = false, bool _color = true);
-	
+
 	double min_v_x = 0;
 	double max_v_x=0;
 	vtkSmartPointer<vtkRenderer> renderer;
@@ -229,8 +231,8 @@ public:
 	CPathwaySet pset;
 	double get_min_traj_v(int k);
 	double get_max_traj_v(int k);
-	CPathway dist_stores; 
-	string pathout; 
+	CPathway dist_stores;
+	string pathout;
 	CMatrix_arma_sp Kv;
 	CMatrix_arma_sp KD;
 	CMatrix_arma_sp Kt;

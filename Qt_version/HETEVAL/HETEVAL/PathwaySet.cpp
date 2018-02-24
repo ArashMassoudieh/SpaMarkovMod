@@ -150,20 +150,21 @@ void CPathwaySet::make_uniform_at_t(double dt)
 
 
 
-CPosition CPathwaySet::get_pair_v(int increment)
+CPosition CPathwaySet::get_pair_v(int increment, int num_seq)
 {
-    CPosition p; 
+    CPosition p(num_seq); 
     int i = int(unitrandom()*paths.size());
-    int j = int((paths[i].positions.size()- increment)*unitrandom());
-    p.v[0] = paths[i].positions[j].v[0];
-    p.v[1] = paths[i].positions[j + increment].v[0];
+    int j = int((paths[i].positions.size()- (num_seq-1)*increment)*unitrandom());
+    for (int ii=0 ; i<num_seq; i++)
+       p.v[ii] = paths[i].positions[j+ii*increment].v[0];
+    
     p.weight = paths[i].weight;
     return p;
 }
 
-CBTCSet CPathwaySet::get_pair_v(int increment, int n)
+CBTCSet CPathwaySet::get_pair_v(int increment, int n, int num_seq)
 {
-	CBTCSet out(2);
+	CBTCSet out(num_seq);
 	for (int i = 0; i < n; i++)
 	{
 		CPosition p = get_pair_v(increment);

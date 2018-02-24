@@ -7,10 +7,11 @@
 #include <qtoolbar.h>
 #include <qtoolbutton.h>
 #include <qwt_plot.h>
+#include <qdebug.h>
+#endif // Qt_version
 #include "Spectogram.h"
 #include "vtk.h"
 #include "heteval.h"
-#include <qdebug.h>
 #include "Pathway.h"
 #include "StringOP.h"
 
@@ -47,7 +48,7 @@ public:
 void CGrid::show_K_field()
 {
 	PlotWindow *P = new PlotWindow(this);
-	
+
 	P->resize(600, 400);
 	P->show();
 }
@@ -56,7 +57,7 @@ void CGrid::show_K_field()
 void CGrid::show_K_field_vtk(double z_factor)
 {
 
-	
+
 }
 
 void CGrid::showthings(vector<vtkSmartPointer<vtkActor>> actors, string filename)
@@ -187,7 +188,7 @@ vtkSmartPointer<vtkActor> CGrid::get_K_field_vtk_pdt(double z_factor)
 	outputPolyData->GetPointData()->SetScalars(colors_2);
 
 
-	//Append the two meshes 
+	//Append the two meshes
 	vtkSmartPointer<vtkAppendPolyData> appendFilter =
 		vtkSmartPointer<vtkAppendPolyData>::New();
 #if VTK_MAJOR_VERSION <= 5
@@ -334,7 +335,7 @@ void CGrid::write_K_field_to_vtp(string filename, double z_factor, bool _log)
 	outputPolyData->GetPointData()->SetScalars(values);
 
 
-	//Append the two meshes 
+	//Append the two meshes
 	vtkSmartPointer<vtkAppendPolyData> appendFilter =
 		vtkSmartPointer<vtkAppendPolyData>::New();
 #if VTK_MAJOR_VERSION <= 5
@@ -370,7 +371,7 @@ void CGrid::write_K_field_to_vtp(string filename, double z_factor, bool _log)
 	// This is set so we can see the data in a text editor.
 	writer->SetDataModeToAscii();
 	writer->Write();
-	
+
 
 }
 
@@ -387,7 +388,7 @@ vtkSmartPointer<vtkActor> CGrid::traj_vtk_pdt(int trajno, double z_factor, doubl
 	}
 	vtkSmartPointer<vtkPolyLine> polyLine =
 		vtkSmartPointer<vtkPolyLine>::New();
-	
+
 	polyLine->GetPointIds()->SetNumberOfIds(Traj.paths[trajno].positions.size());
 	for (unsigned int i = 0; i < Traj.paths[trajno].positions.size(); i++)
 	{
@@ -424,7 +425,7 @@ vtkSmartPointer<vtkActor> CGrid::traj_vtk_pdt(int trajno, double z_factor, doubl
 		vtkSmartPointer<vtkUnsignedCharArray>::New();
 	colors_2->SetNumberOfComponents(3);
 	colors_2->SetName("Colors");
-	
+
 	for (int i = 0; i < polyData->GetNumberOfPoints(); i++)
 	{
 		double p[3];
@@ -432,18 +433,18 @@ vtkSmartPointer<vtkActor> CGrid::traj_vtk_pdt(int trajno, double z_factor, doubl
 
 		double dcolor[3];
 		colorLookupTable->GetColor(p[2], dcolor);
-		
+
 		unsigned char color[3];
 		for (unsigned int j = 0; j < 3; j++)
 		{
 			color[j] = static_cast<unsigned char>(255.0 * dcolor[j]);
 		}
-		
+
 		colors_2->InsertNextTupleValue(color);
 	}
 
 	polyData->GetPointData()->SetScalars(colors_2);
-	
+
 	// Visualization
 	vtkSmartPointer<vtkPolyDataMapper> mapper =
 		vtkSmartPointer<vtkPolyDataMapper>::New();
@@ -467,7 +468,7 @@ vtkSmartPointer<vtkPolyData> CGrid::traj_vtk_pdt_vtp(int trajno, double z_factor
 	// Create a vtkPoints object and store the points in it
 	vtkSmartPointer<vtkPoints> points =
 		vtkSmartPointer<vtkPoints>::New();
-	
+
 	vtkSmartPointer<vtkFloatArray> values =
 		vtkSmartPointer<vtkFloatArray>::New();
 
@@ -488,7 +489,7 @@ vtkSmartPointer<vtkPolyData> CGrid::traj_vtk_pdt_vtp(int trajno, double z_factor
 
 	for (int i = 0; i<Traj.paths[trajno].positions.size(); i++)
 	{
-		
+
 		if (!_log)
 		{
 			double t[1] = { float(Traj.paths[trajno].positions[i].v[0]) };
@@ -579,14 +580,14 @@ vtkSmartPointer<vtkPolyData> CGrid::traj_vtk_pdt_vtp(int trajno, double z_factor
 			colors_2->InsertNextTupleValue(color);
 		}
 
-		
+
 	}
 
 	polyData->GetPointData()->SetScalars(values);
 	polyData->GetPointData()->AddArray(vy);
 	polyData->GetPointData()->AddArray(tm);
 	// Visualization
-	
+
 	return polyData;
 }
 
@@ -618,7 +619,7 @@ void CGrid::trajs_vtk_pdt_to_vtp(string filename, double z_factor, double offset
 	appendFilter->Update();
 
 
-	
+
 	// Visualization
 	vtkSmartPointer<vtkPolyDataMapper> mapper =
 		vtkSmartPointer<vtkPolyDataMapper>::New();
@@ -637,7 +638,7 @@ void CGrid::trajs_vtk_pdt_to_vtp(string filename, double z_factor, double offset
 	// This is set so we can see the data in a text editor.
 	writer->SetDataModeToAscii();
 	writer->Write();
-	
+
 }
 
 
@@ -699,7 +700,7 @@ void CGrid::screenshot_test()
 
 		renderWindow->Render();
 
-		// Screenshot  
+		// Screenshot
 		vtkSmartPointer<vtkWindowToImageFilter> windowToImageFilter =
 			vtkSmartPointer<vtkWindowToImageFilter>::New();
 		windowToImageFilter->SetInput(renderWindow);
@@ -718,8 +719,8 @@ void CGrid::screenshot_test()
 		renderer->ResetCamera();
 		renderWindow->Render();
 		renderWindowInteractor->Start();
-		
-	
+
+
 }
 
 #endif // Qt_version
@@ -750,7 +751,7 @@ vtkSmartPointer<vtkPolyData> pathway_vtk_pdt_vtp(CPathway &pathway, double z_fac
 		vtkSmartPointer<vtkFloatArray>::New();
 	values_t->SetNumberOfComponents(1);
 	values_t->SetName("arrival_time");
-	
+
 
 	for (int i = 0; i<pathway.positions.size(); i++)
 	{
@@ -799,10 +800,10 @@ vtkSmartPointer<vtkPolyData> pathway_vtk_pdt_vtp(CPathway &pathway, double z_fac
 
 vtkSmartPointer<vtkPolyDataMapper> pathways_vtk_pdt_vtp(CPathwaySet *pathwayset, double z_factor, double offset)
 {
-	vector<vtkSmartPointer<vtkPolyData>> outarray; 
+	vector<vtkSmartPointer<vtkPolyData>> outarray;
 	for (int i = 0; i < pathwayset->paths.size(); i++)
 		outarray.push_back(pathway_vtk_pdt_vtp(pathwayset->paths[i], z_factor, offset));
-	
+
 	vtkSmartPointer<vtkAppendPolyData> appendFilter =
 		vtkSmartPointer<vtkAppendPolyData>::New();
 #if VTK_MAJOR_VERSION <= 5
@@ -906,7 +907,7 @@ void CGrid::write_K_solution_to_vtp(string filename, double z_factor, bool _log)
 	vtkSmartPointer<vtkPolyData> inputPolyData =
 		vtkSmartPointer<vtkPolyData>::New();
 	inputPolyData->SetPoints(points_3);
-	
+
 	// Triangulate the grid points
 	vtkSmartPointer<vtkDelaunay2D> delaunay =
 		vtkSmartPointer<vtkDelaunay2D>::New();
@@ -971,7 +972,7 @@ void CGrid::write_K_solution_to_vtp(string filename, double z_factor, bool _log)
 	outputPolyData->GetPointData()->AddArray(_H);
 	outputPolyData->GetPointData()->AddArray(v);
 
-	//Append the two meshes 
+	//Append the two meshes
 	vtkSmartPointer<vtkAppendPolyData> appendFilter =
 		vtkSmartPointer<vtkAppendPolyData>::New();
 #if VTK_MAJOR_VERSION <= 5
@@ -1026,14 +1027,14 @@ void CGrid::write_C_to_vtp(string filename, double z_factor, bool _log, double t
 	vtkSmartPointer<vtkPoints> points_3 =
 		vtkSmartPointer<vtkPoints>::New();
 
-	
+
 	double xx, yy, zz;
 	vtkSmartPointer<vtkFloatArray> values =
 		vtkSmartPointer<vtkFloatArray>::New();
 
-	
+
 	values->SetNumberOfComponents(1);
-	
+
 	if (_log)
 		values->SetName("Log Concentration");
 	else
@@ -1127,8 +1128,8 @@ void CGrid::write_C_to_vtp(string filename, double z_factor, bool _log, double t
 	}
 
 	outputPolyData->GetPointData()->SetScalars(values);
-	
-	//Append the two meshes 
+
+	//Append the two meshes
 	vtkSmartPointer<vtkAppendPolyData> appendFilter =
 		vtkSmartPointer<vtkAppendPolyData>::New();
 #if VTK_MAJOR_VERSION <= 5
