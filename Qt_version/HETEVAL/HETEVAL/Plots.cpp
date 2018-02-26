@@ -186,10 +186,10 @@ vtkSmartPointer<vtkActor> CGrid::get_K_field_vtk_pdt(double z_factor)
 		{
 			color[j] = static_cast<unsigned char>(255.0 * dcolor[j]);
 		}
-		std::cout << "color: "
-			<< (int)color[0] << " "
-			<< (int)color[1] << " "
-			<< (int)color[2] << std::endl;
+		//std::cout << "color: "
+		//	<< (int)color[0] << " "
+		//	<< (int)color[1] << " "
+		//	<< (int)color[2] << std::endl;
 
 		colors_2->InsertNextTupleValue(color);
 	}
@@ -333,10 +333,10 @@ void CGrid::write_K_field_to_vtp(string filename, double z_factor, bool _log)
 		{
 			color[j] = static_cast<unsigned char>(255.0 * dcolor[j]);
 		}
-		std::cout << "color: "
-			<< (int)color[0] << " "
-			<< (int)color[1] << " "
-			<< (int)color[2] << std::endl;
+		//std::cout << "color: "
+		//	<< (int)color[0] << " "
+		//	<< (int)color[1] << " "
+		//	<< (int)color[2] << std::endl;
 
 		colors_2->InsertNextTupleValue(color);
 	}

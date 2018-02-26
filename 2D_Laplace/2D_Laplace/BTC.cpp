@@ -1141,7 +1141,7 @@ CTimeSeries CTimeSeries::distribution(int n_bins, int limit)
     double p_start = min(C1);
     double p_end = max(C1)*1.001;
     double dp = abs(p_end - p_start)/n_bins;
-    cout<<p_start << "  " << p_end << "  " << dp << endl;
+    cout << "\r" << "low limit: " << p_start << " up limit: " << p_end << " increment: " << dp << std::flush;
     if (dp == 0) return out;
     out.t[0] = p_start - dp/2;
     out.C[0] = 0;
