@@ -152,6 +152,6 @@ double pos(double x);
 double neg(double x);
 namespace TS {
     double correlation(const CTimeSeries &TS1, const CTimeSeries &TS2);
-}
+};
 
 

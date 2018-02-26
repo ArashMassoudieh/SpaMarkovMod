@@ -188,16 +188,17 @@ void CGrid::assign_K_gauss()
 	srand(time(NULL));
 	while (n_filled<GP.nx*GP.ny)
 	{
-            if (n_filled%100==0)
-		set_progress_value(double(n_filled) / double(GP.nx / GP.ny));
+        if (n_filled%100==0)
+		set_progress_value(double(n_filled) / double(GP.nx * GP.ny));
             int i = unitrandom()*(GP.nx-1) + 0.5;
             int j = unitrandom()*(GP.ny-1) + 0.5;
             if (!p[i][j].k_det)
             {
-		assign_K_gauss(i, j);
-		n_filled++;
+                assign_K_gauss(i, j);
+                n_filled++;
             }
-	}
+    }
+    cout<<endl;
 
 }
 
@@ -326,6 +327,22 @@ bool CGrid::createuniform(double K, int _nx, int _ny)
 CGrid::CGrid(string filename)
 {
 	ifstream file(filename);
+	if (!file.good())
+        {
+#if QT_version
+            show_in_window("File " + filename + "was not found!");
+#endif
+            cout << "File " + filename + "was not found!" << endl;
+            return;
+        }
+        else
+        {
+#if QT_version
+            show_in_window("Reading " + filename);
+#endif
+            cout << "Reading " + filename + "..." << endl;
+
+        }
 	vector<string> s;
 
 	int n_for = 1;
@@ -337,77 +354,81 @@ CGrid::CGrid(string filename)
 		{
 
 			if (tolower(s[0]) == "pathout")
-                        {   pathout = s[1].c_str();
-                            pathout.erase( std::remove(pathout.begin(), pathout.end(), '\r'), pathout.end() );
-                        }
+            {
+                pathout = s[1].c_str();
+                pathout.erase( std::remove(pathout.begin(), pathout.end(), '\r'), pathout.end() );
+                cout<<"Output path is: " + pathout << endl;
+            }
 			if (tolower(s[0]) == "for")
 			{
+				cout << "For loop encountered"<<endl;
 				n_for = atoi(s[1].c_str());
 				last_for_location = commands.size();
 			}
 			if (tolower(s[0]) == "endfor")
 			{
-
-                            _command command;
-                            command.command = "clear_all";
-                            commands.push_back(command);
-                            int end_for_location = commands.size();
-                            for (int i = 0; i < n_for-1; i++)
-                            {
-                                _command write_commend;
-                                write_commend.command = "write";
-                                write_commend.parameters["content"] = "starting realization " + numbertostring(i + 1);
-                                commands.push_back(write_commend);
-                                for (int j = last_for_location; j < end_for_location; j++)
-                                {
-                                    _command new_command = commands[j];
-                                    if (new_command.parameters["filename"].size() > 0)
-                                            new_command.parameters["filename"] = insert_counter_in_file_name(new_command.parameters["filename"], i+1);
-                                    if (new_command.parameters["filename_x"].size() > 0)
-                                            new_command.parameters["filename_x"] = insert_counter_in_file_name(new_command.parameters["filename_x"], i+1);
-                                    if (new_command.parameters["filename_y"].size() > 0)
-                                            new_command.parameters["filename_y"] = insert_counter_in_file_name(new_command.parameters["filename_y"], i+1);
-                                    if (new_command.parameters["filename_mag"].size() > 0)
-                                            new_command.parameters["filename_mag"] = insert_counter_in_file_name(new_command.parameters["filename_mag"], i+1);
-                                    if (new_command.parameters["dist_filename"].size() > 0)
-                                            new_command.parameters["dist_filename"] = insert_counter_in_file_name(new_command.parameters["dist_filename"], i+1);
-                                    if (new_command.parameters["ranks_filename"].size() > 0)
-                                            new_command.parameters["ranks_filename"] = insert_counter_in_file_name(new_command.parameters["ranks_filename"], i+1);
-                                    if (new_command.parameters["ranks_filename"].size() > 0)
-                                            new_command.parameters["ranks_filename"] = insert_counter_in_file_name(new_command.parameters["normal_filename"], i+1);
-                                    if (new_command.parameters["OU_parameters_filename"].size() > 0)
-                                            new_command.parameters["OU_parameters_filename"] = insert_counter_in_file_name(new_command.parameters["OU_parameters_filename"], i+1);
-
-                                    commands.push_back(new_command);
-
-                                }
-                                _command command;
-                                command.command = "clear_all";
-                                commands.push_back(command);
-
-                            }
-                            n_for = 1;
-
-                    }
-                    if (tolower(s[0]) == "k_dist")
+                _command command;
+                command.command = "clear_all";
+                commands.push_back(command);
+                int end_for_location = commands.size();
+                for (int i = 0; i < n_for-1; i++)
+                {
+                    _command write_commend;
+                    write_commend.command = "write";
+                    write_commend.parameters["content"] = "starting realization " + numbertostring(i + 1);
+                    commands.push_back(write_commend);
+                    for (int j = last_for_location; j < end_for_location; j++)
                     {
-                            marginal_K_dist_type = s[1];
-                            for (int j = 2; j < s.size(); j++)
-                                    marginal_K_dist_params.push_back(atof(s[j].c_str()));
-                    }
-                    if (tolower(s[0]) == "command")
-                    {
-                            _command command;
-                            command.command = tolower(s[1]);
-                            for (int j = 2; j < s.size(); j++)
-                            {   if (split(s[j], '=').size()>1)
-                                    command.parameters[split(s[j], '=')[0]] = split(s[j], '=')[1];
+                        _command new_command = commands[j];
+                        if (new_command.parameters["filename"].size() > 0)
+                                new_command.parameters["filename"] = insert_counter_in_file_name(new_command.parameters["filename"], i+1);
+                        if (new_command.parameters["filename_x"].size() > 0)
+                                new_command.parameters["filename_x"] = insert_counter_in_file_name(new_command.parameters["filename_x"], i+1);
+                        if (new_command.parameters["filename_y"].size() > 0)
+                                new_command.parameters["filename_y"] = insert_counter_in_file_name(new_command.parameters["filename_y"], i+1);
+                        if (new_command.parameters["filename_mag"].size() > 0)
+                                new_command.parameters["filename_mag"] = insert_counter_in_file_name(new_command.parameters["filename_mag"], i+1);
+                        if (new_command.parameters["dist_filename"].size() > 0)
+                                new_command.parameters["dist_filename"] = insert_counter_in_file_name(new_command.parameters["dist_filename"], i+1);
+                        if (new_command.parameters["ranks_filename"].size() > 0)
+                                new_command.parameters["ranks_filename"] = insert_counter_in_file_name(new_command.parameters["ranks_filename"], i+1);
+                        if (new_command.parameters["ranks_filename"].size() > 0)
+                                new_command.parameters["ranks_filename"] = insert_counter_in_file_name(new_command.parameters["normal_filename"], i+1);
+                        if (new_command.parameters["OU_parameters_filename"].size() > 0)
+                                new_command.parameters["OU_parameters_filename"] = insert_counter_in_file_name(new_command.parameters["OU_parameters_filename"], i+1);
 
-                            }
+                        commands.push_back(new_command);
 
-                            commands.push_back(command);
                     }
-                    if (tolower(s[0]) == "x0_trajs") trajectory_params.x0_trajs = atof(s[1].c_str());
+                    _command command;
+                    command.command = "clear_all";
+                    commands.push_back(command);
+
+                }
+                n_for = 1;
+
+            }
+            if (tolower(s[0]) == "k_dist")
+            {
+
+                marginal_K_dist_type = s[1];
+                for (int j = 2; j < s.size(); j++)
+                    marginal_K_dist_params.push_back(atof(s[j].c_str()));
+                cout << "Hydraulic conductivity marginal distribution initialized ..." << endl;
+            }
+            if (tolower(s[0]) == "command")
+            {
+                _command command;
+                command.command = tolower(s[1]);
+                for (int j = 2; j < s.size(); j++)
+                {   if (split(s[j], '=').size()>1)
+                        command.parameters[split(s[j], '=')[0]] = split(s[j], '=')[1];
+
+                }
+                cout << "command: " << s[1] << endl;
+                commands.push_back(command);
+            }
+            if (tolower(s[0]) == "x0_trajs") trajectory_params.x0_trajs = atof(s[1].c_str());
 		}
 	}
 
@@ -583,16 +604,16 @@ CPathwaySet CGrid::gettrajectories_fixed_dx(double dx, double x_end)
     {
 //	qDebug() << i << endl;
 
-	CPathway X1 = gettrajectory_fix_dx(pts[i], dx, x_end);
-        cout << i << "  " << X1.weight<< endl;
-	if (weighted)
-        {   X.weighted = true;
-            X.append(X1);
-        }
-        else
-        {   X.weighted = false;
-            X.append(X1);
-        }
+        CPathway X1 = gettrajectory_fix_dx(pts[i], dx, x_end);
+        //cout << "\r" << "Trajectory #"<<  i << " Weight: " << X1.weight<< std::flush;
+        if (weighted)
+            {   X.weighted = true;
+                X.append(X1);
+            }
+            else
+            {   X.weighted = false;
+                X.append(X1);
+            }
         set_progress_value(double(i) / double(pts.size()));
     }
 
@@ -1205,8 +1226,6 @@ vector<ijval> get_top_n(vector<ijval> vec, int n)
 	return out;
 }
 
-#ifdef QT_version
-
 void CGrid::runcommands_qt()
 {
 
@@ -1219,9 +1238,11 @@ void CGrid::runcommands_qt()
 
 	for (int i = 0; i < commands.size(); i++)
 	{
+            #ifdef QT_version
             main_window->setCursor(Qt::WaitCursor);
             QApplication::processEvents();
             qDebug() << QString::fromStdString(commands[i].command) << endl;
+            #endif // QT_version
             if (commands[i].command == "get_all_btc_points")
             {
                 show_in_window("Getting all btc points");
@@ -1270,21 +1291,21 @@ void CGrid::runcommands_qt()
 
             if (commands[i].command == "generate_k_field")
             {
-                    clear_contents();
-                    show_in_window("Assigning K...,");
+                clear_contents();
+                show_in_window("Assigning K...,");
 
-                    //cout << "Assigning K..." << endl;
-                    field_gen.max_correl_n = atoi(commands[i].parameters["n_neighbors"].c_str());
-                    field_gen.k_correlation_lenght_scale_x = atof(commands[i].parameters["corr_length_scale_x"].c_str());
-                    field_gen.k_correlation_lenght_scale_y = atof(commands[i].parameters["corr_length_scale_y"].c_str());
-                    assign_K_gauss();
+                //cout << "Assigning K..." << endl;
+                field_gen.max_correl_n = atoi(commands[i].parameters["n_neighbors"].c_str());
+                field_gen.k_correlation_lenght_scale_x = atof(commands[i].parameters["corr_length_scale_x"].c_str());
+                field_gen.k_correlation_lenght_scale_y = atof(commands[i].parameters["corr_length_scale_y"].c_str());
+                assign_K_gauss();
             }
 
             if (commands[i].command == "write_k_field")
             {
-                    show_in_window("Writing K field...");
-                    //cout << "Writing K field..." << endl;
-                    writeasmatrixK(pathout+commands[i].parameters["filename"], 0);
+                show_in_window("Writing K field...");
+                cout << "Writing K field..." << endl;
+                writeasmatrixK(pathout+commands[i].parameters["filename"], 0);
             }
 
             if (commands[i].command == "read_k_field")
@@ -1315,7 +1336,7 @@ void CGrid::runcommands_qt()
                     dt = atof(commands[i].parameters["dt"].c_str());
 
                     cout << "Solving transport ..." << endl;
-                    solve_transport(atof(commands[i].parameters["t_end"].c_str()), main_window->get_ui()->ShowOutput);
+                    solve_transport(atof(commands[i].parameters["t_end"].c_str()));
             }
 
             if (commands[i].command == "solve_transport_ou")
@@ -1325,7 +1346,7 @@ void CGrid::runcommands_qt()
                 D = atof(commands[i].parameters["diffusion"].c_str());
                 dt = atof(commands[i].parameters["dt"].c_str());
                 OU.kappa = atof(commands[i].parameters["kappa"].c_str());
-                solve_transport_OU(atof(commands[i].parameters["t_end"].c_str()), main_window->get_ui()->ShowOutput);
+                solve_transport_OU(atof(commands[i].parameters["t_end"].c_str()));
                 if (commands[i].parameters.count("filename") > 0) OU.BTCs.writetofile(pathout + commands[i].parameters["filename"]);
                 if (commands[i].parameters.count("filename_d") > 0) OU.BTCs.detivative().writetofile(pathout + commands[i].parameters["filename_d"]);
                 if (commands[i].parameters.count("filename_n") > 0) OU.BTC_normal.writetofile(pathout + commands[i].parameters["filename_n"]);
@@ -1340,13 +1361,15 @@ void CGrid::runcommands_qt()
                 leftboundary_C = 1;
                 D = atof(commands[i].parameters["diffusion"].c_str());
 
-                solve_transport_laplace(main_window->get_ui()->ShowOutput, atof(commands[i].parameters["s"].c_str()));
+                solve_transport_laplace(atof(commands[i].parameters["s"].c_str()));
             }
 
             if (commands[i].command == "write_h_field")
             {
                 show_in_window("Writing H field");
+               #ifdef QT_version
                 QApplication::processEvents();
+               #endif // QT_version
                 H.writetofile(pathout+commands[i].parameters["filename"]);
             }
 
@@ -1370,15 +1393,19 @@ void CGrid::runcommands_qt()
             if (commands[i].command == "create_trajectories")
             {
                 show_in_window("Simulating trajectories ...");
+                #ifdef QT_version
                 QApplication::processEvents();
-                //cout << "Simulating trajectories ..." << endl;
+                #endif // QT_version
+                cout << "Simulating trajectories ..." << endl;
                 Traj = gettrajectories(atof(commands[i].parameters["dt"].c_str()), atof(commands[i].parameters["t_end"].c_str()));
             }
 
             if (commands[i].command == "create_trajectories_fix_dx")
             {
                 show_in_window("Simulating trajectories with fixed dx...");
+                #ifdef QT_version
                 QApplication::processEvents();
+                #endif // QT_version
                 cout << "Simulating trajectories with fixed dx..." << endl;
                 Traj = gettrajectories_fixed_dx(atof(commands[i].parameters["dx"].c_str()), atof(commands[i].parameters["x_end"].c_str()));
             }
@@ -1429,7 +1456,9 @@ void CGrid::runcommands_qt()
                 Allpoints_velocities_eulerian.BTC[2].append(v_mag);
 
                 show_in_window("Get Velocities distributions");
+                #ifdef QT_version
                 QApplication::processEvents();
+                #endif // QT_version
                 //cout << "Get Velocities distributions" << endl;
                 vx_dist = vx.distribution(atoi(commands[i].parameters["nbins"].c_str()), 0);
                 vy_dist = vy.distribution(atoi(commands[i].parameters["nbins"].c_str()), 0);
@@ -1459,17 +1488,34 @@ void CGrid::runcommands_qt()
                 v_mag_dist_all.writefile(pathout + commands[i].parameters["filename_mag"]);
                 if (commands[i].parameters.count("filename_x_log") > 0)
                 {
+                    #ifdef QT_version
                     qDebug() << "Calculating log-transformed distributions" << endl;
+                    #else
+                    cout << "Calculating log-transformed distributions" << endl;
+                    #endif // QT_version
                     CBTC vx_dist_all_log = Allpoints_velocities_eulerian.BTC[0].Log().distribution(atoi(commands[i].parameters["nbins"].c_str()), 0);
+                    #ifdef QT_version
                     qDebug() << "Calculating log-transformed distributions, Done!" << endl;
+                    #else
+                    cout<< "Calculating log-transformed distributions, Done!" << endl;
+                    #endif // QT_version
                     vx_dist_all_log.writefile(pathout + commands[i].parameters["filename_x_log"]);
+
                     if (commands[i].parameters.count("filename_log_int") > 0)
                     {
                         vx_dist_all_log.unlog().writefile(pathout + commands[i].parameters["filename_log_int"]);
                     }
+                    #ifdef QT_version
                     qDebug() << "Calculating log-transformed distributions for velocity magnitude" << endl;
+                    #else
+                    cout<< "Calculating log-transformed distributions for velocity magnitude" << endl;
+                    #endif // QT_version
                     CBTC v_mag_dist_all_log = Allpoints_velocities_eulerian.BTC[2].Log().distribution(atoi(commands[i].parameters["nbins"].c_str()), 0);
+                    #ifdef QT_version
                     qDebug() << "Calculating log-transformed distributions for velocity magnitude, Done!" << endl;
+                    #else
+                    cout << "Calculating log-transformed distributions for velocity magnitude, Done!" << endl;
+                    #endif // QT_version
                     v_mag_dist_all_log.writefile(pathout + commands[i].parameters["filename_mag_log"]);
                     if (commands[i].parameters.count("filename_log_int_mag") > 0)
                     {
@@ -1563,11 +1609,13 @@ void CGrid::runcommands_qt()
                 renormalize_k();
             }
 
+            #ifdef QT_version
             if (commands[i].command == "show_k_field")
             {
                 show_in_window("Showing K field...");
                 show_K_field();
             }
+            #endif // QT_version
 
             if (commands[i].command == "save_k_field_into_vtp")
             {
@@ -1626,11 +1674,13 @@ void CGrid::runcommands_qt()
 
             }
 
+            #if QT_version
             if (commands[i].command == "screen_shot_test")
             {
                 show_in_window("Screen Shot test");
                 screenshot_test();
             }
+            #endif // QT_version
 
             if (commands[i].command == "save_trajs_into_vtp")
             {
@@ -1747,8 +1797,8 @@ void CGrid::runcommands_qt()
                 if (commands[i].parameters.count("ranks_filename") > 0)
                 {
                     show_in_window("Writing ranks");
-                    CBTCSet ranks(atoi(commands[i].parameters["nsequence"]));
-                    for (int ii=0; i<atoi(commands[i].parameters["nsequence"]); i++)
+                    CBTCSet ranks(atoi(commands[i].parameters["nsequence"].c_str()));
+                    for (int ii=0; i<atoi(commands[i].parameters["nsequence"].c_str()); i++)
                         ranks.BTC[ii] = pairs.BTC[ii].rank_bd(atoi(commands[i].parameters["nbins"].c_str()));
 
                     ranks.writetofile(pathout+commands[i].parameters["ranks_filename"]);
@@ -1756,8 +1806,8 @@ void CGrid::runcommands_qt()
                 if (commands[i].parameters.count("normal_filename") > 0)
                 {
                     show_in_window("Writing normals");
-                    CBTCSet normals(atoi(commands[i].parameters["nsequence"]));
-                    for (int ii=0; i<atoi(commands[i].parameters["nsequence"]); i++)
+                    CBTCSet normals(atoi(commands[i].parameters["nsequence"].c_str()));
+                    for (int ii=0; i<atoi(commands[i].parameters["nsequence"].c_str()); i++)
                         normals.BTC[ii] = pairs.BTC[ii].map_to_standard_normal(atoi(commands[i].parameters["nbins"].c_str()));
 
                     normals.writetofile(pathout + commands[i].parameters["normal_filename"]);
@@ -1813,11 +1863,13 @@ void CGrid::runcommands_qt()
 	}
 
 	show_in_window("Finished!");
+#ifdef QT_version
 	main_window->setCursor(Qt::ArrowCursor);
+#endif // QT_version
 }
 
 
-#endif // Qt_version
+
 
 double CGrid::max_K()
 {
@@ -2360,6 +2412,7 @@ void CGrid::set_progress_value(double s)
 	main_window->get_ui()->progressBar->setValue(s*100);
 	QApplication::processEvents();
 #endif // QT_version
+    cout << "\r Progress: " << s*100 << "%";
 }
 
 void CGrid::clear_contents()

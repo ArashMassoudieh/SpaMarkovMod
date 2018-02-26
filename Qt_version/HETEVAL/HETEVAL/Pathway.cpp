@@ -14,7 +14,7 @@ CPathway::CPathway(const CPathway &P)
 	maxx = P.maxx;
 	minx = P.minx;
 	positions = P.positions;
-        weight = P.weight;
+    weight = P.weight;
 }
 
 void CPathway::create_range_x(double x_min, double x_max, double dx)
@@ -28,8 +28,8 @@ CPathway& CPathway::operator=(const CPathway &P)
 	maxx = P.maxx;
 	minx = P.minx;
 	positions = P.positions;
-        weight = P.weight; 
-	return *this; 
+        weight = P.weight;
+	return *this;
 }
 
 
@@ -89,14 +89,14 @@ CVector CPathway::get_velocity_at_t(double t)
 CPathway CPathway::make_uniform_x(double dx)
 {
 	CPathway pathout;
-	pathout.uniform = true; 
-        pathout.weight = weight; 
+	pathout.uniform = true;
+        pathout.weight = weight;
 	double x = positions[0].x;
 	pathout.append(positions[0]);
 	x += dx;
 	for (int i = 1; i < int(positions.size()); i++)
 	{
-		
+
 		while (positions[i].x > x)
 		{
                     CPosition p = positions[i - 1] + (positions[i] - positions[i - 1]) / (positions[i].x - positions[i - 1].x)*(x - positions[i - 1].x);
@@ -104,7 +104,7 @@ CPathway CPathway::make_uniform_x(double dx)
                     x += dx;
 		}
 	}
-		
+
 	return pathout;
 }
 
@@ -112,7 +112,7 @@ CPathway CPathway::make_uniform_t(double dt)
 {
 	CPathway pathout;
 	double t = positions[0].t;
-        pathout.weight = weight; 
+        pathout.weight = weight;
 	pathout.positions[0] = positions[0];
 	t += dt;
 	for (int i = 1; i < int(positions.size()); i++)
@@ -180,11 +180,11 @@ void CPathway::write(string filename)
 void CPathway::create(CDistribution *dist, double x_min, double x_max, double kappa, double dx, double _weight)
 {
 	CPosition p;
-        weight = _weight; 
+        weight = _weight;
 	p.u = unitrandom();
 	p.z = gsl_cdf_gaussian_Pinv(p.u,1);
 	p.v[0] = dist->inverseCDF(p.u);
-	p.x = x_min; 
+	p.x = x_min;
 	p.y = 0;
 	p.t = 0;
 	append(p);
@@ -195,7 +195,7 @@ void CPathway::create(CDistribution *dist, double x_min, double x_max, double ka
 		p.x += dx;
 		p.y = 0;
 		p.v[0] = dist->inverseCDF(p.u);
-		p.t += dx / p.v[0]; 
+		p.t += dx / p.v[0];
 		append(p);
 	}
 }
@@ -302,7 +302,7 @@ CBTCSet CPathway::get_distribution(bool _log, int n_bins)
 	B.append(get_distribution("z", _log, n_bins));
 	B.append(get_distribution("v_eff", _log, n_bins));
 	B.append(get_distribution("t_eff", _log, n_bins));
-	
+
 	B.setname(0, "t");
 	B.setname(1, "x");
 	B.setname(2, "y");
@@ -328,15 +328,15 @@ CBTC& CPathway::get_distribution(string var, bool _log, int n_bins)
 		double p_end = min_max[1] * 1.001;
 		double dp = abs(p_end - p_start) / n_bins;
 		if (dp == 0){
-                    CBTC X = CBTC(); 
+                    CBTC X = CBTC();
                     return X;
                 }
 		out.t[0] = p_start - dp / 2;
-		
+
 		for (int i = 0; i < n_bins + 1; i++)
 			out.t[i + 1] = out.t[i] + dp;
-		
-		
+
+
 		for (int i = 0; i < int(positions.size()); i++)
 			out.C[int((positions[i].getvar(var) - p_start) / dp) + 1] += 1.0 / positions.size() / dp;
 	}
@@ -345,22 +345,22 @@ CBTC& CPathway::get_distribution(string var, bool _log, int n_bins)
 		vector<double> min_max = minmax(var);
 		double p_start = min_max[0];
 		if (p_start <= 0){
-                    CBTC X = CBTC(); 
+                    CBTC X = CBTC();
                     return X;
                 }
-		if (min_max[0] == min_max[1]) return out; 
+		if (min_max[0] == min_max[1]) return out;
 		double p_end = min_max[1] * 1.001;
 		double dp = (log(p_end) - log(p_start)) / n_bins;
 		if (dp == 0)
                 {
-                    CBTC X = CBTC(); 
+                    CBTC X = CBTC();
                     return X;
                 }
 		out.t[0] = exp(log(p_start) - dp / 2.0);
-		
+
 		for (int i = 0; i < n_bins + 1; i++)
 			out.t[i + 1] = out.t[i] * exp(dp);
-	
+
 		for (int i = 0; i < positions.size(); i++)
 			out.C[int((log(positions[i].getvar(var)) - log(p_start)) / dp) + 1] += 1.0 / positions.size() / (out.t[int((log(positions[i].getvar(var)) - log(p_start)) / dp) + 2]- out.t[int((log(positions[i].getvar(var)) - log(p_start)) / dp)])*2;
 	}

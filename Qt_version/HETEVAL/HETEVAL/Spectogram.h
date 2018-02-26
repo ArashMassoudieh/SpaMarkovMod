@@ -1,7 +1,10 @@
+#ifdef QT_version
 #include <qwt_plot.h>
 #include <qwt_plot_spectrogram.h>
+#endif // QT_version
 #include "Grid.h"
 
+#ifdef QT_version
 class Plot : public QwtPlot
 {
 	//Q_OBJECT
@@ -34,3 +37,4 @@ private:
 	int d_mapType;
 	int d_alpha;
 };
+#endif

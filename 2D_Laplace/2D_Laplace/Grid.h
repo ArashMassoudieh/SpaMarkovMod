@@ -16,7 +16,7 @@
 
 
 #define arma
-#define Qt_version
+//#define Qt_version
 
 class HETEVAL;
 
@@ -202,29 +202,32 @@ public:
 	CVector_arma create_RHS_OU(double dt);
 	void solve_transport_OU(double t_end);
 	double time_weight;
-#ifdef Qt_version
-	void show_K_field();
-	void show_K_field_vtk(double z_factor = 0.5);
+	double min_v_x = 0;
+	double max_v_x=0;
+	void create_inverse_K_OU(double dt);
+	void write_K_solution_to_vtp(string filename, double z_factor, bool _log);
+	void write_C_to_vtp(string filename, double z_factor, bool _log, vector<double> t);
+	void write_C_to_vtp(string filename, double z_factor, bool _log, double t);
+	void clear();
 	void showthings(vector<vtkSmartPointer<vtkActor>> actors, string filename = "");
-	vtkSmartPointer<vtkActor> get_K_field_vtk_pdt(double z_factor=0.5);
 	void write_K_field_to_vtp(string filename="surface.vtp", double z_factor=0.5, bool _log = false);
 	vtkSmartPointer<vtkActor> traj_vtk_pdt(int trajno, double z_factor=0.5,double offset = 0);
 	vtkSmartPointer<vtkPolyData> traj_vtk_pdt_vtp(int trajno, double z_factor=0.5, double offset=0, bool _log = false, bool _color = true);
 	vector<vtkSmartPointer<vtkActor>> trajs_vtk_pdt(double z_factor=0.5, double offset = 0);
 	void trajs_vtk_pdt_to_vtp(string filename = "paths.vtp", double z_factor = 0.5, double offset = 0, bool _log = false, bool _color = true);
-
-	double min_v_x = 0;
-	double max_v_x=0;
+    vtkSmartPointer<vtkActor> get_K_field_vtk_pdt(double z_factor=0.5);
 	vtkSmartPointer<vtkRenderer> renderer;
 	vtkSmartPointer<vtkRenderWindow> renderWindow;
 	vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor;
+    void show_K_field();
+	void show_K_field_vtk(double z_factor = 0.5);
+
 	void screen_shot(string filename = "screen_shot.png");
 	void screenshot_test();
-	void write_K_solution_to_vtp(string filename, double z_factor, bool _log);
-	void write_C_to_vtp(string filename, double z_factor, bool _log, vector<double> t);
-	void write_C_to_vtp(string filename, double z_factor, bool _log, double t);
-	void clear();
-	void create_inverse_K_OU(double dt);
+#ifdef Qt_version
+
+
+
 	HETEVAL *main_window;
 #endif // Qt_version
 	CDistribution dist;

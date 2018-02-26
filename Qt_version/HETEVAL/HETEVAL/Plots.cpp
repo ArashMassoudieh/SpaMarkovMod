@@ -14,6 +14,7 @@
 #include "Pathway.h"
 #include "StringOP.h"
 
+#ifdef QT_version
 class PlotWindow : public QMainWindow
 {
 public:
@@ -51,7 +52,7 @@ void CGrid::show_K_field()
 	P->resize(600, 400);
 	P->show();
 }
-
+#endif // QT_version
 
 void CGrid::show_K_field_vtk(double z_factor)
 {
@@ -61,7 +62,9 @@ void CGrid::show_K_field_vtk(double z_factor)
 
 void CGrid::showthings(vector<vtkSmartPointer<vtkActor>> actors, string filename)
 {
+	#ifdef QT_version
 	main_window->get_ui()->ShowOutput->append("Creating renderer ...");
+	#endif // QT_version
 	renderer = vtkSmartPointer<vtkRenderer>::New();
 	renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
 	renderWindow->AddRenderer(renderer);
@@ -76,11 +79,16 @@ void CGrid::showthings(vector<vtkSmartPointer<vtkActor>> actors, string filename
 
 	if (filename != "")
 	{
+		#ifdef QT_version
 		qDebug() << "Saving screen shot" << endl;
 		main_window->get_ui()->ShowOutput->append("Saving Screen Shot ...");
+		#endif // QT_version
+
 		vtkSmartPointer<vtkWindowToImageFilter> windowToImageFilter =
 			vtkSmartPointer<vtkWindowToImageFilter>::New();
+		#ifdef QT_version
 		qDebug() << "Setting Window Image Filter" << endl;
+		#endif // QT_version
 		windowToImageFilter->SetInput(renderWindow);
 		windowToImageFilter->SetMagnification(3); //set the resolution of the output image (3 times the current resolution of vtk render window)
 		windowToImageFilter->SetInputBufferTypeToRGBA(); //also record the alpha (transparency) channel
@@ -91,7 +99,9 @@ void CGrid::showthings(vector<vtkSmartPointer<vtkActor>> actors, string filename
 			vtkSmartPointer<vtkPNGWriter>::New();
 		writer->SetFileName(filename.c_str());
 		writer->SetInputConnection(windowToImageFilter->GetOutputPort());
+		#ifdef QT_version
 		qDebug() << "Writing the image"<<endl;
+		#endif // QT_version
 		writer->Write();
 	}
 	//->FullScreenOn();
@@ -167,10 +177,10 @@ vtkSmartPointer<vtkActor> CGrid::get_K_field_vtk_pdt(double z_factor)
 
 		double dcolor[3];
 		colorLookupTable->GetColor(p[2], dcolor);
-		std::cout << "dcolor: "
-			<< dcolor[0] << " "
-			<< dcolor[1] << " "
-			<< dcolor[2] << std::endl;
+		//std::cout << "dcolor: "
+		//	<< dcolor[0] << " "
+		//	<< dcolor[1] << " "
+		//	<< dcolor[2] << std::endl;
 		unsigned char color[3];
 		for (unsigned int j = 0; j < 3; j++)
 		{
@@ -314,10 +324,10 @@ void CGrid::write_K_field_to_vtp(string filename, double z_factor, bool _log)
 
 		double dcolor[3];
 		colorLookupTable->GetColor(p[2], dcolor);
-		std::cout << "dcolor: "
-			<< dcolor[0] << " "
-			<< dcolor[1] << " "
-			<< dcolor[2] << std::endl;
+		//std::cout << "dcolor: "
+		//	<< dcolor[0] << " "
+		//	<< dcolor[1] << " "
+		//	<< dcolor[2] << std::endl;
 		unsigned char color[3];
 		for (unsigned int j = 0; j < 3; j++)
 		{
@@ -629,7 +639,9 @@ void CGrid::trajs_vtk_pdt_to_vtp(string filename, double z_factor, double offset
 	//mapper->SetInputData(polydata_1);
 #endif
 
+	#ifdef QT_version
 	main_window->get_ui()->ShowOutput->append("Writing vtp file... ");
+	#endif // QT_version
 	vtkSmartPointer<vtkXMLPolyDataWriter> writer =
 		vtkSmartPointer<vtkXMLPolyDataWriter>::New();
 	writer->SetFileName(filename.c_str());
@@ -721,9 +733,6 @@ void CGrid::screenshot_test()
 
 
 }
-
-#endif // Qt_version
-
 
 vtkSmartPointer<vtkPolyData> pathway_vtk_pdt_vtp(CPathway &pathway, double z_factor, double offset)
 {
@@ -950,10 +959,10 @@ void CGrid::write_K_solution_to_vtp(string filename, double z_factor, bool _log)
 
 		double dcolor[3];
 		colorLookupTable->GetColor(p[2], dcolor);
-		std::cout << "dcolor: "
-			<< dcolor[0] << " "
-			<< dcolor[1] << " "
-			<< dcolor[2] << std::endl;
+		//std::cout << "dcolor: "
+		//	<< dcolor[0] << " "
+		//	<< dcolor[1] << " "
+		//	<< dcolor[2] << std::endl;
 		unsigned char color[3];
 		for (unsigned int j = 0; j < 3; j++)
 		{
@@ -1109,19 +1118,19 @@ void CGrid::write_C_to_vtp(string filename, double z_factor, bool _log, double t
 
 		double dcolor[3];
 		colorLookupTable->GetColor(p[2], dcolor);
-		std::cout << "dcolor: "
-			<< dcolor[0] << " "
-			<< dcolor[1] << " "
-			<< dcolor[2] << std::endl;
+		//std::cout << "dcolor: "
+		//	<< dcolor[0] << " "
+		//	<< dcolor[1] << " "
+		//	<< dcolor[2] << std::endl;
 		unsigned char color[3];
 		for (unsigned int j = 0; j < 3; j++)
 		{
 			color[j] = static_cast<unsigned char>(255.0 * dcolor[j]);
 		}
-		std::cout << "color: "
-			<< (int)color[0] << " "
-			<< (int)color[1] << " "
-			<< (int)color[2] << std::endl;
+		//std::cout << "color: "
+		//	<< (int)color[0] << " "
+		//	<< (int)color[1] << " "
+		//	<< (int)color[2] << std::endl;
 
 		colors_2->InsertNextTupleValue(color);
 	}

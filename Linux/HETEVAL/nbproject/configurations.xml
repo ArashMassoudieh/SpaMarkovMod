@@ -96,7 +96,7 @@
             <pElem>../../2D_Laplace/2D_Laplace</pElem>
             <pElem>../..</pElem>
             <pElem>../../gsl</pElem>
-            <pElem>${vtk}</pElem>
+            <pElem>$(vtk)</pElem>
             <pElem>../../Qt_version/HETEVAL</pElem>
             <pElem>../../Qt_version/HETEVAL/HETEVAL</pElem>
             <pElem>${vtk}/Common/Core</pElem>
@@ -151,6 +151,7 @@
             <pElem>../../Qt_version/HETEVAL/HETEVAL/qwt-6.1.3/src</pElem>
           </incDir>
           <preprocessorList>
+            <Elem>QT_version</Elem>
             <Elem>fopenmp</Elem>
           </preprocessorList>
         </ccTool>
@@ -591,6 +592,9 @@
             <pElem>../../../../Qt/5.8/gcc_64/include</pElem>
             <pElem>../../Qt_version/HETEVAL/HETEVAL/qwt-6.1.3/src</pElem>
           </incDir>
+          <preprocessorList>
+            <Elem>QT_version</Elem>
+          </preprocessorList>
         </ccTool>
         <fortranCompilerTool>
           <developmentMode>5</developmentMode>
@@ -728,6 +732,12 @@
       <packaging>
         <packType>Debian</packType>
         <packFileList>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}bin/${OUTPUT_BASENAME}"
+                            from="${OUTPUT_PATH}"
+                            perm="755"
+                            owner="root"
+                            group="bin"/>
           <packFileListElem type="File"
                             to="${PACKAGE_TOP_DIR}bin/${OUTPUT_BASENAME}"
                             from="${OUTPUT_PATH}"
