@@ -167,8 +167,8 @@ vtkSmartPointer<vtkActor> CGrid::get_K_field_vtk_pdt(double z_factor)
 	colors_2->SetNumberOfComponents(3);
 	colors_2->SetName("Colors");
 
-	std::cout << "There are " << outputPolyData->GetNumberOfPoints()
-		<< " points." << std::endl;
+//	std::cout << "There are " << outputPolyData->GetNumberOfPoints()
+//		<< " points." << std::endl;
 
 	for (int i = 0; i < outputPolyData->GetNumberOfPoints(); i++)
 	{
@@ -314,8 +314,8 @@ void CGrid::write_K_field_to_vtp(string filename, double z_factor, bool _log)
 	colors_2->SetNumberOfComponents(3);
 	colors_2->SetName("Colors");
 
-	std::cout << "There are " << outputPolyData->GetNumberOfPoints()
-		<< " points." << std::endl;
+//	std::cout << "There are " << outputPolyData->GetNumberOfPoints()
+//		<< " points." << std::endl;
 
 	for (int i = 0; i < outputPolyData->GetNumberOfPoints(); i++)
 	{
@@ -949,8 +949,8 @@ void CGrid::write_K_solution_to_vtp(string filename, double z_factor, bool _log)
 	colors_2->SetNumberOfComponents(3);
 	colors_2->SetName("Colors");
 
-	std::cout << "There are " << outputPolyData->GetNumberOfPoints()
-		<< " points." << std::endl;
+//	std::cout << "There are " << outputPolyData->GetNumberOfPoints()
+//		<< " points." << std::endl;
 
 	for (int i = 0; i < outputPolyData->GetNumberOfPoints(); i++)
 	{
@@ -968,10 +968,10 @@ void CGrid::write_K_solution_to_vtp(string filename, double z_factor, bool _log)
 		{
 			color[j] = static_cast<unsigned char>(255.0 * dcolor[j]);
 		}
-		std::cout << "color: "
-			<< (int)color[0] << " "
-			<< (int)color[1] << " "
-			<< (int)color[2] << std::endl;
+//		std::cout << "color: "
+//			<< (int)color[0] << " "
+//			<< (int)color[1] << " "
+//			<< (int)color[2] << std::endl;
 
 		colors_2->InsertNextTupleValue(color);
 	}
@@ -1108,8 +1108,8 @@ void CGrid::write_C_to_vtp(string filename, double z_factor, bool _log, double t
 	colors_2->SetNumberOfComponents(3);
 	colors_2->SetName("Colors");
 
-	std::cout << "There are " << outputPolyData->GetNumberOfPoints()
-		<< " points." << std::endl;
+//	std::cout << "There are " << outputPolyData->GetNumberOfPoints()
+//		<< " points." << std::endl;
 
 	for (int i = 0; i < outputPolyData->GetNumberOfPoints(); i++)
 	{

@@ -627,7 +627,7 @@ void CGrid::initialize(int numpoints,double x_0,bool _weighted)
     if (!_weighted)
     {
         int burnout = 10000;
-        double y_0 = unitrandom();
+        double y_0 = unitrandom()*GP.dy*(GP.ny-1);
         point pt_0; pt_0.x = x_0; pt_0.y = y_0;
         double v_x = getvelocity(pt_0)[0];
         pts.push_back(pt_0);
@@ -648,7 +648,7 @@ void CGrid::initialize(int numpoints,double x_0,bool _weighted)
         }
     }
     else
-    {   double y_0 = unitrandom();
+    {   double y_0 = unitrandom()*GP.dy*(GP.ny-1);
         point pt_0; pt_0.x = x_0; pt_0.y = y_0;
         double v_x = getvelocity(pt_0)[0];
         pts.push_back(pt_0);

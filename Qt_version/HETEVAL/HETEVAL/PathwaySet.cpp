@@ -12,13 +12,13 @@ CPathwaySet::CPathwaySet(const CPathwaySet & P)
 {
 	paths = P.paths;
         weighted = P.weighted;
-             
+
 }
 
 CPathwaySet &CPathwaySet::operator=(const CPathwaySet & P)
 {
 	paths = P.paths;
-	return *this; 
+	return *this;
 }
 
 
@@ -34,14 +34,14 @@ void CPathwaySet::write(string filename)
 	{
 		file << "t_" << numbertostring(j) << ",x_" << numbertostring(j) << ",y_" << numbertostring(j) << ",u_" << numbertostring(j) << ",v_" << numbertostring(j) << ",u_" << numbertostring(j) << ",z_" << numbertostring(j);
 	}
-	file << endl; 
+	file << endl;
 	for (int i = 0; i < max_num_points(); i++)
 	{
 		for (int j = 0; j < paths.size(); j++)
 		{
 			if (i < paths[j].positions.size())
 				file << paths[j].positions[i].t << "," << paths[j].positions[i].x << "," << paths[j].positions[i].y << "," << paths[j].positions[i].v[0] << "," << paths[j].positions[i].v[1] << "," << paths[j].positions[i].u << "," << paths[j].positions[i].z << ",";
-			else 
+			else
 				file << "," << "," << "," << "," << "," << "," << ",";
 		}
 		file << endl;
@@ -57,11 +57,11 @@ void CPathwaySet::append(const CPathway & P, double weight)
 
 int CPathwaySet::max_num_points()
 {
-	int max_np = 0; 
+	int max_np = 0;
 	for (int i = 0; i < paths.size(); i++)
 		max_np = max(max_np, int(paths[i].positions.size()));
 
-	return max_np; 
+	return max_np;
 }
 
 void CPathwaySet::create(int n, CDistribution * dist, double x_min, double x_max, double kappa, double dx, double weight)
@@ -70,15 +70,15 @@ void CPathwaySet::create(int n, CDistribution * dist, double x_min, double x_max
 	{
             CPathway P;
             P.create(dist, x_min, x_max, kappa, dx);
-            P.weight = weight; 
+            P.weight = weight;
             append(P);
 	}
 }
 
 void CPathwaySet::write_vtk(vtkSmartPointer<vtkPolyDataMapper> mapper, string filename)
 {
-	
-	
+
+
 	vtkSmartPointer<vtkXMLPolyDataWriter> writer =
 		vtkSmartPointer<vtkXMLPolyDataWriter>::New();
 	writer->SetFileName(filename.c_str());
@@ -152,12 +152,12 @@ void CPathwaySet::make_uniform_at_t(double dt)
 
 CPosition CPathwaySet::get_pair_v(int increment, int num_seq)
 {
-    CPosition p(num_seq); 
+    CPosition p(num_seq);
     int i = int(unitrandom()*paths.size());
     int j = int((paths[i].positions.size()- (num_seq-1)*increment)*unitrandom());
-    for (int ii=0 ; i<num_seq; i++)
+    for (int ii=0 ; ii<num_seq; ii++)
        p.v[ii] = paths[i].positions[j+ii*increment].v[0];
-    
+
     p.weight = paths[i].weight;
     return p;
 }
@@ -167,10 +167,10 @@ CBTCSet CPathwaySet::get_pair_v(int increment, int n, int num_seq)
 	CBTCSet out(num_seq);
 	for (int i = 0; i < n; i++)
 	{
-		CPosition p = get_pair_v(increment);
+		CPosition p = get_pair_v(increment, num_seq);
 		out.append(double(i), p.v.vec, p.weight);
 	}
-	return out; 
+	return out;
 
 }
 
@@ -178,14 +178,14 @@ CBTC CPathwaySet::get_BTC(double x, int n_bins)
 {
     CBTC BTC;
     if (weighted)
-    {    
-        BTC.weighted = true; 
+    {
+        BTC.weighted = true;
         for (int i = 0; i < paths.size(); i++)
            BTC.append(i, paths[i].get_cross_time(x),paths[i].weight);
     }
     else
-    {    
-        BTC.weighted = false; 
+    {
+        BTC.weighted = false;
         for (int i = 0; i < paths.size(); i++)
            BTC.append(i, paths[i].get_cross_time(x));
     }
@@ -198,20 +198,20 @@ CBTC CPathwaySet::get_BTC_points(double x)
 {
     CBTC BTC;
     if (weighted)
-    {   BTC.weighted = true; 
+    {   BTC.weighted = true;
         for (int i = 0; i < paths.size(); i++)
             BTC.append(i, paths[i].get_cross_time(x),paths[i].weight);
     }
     else
-    {   BTC.weighted = false; 
+    {   BTC.weighted = false;
         for (int i = 0; i < paths.size(); i++)
             BTC.append(i, paths[i].get_cross_time(x));
     }
-        
 
-    return BTC; 
+
+    return BTC;
 
 }
-	
+
 
 

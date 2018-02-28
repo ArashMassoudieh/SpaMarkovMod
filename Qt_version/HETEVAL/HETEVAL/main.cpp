@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
     cout<<"Enter the input file name: ";
     cin>>filename;
     //cout << "reading [" << filename << "]..." << endl;
-    filename = "/home/arash/Projects/UpscalingInputfiles/test.txt";
+    filename = "/home/arash/Projects/UpscalingInputs/test.txt";
     CGrid G(filename);
     cout << "running [" << filename << "]..." << endl;
     G.runcommands_qt();
