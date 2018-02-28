@@ -1101,9 +1101,9 @@ CVector CTimeSeriesSet::get_kappa_gamma(double delta_x)
         }
         cout<<"     Calculating Correlation..."<<endl;
         if (nvars>2)
-        {   CMatrix corr = TS::correlation(residuals.BTC[0], residuals.BTC[1]);
-            X[2] = corr[0][0];
-        }
+            X[2] = TS::correlation(residuals.BTC[0], residuals.BTC[1]);
+
+
     }
 
 
