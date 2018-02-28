@@ -1798,7 +1798,7 @@ void CGrid::runcommands_qt()
                 {
                     show_in_window("Writing ranks");
                     CBTCSet ranks(atoi(commands[i].parameters["nsequence"].c_str()));
-                    for (int ii=0; i<atoi(commands[i].parameters["nsequence"].c_str()); i++)
+                    for (int ii=0; ii<atoi(commands[i].parameters["nsequence"].c_str()); ii++)
                         ranks.BTC[ii] = pairs.BTC[ii].rank_bd(atoi(commands[i].parameters["nbins"].c_str()));
 
                     ranks.writetofile(pathout+commands[i].parameters["ranks_filename"]);
@@ -1807,17 +1807,18 @@ void CGrid::runcommands_qt()
                 {
                     show_in_window("Writing normals");
                     CBTCSet normals(atoi(commands[i].parameters["nsequence"].c_str()));
-                    for (int ii=0; i<atoi(commands[i].parameters["nsequence"].c_str()); i++)
+                    for (int ii=0; ii<atoi(commands[i].parameters["nsequence"].c_str()); ii++)
                         normals.BTC[ii] = pairs.BTC[ii].map_to_standard_normal(atoi(commands[i].parameters["nbins"].c_str()));
 
                     normals.writetofile(pathout + commands[i].parameters["normal_filename"]);
                     if (commands[i].parameters.count("OU_parameters_filename") > 0)
                     {
-                        show_in_window("Writing OU params");
+                        show_in_window("Calculating OU params");
 
                         CVector X = normals.get_kappa_gamma(atof(commands[i].parameters["delta_x"].c_str()));
                         extracted_OU_parameters.append("p1_"+commands[i].parameters["increment"], atoi(commands[i].parameters["increment"].c_str()), X[0]);
                         extracted_OU_parameters.append("p2_"+commands[i].parameters["increment"], atoi(commands[i].parameters["increment"].c_str()), X[1]);
+                        show_in_window("Writing OU params");
                         X.writetofile(pathout + commands[i].parameters["OU_parameters_filename"]);
                     }
                 }

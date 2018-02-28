@@ -974,8 +974,7 @@ double CTimeSeries::average(double tt)
 
 double CTimeSeries::slope(double tt)
 {
-    double ttt = tt;
-    return (C[n - 1] - C[n - 2]) / (t[n - 1] - t[n - 2]);
+   return (C[n - 1] - C[n - 2]) / (t[n - 1] - t[n - 2]);
 }
 
 
@@ -1516,7 +1515,7 @@ CTimeSeries CTimeSeries::distribution_log(int n_bins, int limit)
 	CTimeSeries out(n_bins + 2);
 
 	CVector C1;
-	for (int i = 0; i<C.size()-limit; i++)
+	for (unsigned int i = 0; i<C.size()-limit; i++)
 		if (C[i+limit]>0)
 			C1.append(log(C[i + limit]));
 
@@ -1566,7 +1565,7 @@ double TS::correlation(const CTimeSeries &TS1, const CTimeSeries &TS2)
 {
     double sum2=0;
     double sumprod=0;
-    for (int i=1; i<min(TS1.n,TS2.n)-1; i++)
+    for (int i=0; i<min(TS1.n,TS2.n); i++)
     {
         sum2+=0.5*(pow(TS1.C[i],2)+pow(TS2.C[i],2));
         sumprod += TS1.C[i]*TS2.C[i];

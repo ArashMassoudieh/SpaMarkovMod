@@ -1064,6 +1064,7 @@ CVector CTimeSeriesSet::get_kappa_gamma(double delta_x)
 	CVector X(nvars);
 	double sum_prod = 0;
 	double sum_2 = 0;
+    cout<<"     Calculating Gamma..."<<endl;
 	for (int i=0; i<BTC[0].n; i++)
 	{
             for (int ii=0; ii<nvars-1; ii++)
@@ -1073,38 +1074,40 @@ CVector CTimeSeriesSet::get_kappa_gamma(double delta_x)
 	}
 	X[0] = (1.0-sum_prod / sum_2)/delta_x;
 	double err = 0;
-        double sum_weight = 0;
+    double sum_weight = 0;
+    cout<<"     Calculating Kappa..."<<endl;
+    for (int i = 0; i<BTC[0].n; i++)
+    {
+        for (int ii=0; ii<nvars-1; ii++)
+        {   err += (pow(BTC[ii].C[i] - (sum_prod / sum_2) * BTC[ii+1].C[i], 2)+pow(BTC[ii+1].C[i] - (sum_prod / sum_2) * BTC[ii].C[i], 2))*BTC[0].weight[i]*0.5;
+            sum_weight += BTC[ii].weight[i];
+        }
+    }
+    X[1] = err /(2.0*delta_x)/sum_weight;
+    cout<<"     Calculating Error Correlation..."<<endl;
+    if (nvars>2)
+    {
+        CBTCSet residuals(nvars-1);
         for (int i = 0; i<BTC[0].n; i++)
         {
-            for (int ii=0; ii<nvars-1; ii++)
-            {   err += (pow(BTC[ii].C[i] - (sum_prod / sum_2) * BTC[ii+1].C[i], 2)+pow(BTC[ii+1].C[i] - (sum_prod / sum_2) * BTC[ii].C[i], 2))*BTC[0].weight[i]*0.5;
-                sum_weight += BTC[ii].weight[i];
-            }
-        }
-
-        if (nvars>2)
-	{
-            CBTCSet residuals;
-            for (int i = 0; i<BTC[0].n; i++)
             {
-                {
-                    vector<double> res;
-                    res.push_back(BTC[0].C[i] - (sum_prod / sum_2) * BTC[1].C[i]);
-                    res.push_back(BTC[1].C[i] - (sum_prod / sum_2) * BTC[2].C[i]);
-                    residuals.append(i,res);
+                vector<double> res;
+                for (int j=0; j<nvars-1;j++)
+                    res.push_back(BTC[j].C[i] - (sum_prod / sum_2) * BTC[j+1].C[i]);
 
-                }
+                residuals.append(i,res);
+
             }
-            if (nvars>2)
-            CMatrix corr = TS::correlation(residuals.BTC[0], residuals.BTC[1]);
         }
-	X[1] = err /(2.0*delta_x)/sum_weight;
+        cout<<"     Calculating Correlation..."<<endl;
+        if (nvars>2)
+        {   CMatrix corr = TS::correlation(residuals.BTC[0], residuals.BTC[1]);
+            X[2] = corr[0][0];
+        }
+    }
 
 
-        /*if (nvars>2)
-            qDebug() << "OU_params: " << X[0] << "  " << X[1] << "   " << X[2]<< endl;
-        else
-            qDebug() << "OU_params: " << X[0] << "  " << X[1] << endl;*/
+
 	return X;
 }
 

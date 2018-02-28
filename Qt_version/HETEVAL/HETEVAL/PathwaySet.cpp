@@ -150,7 +150,7 @@ void CPathwaySet::make_uniform_at_t(double dt)
 
 
 
-CPosition CPathwaySet::get_pair_v(int increment, int num_seq)
+CPosition CPathwaySet::get_pair_v_pos(int increment, int num_seq)
 {
     CPosition p(num_seq);
     int i = int(unitrandom()*paths.size());
@@ -167,8 +167,9 @@ CBTCSet CPathwaySet::get_pair_v(int increment, int n, int num_seq)
 	CBTCSet out(num_seq);
 	for (int i = 0; i < n; i++)
 	{
-		CPosition p = get_pair_v(increment, num_seq);
+		CPosition p = get_pair_v_pos(increment, num_seq);
 		out.append(double(i), p.v.vec, p.weight);
+		cout << "\r" << float(i)/float(n)*100 << "%" << std::flush;
 	}
 	return out;
 
