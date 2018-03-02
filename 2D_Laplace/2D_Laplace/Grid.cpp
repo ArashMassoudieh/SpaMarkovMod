@@ -640,11 +640,14 @@ CBTC CGrid::initialize(int numpoints,double x_0,bool _weighted)
                 y_0 = unitrandom()*GP.dy*(GP.ny-1);
                 pt_0.x = x_0; pt_0.y = y_0;
                 double v_xp = v_x;
-                double v_x = getvelocity(pt_0)[0];
+                v_x = getvelocity(pt_0)[0];
                 double u = unitrandom();
                 if (u < v_x / v_xp) accepted = true;
             }
-            if (i>burnout) {pts.push_back(pt_0); vels.append(i,v_x);}
+            if (i>burnout) {
+                pts.push_back(pt_0);
+                vels.append(i,v_x);
+            }
             set_progress_value(double(i) / double(burnout + numpoints));
         }
         cout<<endl;
@@ -659,7 +662,7 @@ CBTC CGrid::initialize(int numpoints,double x_0,bool _weighted)
             y_0 = unitrandom()*GP.dy*(GP.ny-1);
             pt_0.x = x_0; pt_0.y = y_0;
             double v_xp = v_x;
-            double v_x = getvelocity(pt_0)[0];
+            v_x = getvelocity(pt_0)[0];
             double u = unitrandom();
             pts.push_back(pt_0);
             vels.append(i,v_x,v_x);
