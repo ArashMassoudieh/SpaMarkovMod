@@ -149,7 +149,7 @@ public:
 	CPathwaySet gettrajectories_fixed_dx(double dt, double x_end);
 	vector<point> pts;
         bool weighted;
-	void initialize(int numpoints, double x_0, bool weighted=false);
+	CBTC initialize(int numpoints, double x_0, bool weighted=false);
 	CMatrix_arma_sp create_stiffness_matrix_arma();
 	CVector_arma create_RHS_arma();
 	CVector create_RHS();

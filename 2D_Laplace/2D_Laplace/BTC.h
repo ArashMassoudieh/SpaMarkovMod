@@ -61,7 +61,7 @@ public:
     double average();
     double average(double t);
     double slope(double tt);
-    CTimeSeries distribution(int n_bins, int limit);
+    CTimeSeries distribution(int n_bins = 40, int limit=0);
     void append(double x);
     void append(double tt, double xx, double weight=1);
     void append(CTimeSeries &CC);

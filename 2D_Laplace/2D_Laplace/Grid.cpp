@@ -591,7 +591,7 @@ CPathwaySet CGrid::gettrajectories(double dt, double t_end)
         }
         set_progress_value(double(i) / double(pts.size()));
     }
-
+    cout<<endl;
     return X;
 }
 
@@ -616,14 +616,15 @@ CPathwaySet CGrid::gettrajectories_fixed_dx(double dx, double x_end)
             }
         set_progress_value(double(i) / double(pts.size()));
     }
-
+    cout<<endl;
     return X;
 }
 
 
-void CGrid::initialize(int numpoints,double x_0,bool _weighted)
+CBTC CGrid::initialize(int numpoints,double x_0,bool _weighted)
 {
     weighted = _weighted;
+    CBTC vels;
     if (!_weighted)
     {
         int burnout = 10000;
@@ -643,9 +644,10 @@ void CGrid::initialize(int numpoints,double x_0,bool _weighted)
                 double u = unitrandom();
                 if (u < v_x / v_xp) accepted = true;
             }
-            if (i>burnout) pts.push_back(pt_0);
+            if (i>burnout) {pts.push_back(pt_0); vels.append(i,v_x);}
             set_progress_value(double(i) / double(burnout + numpoints));
         }
+        cout<<endl;
     }
     else
     {   double y_0 = unitrandom()*GP.dy*(GP.ny-1);
@@ -660,10 +662,12 @@ void CGrid::initialize(int numpoints,double x_0,bool _weighted)
             double v_x = getvelocity(pt_0)[0];
             double u = unitrandom();
             pts.push_back(pt_0);
+            vels.append(i,v_x,v_x);
             set_progress_value(double(i) / double(numpoints));
         }
+        cout<<endl;
     }
-
+    return vels.distribution(40);
 }
 
 CMatrix_arma_sp CGrid::create_stiffness_matrix_arma()
@@ -861,7 +865,7 @@ CMatrix CGrid::solve()
 	max_v_x = max_vx();
 	min_v_x = min_vx();
 	return H;
-
+    cout<<endl;
 }
 
 vector<int> CGrid::get_ij(int k)
@@ -965,7 +969,9 @@ void CGrid::runcommands()
 		if (commands[i].command == "initialize_trajectories")
 		{
 			cout << "Initializing trajectories ..." << endl;
-			initialize(atoi(commands[i].parameters["num_points"].c_str()), atof(commands[i].parameters["x0"].c_str()));
+			CBTC ini_vel = initialize(atoi(commands[i].parameters["num_points"].c_str()), atof(commands[i].parameters["x0"].c_str()));
+            if (commands[i].parameters.count("filename"))
+                ini_vel.writefile(commands[i].parameters["filename"]);
 		}
 
 		if (commands[i].command == "create_trajectories")
@@ -1386,8 +1392,10 @@ void CGrid::runcommands_qt()
             {
                 show_in_window("Initializing trajectories ...");
                 cout << "Initializing trajectories ..." << endl;
-                initialize(atoi(commands[i].parameters["n"].c_str()), atof(commands[i].parameters["x_0"].c_str()),atoi(commands[i].parameters["weighted"].c_str()));
+                CBTC ini_vel=initialize(atoi(commands[i].parameters["n"].c_str()), atof(commands[i].parameters["x_0"].c_str()),atoi(commands[i].parameters["weighted"].c_str()));
                 weighted = atoi(commands[i].parameters["weighted"].c_str());
+                if (commands[i].parameters.count("filename"))
+                    ini_vel.writefile(pathout+commands[i].parameters["filename"]);
             }
 
             if (commands[i].command == "create_trajectories")
@@ -2080,23 +2088,23 @@ void CGrid::solve_transport(double t_end)
 	K.writetofile(pathout + "transport_matrix.txt");
 	set_progress_value(0);
         for (double t = 0; t < t_end; t += dt)
-	{
-		CVector_arma RHS = create_RHS_transport(dt, time_weight, D);
-		CVector_arma S = solve_ar(K, RHS);
+        {
+            CVector_arma RHS = create_RHS_transport(dt, time_weight, D);
+            CVector_arma S = solve_ar(K, RHS);
 
-		for (int i=0; i<GP.nx+1; i++)
-			for (int j=0; j<GP.ny+1; j++)
-				C[i][j] = S[get_cell_no(i, j)];
+            for (int i=0; i<GP.nx+1; i++)
+                for (int j=0; j<GP.ny+1; j++)
+                    C[i][j] = S[get_cell_no(i, j)];
 
-		for (int i = 0; i < GP.nx; i++)
-			for (int j = 0; j < GP.ny; j++)
-				p[i][j].C.push_back(0.25*(C[i][j] + C[i + 1][j] + C[i][j + 1] + C[i + 1][j + 1]));
+            for (int i = 0; i < GP.nx; i++)
+                for (int j = 0; j < GP.ny; j++)
+                    p[i][j].C.push_back(0.25*(C[i][j] + C[i + 1][j] + C[i][j + 1] + C[i + 1][j + 1]));
 
-//		set_progress_value(t / t_end);
-//                tbrowse->append("t = " + QString::number(t));
+            set_progress_value(t / t_end);
+    //                tbrowse->append("t = " + QString::number(t));
 
-	}
-
+        }
+        cout<<endl;
 }
 
 void CGrid::solve_transport_laplace(double s)
@@ -2351,36 +2359,36 @@ void CGrid::solve_transport_OU(double t_end)
 	for (int i = 0; i < GP.nx + 2; i++) OU.BTCs.BTC[i].append(0, 0);
 	for (int i = 0; i < GP.nx + 2; i++) OU.BTC_normal.BTC[i].append(0, 0);
 	set_progress_value(0);
-        for (double t = 0; t < t_end; t += dt)
-	{
-		CVector_arma RHS = create_RHS_OU(dt);
-		CVector_arma S = OU.Inv_M*RHS;
+    for (double t = 0; t < t_end; t += dt)
+    {
+        CVector_arma RHS = create_RHS_OU(dt);
+        CVector_arma S = OU.Inv_M*RHS;
 
-		for (int i = 0; i < GP.nx+2; i++)
-		{
-			double sum = 0;
-			double sum_fw = 0;
+        for (int i = 0; i < GP.nx+2; i++)
+        {
+            double sum = 0;
+            double sum_fw = 0;
 
-			for (int j = 0; j < GP.ny; j++)
-			{
-				C[i][j] = S[get_cell_no_OU(i, j)];
-				sum += C[i][j] * GP.dy;
-				sum_fw += C[i][j] * OU.FinvU[j]/OU.FinvU.sum();
-			}
-			OU.BTCs.BTC[i].append(t+dt, sum);
-			OU.BTCs_fw.BTC[i].append(t + dt, sum_fw);
-			OU.BTC_normal.BTC[i].append((t + dt)/((i-0.5)*GP.dx), sum);
-			OU.BTC_normal_fw.BTC[i].append((t + dt) / ((i - 0.5)*GP.dx), sum_fw);
-		}
+            for (int j = 0; j < GP.ny; j++)
+            {
+                C[i][j] = S[get_cell_no_OU(i, j)];
+                sum += C[i][j] * GP.dy;
+                sum_fw += C[i][j] * OU.FinvU[j]/OU.FinvU.sum();
+            }
+            OU.BTCs.BTC[i].append(t+dt, sum);
+            OU.BTCs_fw.BTC[i].append(t + dt, sum_fw);
+            OU.BTC_normal.BTC[i].append((t + dt)/((i-0.5)*GP.dx), sum);
+            OU.BTC_normal_fw.BTC[i].append((t + dt) / ((i - 0.5)*GP.dx), sum_fw);
+        }
 
         #if QT_version
                 set_progress_value(t / t_end);
-		tbrowse->append("t = " + QString::number(t));
-		#else
-		cout<<"t = " <<t <<endl;
-		#endif // QT_version
+        tbrowse->append("t = " + QString::number(t));
+        #else
+        cout<<"t = " <<t <<endl;
+        #endif // QT_version
 
-	}
+    }
 
 }
 
