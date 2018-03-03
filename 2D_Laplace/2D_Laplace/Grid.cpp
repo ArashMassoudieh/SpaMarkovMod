@@ -627,7 +627,8 @@ CBTC CGrid::initialize(int numpoints,double x_0,bool _weighted)
     CBTC vels;
     if (!_weighted)
     {
-        int burnout = 10000;
+        int burnout = 0;
+        double v_max = get_v_btc(x_0,0).maxC();
         double y_0 = unitrandom()*GP.dy*(GP.ny-1);
         point pt_0; pt_0.x = x_0; pt_0.y = y_0;
         double v_x = getvelocity(pt_0)[0];
@@ -639,10 +640,9 @@ CBTC CGrid::initialize(int numpoints,double x_0,bool _weighted)
             {
                 y_0 = unitrandom()*GP.dy*(GP.ny-1);
                 pt_0.x = x_0; pt_0.y = y_0;
-                double v_xp = v_x;
                 v_x = getvelocity(pt_0)[0];
                 double u = unitrandom();
-                if (u < v_x / v_xp) accepted = true;
+                if (u < (v_x / v_max/5)) accepted = true;
             }
             if (i>burnout) {
                 pts.push_back(pt_0);
@@ -1448,7 +1448,7 @@ void CGrid::runcommands_qt()
             if (commands[i].command == "write_trajectories")
             {
                 show_in_window("Writing trajectories ...");
-                cout << "Writing trajectories ..." << endl;
+                //cout << "Writing trajectories ..." << endl;
                 if (commands[i].parameters.count("interval")>0)
                     Traj.write(pathout+commands[i].parameters["filename"]);
                 else
