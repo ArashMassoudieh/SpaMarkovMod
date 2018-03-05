@@ -107,6 +107,8 @@ public:
     vector<double> weight;
     bool weighted = false;
     double autocorrelation();
+    CBTC normalize_by_max();
+
 
 };
 

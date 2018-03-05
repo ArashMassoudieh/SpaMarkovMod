@@ -633,7 +633,7 @@ CBTC CGrid::initialize(int numpoints,double x_0,bool _weighted)
         point pt_0; pt_0.x = x_0; pt_0.y = y_0;
         double v_x = getvelocity(pt_0)[0];
         pts.push_back(pt_0);
-        for (int i = 1; i < burnout+numpoints; i++)
+        for (int i = 1; i < numpoints; i++)
         {
             bool accepted = false;
             while (!accepted)
@@ -644,11 +644,10 @@ CBTC CGrid::initialize(int numpoints,double x_0,bool _weighted)
                 double u = unitrandom();
                 if (u < (v_x / v_max/5)) accepted = true;
             }
-            if (i>burnout) {
-                pts.push_back(pt_0);
-                vels.append(i,v_x);
-            }
-            set_progress_value(double(i) / double(burnout + numpoints));
+            pts.push_back(pt_0);
+            vels.append(i,v_x);
+
+            set_progress_value(double(i) / double(numpoints));
         }
         cout<<endl;
     }
@@ -926,6 +925,12 @@ CBTC CGrid::get_v_btc(double x, int k)
 			out.append(i + j * 10000, p[i][j].V[k]);
 	return out;
 
+}
+
+CBTC CGrid::get_v_dist(double x, int k, int nbins)
+{
+    CBTC v = get_v_btc(x,k);
+    return v.distribution(nbins);
 }
 
 void CGrid::runcommands()
@@ -1829,6 +1834,7 @@ void CGrid::runcommands_qt()
                         CVector X = normals.get_kappa_gamma(atof(commands[i].parameters["delta_x"].c_str()));
                         extracted_OU_parameters.append("p1_"+commands[i].parameters["increment"], atoi(commands[i].parameters["increment"].c_str()), X[0]);
                         extracted_OU_parameters.append("p2_"+commands[i].parameters["increment"], atoi(commands[i].parameters["increment"].c_str()), X[1]);
+                        extracted_OU_parameters.append("p3_"+commands[i].parameters["increment"], atoi(commands[i].parameters["increment"].c_str()), X[2]);
                         show_in_window("Writing OU params");
                         X.writetofile(pathout + commands[i].parameters["OU_parameters_filename"]);
                     }
