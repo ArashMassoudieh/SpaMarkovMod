@@ -38,8 +38,12 @@ TDMap& TDMap::operator=(const TDMap& rhs)
     return *this;
 }
 
-void TDMap::reset(unsigned int number_of_bins_x, unsigned int number_of_bins_y, double low_lim_x, double up_lim_x, double low_lim_y, double up_lim_y)
+void TDMap::reset(unsigned int number_of_bins_x, unsigned int number_of_bins_y, double _low_lim_x, double _up_lim_x, double _low_lim_y, double _up_lim_y)
 {
+    low_lim_x = _low_lim_x;
+    up_lim_x = _up_lim_x;
+    low_lim_y = _low_lim_y;
+    up_lim_y = _up_lim_y;
     val.resize(number_of_bins_x);
     for (unsigned int i=0; i<number_of_bins_x; i++)
         val[i].resize(number_of_bins_y);
@@ -118,7 +122,7 @@ void TDMap::normalize()
 {
     double s = sum();
     for (unsigned int i=0; i<val.size(); i++)
-        for (unsigned int j=0; val[i].size(); j++)
+        for (unsigned int j=0; j<val[i].size(); j++)
             val[i][j] = val[i][j]/s;
 
 }
@@ -150,7 +154,7 @@ double TDMap::get_val(unsigned int i, unsigned int j)
 void TDMap::writetofile(string filename)
 {
     ofstream file(filename);
-    file << ",";
+
     for (unsigned int i=0; i<val.size(); i++)
     {
         file << "," << (x_bin[i] + x_bin[i+1])/2;
@@ -163,5 +167,29 @@ void TDMap::writetofile(string filename)
             file << val[i][j] << ",";
         file << endl;
     }
+    file.close();
+}
 
+void TDMap::writetofile_GNU(string filename, string pngfilename)
+{
+    ofstream file(filename);
+    file << "set xrange ["<<low_lim_x<<":"<<up_lim_x<<"]"<<endl;
+    file << "set yrange ["<<low_lim_y<<":"<<up_lim_y<<"]"<<endl;
+    file << "show xrange" << endl;
+    file << "show yrange" << endl;
+    file << "set pm3d map interpolate 5,5"<<endl;
+    file << "splot \"-\" matrix using ($1*"<<(up_lim_x-low_lim_x)/val.size()<<"+"<<low_lim_x<<"):($2*"<<(up_lim_y-low_lim_y)/val.size()<<"+"<<low_lim_x<<"):3"<<endl;
+    for (unsigned int j=0; j<val[0].size(); j++)
+    {
+        for (unsigned int i=0; i<val.size(); i++)
+            file << val[i][j] << " ";
+        file << endl;
+    }
+    file<<"e"<<endl;
+    file<<"e"<<endl;
+    file<<"set term png"<<endl;
+    file<<"set output \"" << pngfilename << "\""<<endl;
+    file<<"replot"<<endl;
+    file<<"set term x11"<<endl;
+    file.close();
 }

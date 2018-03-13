@@ -5,10 +5,24 @@
 #endif // Qt_version
 #include <iostream>
 #include "Grid.h"
-
+#include "2DMap.h"
 
 int main(int argc, char *argv[])
 {
+
+	TDMap M(10,5,0,10,0,5);
+	for (int i=0; i<10; i++)
+        for (int j=0; j<5; j++)
+        {
+            cout<< i << "," << j << endl;
+            M.set_val(i,j,exp(-pow(i-5,2)-pow(j-2.5,2)*5));
+        }
+
+    cout<< "Normalizing..." << endl;
+    M.normalize();
+    cout << "Writing..." << endl;
+	M.writetofile_GNU("Matrix.gnu","myPlot.png");
+
 	#ifdef QT_version
     QApplication a(argc, argv);
     HETEVAL w;

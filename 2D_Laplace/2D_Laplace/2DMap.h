@@ -27,12 +27,18 @@ class TDMap
         vector<double> marginal_x();
         vector<double> marginal_y();
         void writetofile(string filename);
+        void writetofile_GNU(string filename,string pngfilename);
     protected:
 
     private:
         vector<vector<double>> val;
         vector<double> x_bin;
         vector<double> y_bin;
+        double low_lim_x;
+        double up_lim_x;
+        double low_lim_y;
+        double up_lim_y;
+
 };
 
 #endif // 2DMAP_H

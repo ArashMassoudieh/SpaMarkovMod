@@ -5,23 +5,23 @@
 CPosition::CPosition()
 {
 	v = CVector(2);
-	y = 0; 
+	y = 0;
 	x = 0;
 	t = 0;
-	u = 0; 
-	z = 0; 
-        weight = 1; 
+	u = 0;
+	z = 0;
+        weight = 1;
 }
 
 CPosition::CPosition(int n_coor)
 {
 	v = CVector(n_coor);
-	y = 0; 
+	y = 0;
 	x = 0;
 	t = 0;
-	u = 0; 
-	z = 0; 
-        weight = 1; 
+	u = 0;
+	z = 0;
+    weight = 1;
 }
 
 CPosition::CPosition(const CPosition & P)
@@ -44,7 +44,7 @@ CPosition& CPosition::operator=(const CPosition & P)
 	u = P.u;
 	z = P.z;
 	v = P.v;
-        weight = P.weight; 
+        weight = P.weight;
 	return *this;
 }
 
@@ -63,7 +63,7 @@ double CPosition::getvar(string var)
 	if (var == "vy") return v[1];
 	if (var == "v_eff") {if (t > 0) return x / t; else return 0;};
 	if (var == "t_eff") {if (x > 0) return t / x; else return 0;};
-        if (var == "weight") return weight; 
+        if (var == "weight") return weight;
 	return 0;
 }
 
@@ -108,7 +108,7 @@ CPosition operator*(double d, CPosition p1)
 
 CPosition operator*(CPosition p1, double d)
 {
-	return d*p1; 
+	return d*p1;
 }
 
 CPosition operator/(CPosition p1, double d)
