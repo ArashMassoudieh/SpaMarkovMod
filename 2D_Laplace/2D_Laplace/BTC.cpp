@@ -1573,3 +1573,14 @@ double TS::correlation(const CTimeSeries &TS1, const CTimeSeries &TS2)
     return sumprod/sum2;
 }
 
+CBTC CBTC::normalize_by_max()
+{
+    double _max = maxC();
+    CBTC out;
+    for (int i=0; i<n; i++)
+    {
+        out.append(t[i], C[i]/_max);
+    }
+    return out;
+}
+

@@ -1128,3 +1128,53 @@ void CTimeSeriesSet::append(string name, double t, double c, double weight)
     }
 }
 
+TDMap CTimeSeriesSet::get2DMap(int number_of_bins_x, int number_of_bins_y, double low_lim_x, double up_lim_x, double low_lim_y, double up_lim_y)
+{
+    TDMap M(number_of_bins_x, number_of_bins_y, low_lim_x, up_lim_x, low_lim_y, up_lim_y);
+    for (unsigned int k=0; k<min(BTC[0].C.size(), BTC[1].C.size()); k++)
+    {
+        int i= int((BTC[0].C[k]-low_lim_x)/(up_lim_x-low_lim_x)*number_of_bins_x);
+        int j= int((BTC[1].C[k]-low_lim_y)/(up_lim_y-low_lim_y)*number_of_bins_y);
+        if (i>0 && i<number_of_bins_x && j>0 && j<number_of_bins_y)
+            M.add_val(i,j,1);
+    }
+    M.normalize();
+    return M;
+}
+
+TDMap CTimeSeriesSet::get2DMap(int number_of_bins, double low_lim, double up_lim)
+{
+    TDMap M(number_of_bins, low_lim, up_lim);
+    for (unsigned int k=0; k<min(BTC[0].C.size(), BTC[1].C.size()); k++)
+    {
+        int i= int((BTC[0].C[k]-low_lim)/(up_lim-low_lim)*number_of_bins);
+        int j= int((BTC[1].C[k]-low_lim)/(up_lim-low_lim)*number_of_bins);
+        if (i>0 && i<number_of_bins && j>0 && j<number_of_bins)
+            M.add_val(i,j,1);
+    }
+    M.normalize();
+    return M;
+}
+
+TDMap CTimeSeriesSet::get2DMap(int number_of_bins)
+{
+    int number_of_bins_x = number_of_bins;
+    int number_of_bins_y = number_of_bins;
+    double low_lim_x = BTC[0].minC();
+    double up_lim_x = BTC[0].maxC();
+    double low_lim_y = BTC[1].minC();
+    double up_lim_y = BTC[1].maxC();
+
+    TDMap M(number_of_bins_x, number_of_bins_y, low_lim_x, up_lim_x, low_lim_y, up_lim_y);
+    for (unsigned int k=0; k<min(BTC[0].C.size(), BTC[1].C.size()); k++)
+    {
+        int i= int((BTC[0].C[k]-low_lim_x)/(up_lim_x-low_lim_x)*number_of_bins_x);
+        int j= int((BTC[1].C[k]-low_lim_y)/(up_lim_y-low_lim_y)*number_of_bins_y);
+        if (i>0 && i<number_of_bins_x && j>0 && j<number_of_bins_y)
+            M.add_val(i,j,1);
+    }
+    M.normalize();
+    return M;
+}
+
+

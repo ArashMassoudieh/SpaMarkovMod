@@ -2,6 +2,7 @@
 #include "BTC.h"
 #include <vector>
 #include "Vector.h"
+#include "2DMap.h"
 
 #define CBTCSet CTimeSeriesSet
 
@@ -66,14 +67,17 @@ public:
 	bool file_not_found=false;
 	CBTC &operator[](int index);
 	CBTC &operator[](string BTCName);
-	
+
 	CTimeSeriesSet(vector < vector<double> > &, int writeInterval = 1);
 	int indexOf(const string& name) const;
 	void pushBackName(string name);
 	void append(CBTC &BTC, string name = "");
 	CTimeSeriesSet sort(int burnOut = 0);
-	CTimeSeriesSet detivative(); 
+	CTimeSeriesSet detivative();
 	~CTimeSeriesSet(void);
+	TDMap get2DMap(int number_of_bins_x, int number_of_bins_y, double low_lim_x, double up_lim_x, double low_lim_y, double up_lim_y);
+	TDMap get2DMap(int number_of_bins, double low_lim, double up_lim);
+	TDMap get2DMap(int number_of_bins);
 };
 
 double diff(CTimeSeriesSet B1, CTimeSeriesSet B2);

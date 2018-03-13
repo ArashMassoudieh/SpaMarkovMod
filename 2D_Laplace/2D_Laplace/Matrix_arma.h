@@ -8,6 +8,9 @@
 #include <iostream>
 #include "math.h"
 #define ARMA_DONT_PRINT_ERRORS
+#define ARMA_USE_LAPACK
+#define ARMA_USE_BLAS
+#define ARMA_USE_SUPERLU 1
 #include "armadillo"
 class QVariant;
 //class QString;
@@ -15,13 +18,13 @@ class QVariant;
 //#include "QMap"
 using namespace arma;
 class CVector_arma;
-class CMatrix_arma  
+class CMatrix_arma
 {
 
 private:
 	int numrows;
 	int numcols;
-	
+
 public:
 	mat matr;
 	CMatrix_arma(int, int);
@@ -38,7 +41,7 @@ public:
 	virtual ~CMatrix_arma();
 	CMatrix_arma& operator=(const CMatrix_arma&);
 	CMatrix_arma& operator+=(const CMatrix_arma&);
-	CMatrix_arma& operator-=(const CMatrix_arma &);	
+	CMatrix_arma& operator-=(const CMatrix_arma &);
 	CMatrix_arma& operator=(mat&);
 	friend CMatrix_arma mult(CMatrix_arma&, CMatrix_arma&);
 	friend CVector_arma mult(CMatrix_arma&, CVector_arma&);
@@ -50,7 +53,7 @@ public:
 	friend CMatrix_arma Cholesky_factor(CMatrix_arma &M);
 	friend CMatrix_arma LU_decomposition(CMatrix_arma &M);
 	CMatrix_arma LU_decomposition();
-	CMatrix_arma Cholesky_factor();	
+	CMatrix_arma Cholesky_factor();
 	double det();
 	void Print(FILE *FIL);
 	void print(string s);
@@ -73,9 +76,9 @@ public:
 	void setcol(int i, CVector_arma &V);
 	void setcol(int i, CVector &V);
 
-	
+
 };
-	
+
 double det(CMatrix_arma &);
 CMatrix_arma Log(CMatrix_arma &M1);
 CMatrix_arma Exp(CMatrix_arma &M1);

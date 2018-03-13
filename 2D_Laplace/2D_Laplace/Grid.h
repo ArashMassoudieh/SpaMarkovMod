@@ -165,8 +165,9 @@ public:
 	CBTC get_v_btc(int k);
 	CBTC get_kg_btc(int k);
 	void remap_K(int k);
-	CBTC get_v_btc(double x,int k);
-        CBTC get_v_mag_btc();
+	CBTC get_v_btc(double x,int k=0);
+	CBTC get_v_dist(double x, int k=0, int nbins=40);
+    CBTC get_v_mag_btc();
 	vector<_command> commands;
 	void runcommands();
 	CBTC vx_dist;

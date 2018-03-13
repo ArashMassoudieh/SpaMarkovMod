@@ -627,28 +627,27 @@ CBTC CGrid::initialize(int numpoints,double x_0,bool _weighted)
     CBTC vels;
     if (!_weighted)
     {
-        int burnout = 10000;
+        int burnout = 0;
+        double v_max = get_v_btc(x_0,0).maxC();
         double y_0 = unitrandom()*GP.dy*(GP.ny-1);
         point pt_0; pt_0.x = x_0; pt_0.y = y_0;
         double v_x = getvelocity(pt_0)[0];
         pts.push_back(pt_0);
-        for (int i = 1; i < burnout+numpoints; i++)
+        for (int i = 1; i < numpoints; i++)
         {
             bool accepted = false;
             while (!accepted)
             {
                 y_0 = unitrandom()*GP.dy*(GP.ny-1);
                 pt_0.x = x_0; pt_0.y = y_0;
-                double v_xp = v_x;
                 v_x = getvelocity(pt_0)[0];
                 double u = unitrandom();
-                if (u < v_x / v_xp) accepted = true;
+                if (u < (v_x / v_max/5)) accepted = true;
             }
-            if (i>burnout) {
-                pts.push_back(pt_0);
-                vels.append(i,v_x);
-            }
-            set_progress_value(double(i) / double(burnout + numpoints));
+            pts.push_back(pt_0);
+            vels.append(i,v_x);
+
+            set_progress_value(double(i) / double(numpoints));
         }
         cout<<endl;
     }
@@ -928,144 +927,10 @@ CBTC CGrid::get_v_btc(double x, int k)
 
 }
 
-void CGrid::runcommands()
+CBTC CGrid::get_v_dist(double x, int k, int nbins)
 {
-	for (int i = 0; i < int(commands.size()); i++)
-	{
-		if (commands[i].command == "generate_k_field")
-		{
-			cout << "Assigning K..." << endl;
-			assign_K_gauss();
-		}
-
-		if (commands[i].command == "write_k_field")
-		{
-			cout << "Writing K field..." << endl;
-			writeasmatrixK(commands[i].parameters[0], 0);
-		}
-
-		if (commands[i].command == "read_k_field")
-		{
-			cout << "Reading K field..." << endl;
-			getKfromfile(commands[i].parameters[0], GP.nx, GP.ny, GP.nx_data, GP.ny_data);
-		}
-		if (commands[i].command == "solve_hydro")
-		{
-			cout << "Solving hydro ..." << endl;
-			CMatrix H = solve();
-		}
-
-
-		if (commands[i].command == "write_h_field")
-		{
-			cout << "Writing hydro output ..." << endl;
-			H.writetofile(pathout+commands[i].parameters["filename"]);
-		}
-
-		if (commands[i].command == "write_v_field")
-		{
-			cout << "Writing velocities ..." << endl;
-			writeasmatrix(pathout+commands[i].parameters["filename_x"], 0);
-			writeasmatrix(pathout+commands[i].parameters["filename_y"], 1);
-		}
-
-		if (commands[i].command == "initialize_trajectories")
-		{
-			cout << "Initializing trajectories ..." << endl;
-			CBTC ini_vel = initialize(atoi(commands[i].parameters["num_points"].c_str()), atof(commands[i].parameters["x0"].c_str()));
-            if (commands[i].parameters.count("filename"))
-                ini_vel.writefile(commands[i].parameters["filename"]);
-		}
-
-		if (commands[i].command == "create_trajectories")
-		{
-			cout << "Simulating trajectories ..." << endl;
-			Traj = gettrajectories(atof(commands[i].parameters["dt"].c_str()), atof(commands[i].parameters["t_end"].c_str()));
-		}
-
-		if (commands[i].command == "create_trajectories_fix_dx")
-		{
-			cout << "Simulating trajectories with fixed dx..." << endl;
-			Traj = gettrajectories_fixed_dx(atof(commands[i].parameters["dx"].c_str()), atof(commands[i].parameters["x_end"].c_str()));
-		}
-
-		if (commands[i].command == "write_trajectories")
-		{
-			cout << "Writing trajectories ..." << endl;
-			if (commands[i].parameters.count("write_interval")>0)
-				Traj.write(pathout+commands[i].parameters["filename"]);
-			else
-				Traj.write(pathout+commands[i].parameters["filename"]);
-		}
-
-		if (commands[i].command == "get_velocity_dist")
-		{
-			cout << "Get Velocities into vectors..." << endl;
-			CBTC vx = get_v_btc(0);
-			CBTC vy = get_v_btc(1);
-			cout << "Get Velocities distributions" << endl;
-			vx_dist = vx.distribution(atoi(commands[i].parameters["nbins"].c_str()),0);
-			vy_dist = vy.distribution(atoi(commands[i].parameters["nbins"].c_str()),0);
-		}
-
-		if (commands[i].command == "write_velocity_dist")
-		{
-			cout << "Writing velocities into vectors" << endl;
-			vx_dist.writefile(pathout+commands[i].parameters["filename_x"]);
-			vy_dist.writefile(pathout+commands[i].parameters["filename_y"]);
-		}
-
-		if (commands[i].command == "get_velocity_dist_at_sects")
-		{
-			cout << "Get Velocities distributions at cross-sections ..." << endl;
-
-			CBTC vx = get_v_btc(atof(commands[i].parameters["x"].c_str()), 0);
-			CBTC vy = get_v_btc(atof(commands[i].parameters["x"].c_str()), 1);
-			vx_dist = vx.distribution(atoi(commands[i].parameters["nbins"].c_str()), 0);
-			vy_dist = vy.distribution(atoi(commands[i].parameters["nbins"].c_str()), 0);
-			sect_dist.append(vx_dist, "x=" + commands[i].parameters["x"]);
-			sect_dist.append(vy_dist, "y=" + commands[i].parameters["x"]);
-
-		}
-
-		if (commands[i].command == "write_velocities_at_sects")
-		{
-			cout << "Write velocities distributions at cross-sections ..." << endl;
-			sect_dist.writetofile(pathout+commands[i].parameters["filename"]);
-		}
-
-		if (commands[i].command == "create_inverse_marginal_k")
-		{
-			cout << "Create inverse marginal hydraulic conductivity ..." << endl;
-			set_inv_K_dist(atoi(commands[i].parameters["n_inc"].c_str()));
-		}
-
-		if (commands[i].command == "write_inverse_marginal_k")
-		{
-			cout << "Write inverse marginal hydraulic conductivity ..." << endl;
-			inv_K_dist.writefile(pathout+commands[i].parameters["filename"]);
-		}
-
-		if (commands[i].command == "write_marginal_k")
-		{
-			cout << "Write marginal hydraulic conductivity ..." << endl;
-			CBTC K = get_K_CDF(atof(commands[i].parameters["x0"].c_str()), atof(commands[i].parameters["x1"].c_str()), atof(commands[i].parameters["log_inc"].c_str()));
-			K.writefile(commands[i].parameters[0]);
-		}
-
-		if (commands[i].command == "renormalize_k")
-		{
-			cout << "Renormalizing hydraulic conductivity ..." << endl;
-			CBTC K = get_kg_btc(0);
-			double mu = K.mean();
-			double std = K.std();
-			for (int i = 0; i < GP.nx; i++)
-				for (int j = 0; j < GP.ny; j++)
-					p[i][j].K_gauss[0] = (p[i][j].K_gauss[0] - mu) / std;
-			remap_K(0);
-
-		}
-	}
+    CBTC v = get_v_btc(x,k);
+    return v.distribution(nbins);
 }
 
 void CGrid::set_inv_K_dist(int ninc)
@@ -1448,7 +1313,7 @@ void CGrid::runcommands_qt()
             if (commands[i].command == "write_trajectories")
             {
                 show_in_window("Writing trajectories ...");
-                cout << "Writing trajectories ..." << endl;
+                //cout << "Writing trajectories ..." << endl;
                 if (commands[i].parameters.count("interval")>0)
                     Traj.write(pathout+commands[i].parameters["filename"]);
                 else
@@ -1829,6 +1694,7 @@ void CGrid::runcommands_qt()
                         CVector X = normals.get_kappa_gamma(atof(commands[i].parameters["delta_x"].c_str()));
                         extracted_OU_parameters.append("p1_"+commands[i].parameters["increment"], atoi(commands[i].parameters["increment"].c_str()), X[0]);
                         extracted_OU_parameters.append("p2_"+commands[i].parameters["increment"], atoi(commands[i].parameters["increment"].c_str()), X[1]);
+                        extracted_OU_parameters.append("p3_"+commands[i].parameters["increment"], atoi(commands[i].parameters["increment"].c_str()), X[2]);
                         show_in_window("Writing OU params");
                         X.writetofile(pathout + commands[i].parameters["OU_parameters_filename"]);
                     }

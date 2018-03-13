@@ -26,3 +26,5 @@ int main(int argc, char *argv[])
     return 0;
     #endif // Qt_version
 }
+
+//filename = "/home/arash/Projects/Upscaling_outputs/input_test_BTC_log_normal_loop_std1_l_iso_res_corr_s_1.txt";
