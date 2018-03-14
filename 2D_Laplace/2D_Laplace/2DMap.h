@@ -27,7 +27,7 @@ class TDMap
         vector<double> marginal_x();
         vector<double> marginal_y();
         void writetofile(string filename);
-        void writetofile_GNU(string filename,string pngfilename);
+        void writetofile_GNU(string filename,string pngfilename="", string xlabel="", string ylabel="", string title="");
     protected:
 
     private:

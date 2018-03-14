@@ -1,6 +1,7 @@
 #include "2DMap.h"
 #include <fstream>
 #include <string>
+#include "StringOP.h"
 
 TDMap::TDMap()
 {
@@ -170,15 +171,23 @@ void TDMap::writetofile(string filename)
     file.close();
 }
 
-void TDMap::writetofile_GNU(string filename, string pngfilename)
+void TDMap::writetofile_GNU(string filename, string pngfilename, string xlabel, string ylabel, string title)
 {
+    if (pngfilename=="")
+        pngfilename = split(filename,'.')[0] + ".png";
     ofstream file(filename);
     file << "set xrange ["<<low_lim_x<<":"<<up_lim_x<<"]"<<endl;
     file << "set yrange ["<<low_lim_y<<":"<<up_lim_y<<"]"<<endl;
     file << "show xrange" << endl;
     file << "show yrange" << endl;
+    file << "set xlabel \"" << xlabel << "\"" << endl;
+    file << "show xlabel" << endl;
+    file << "set ylabel \"" << ylabel << "\"" << endl;
+    file << "show ylabel" << endl;
+    file << "set title \"" << title << "\"" << endl;
+    file << "show title" << endl;
     file << "set pm3d map interpolate 5,5"<<endl;
-    file << "splot \"-\" matrix using ($1*"<<(up_lim_x-low_lim_x)/val.size()<<"+"<<low_lim_x<<"):($2*"<<(up_lim_y-low_lim_y)/val.size()<<"+"<<low_lim_x<<"):3"<<endl;
+    file << "splot \"-\" matrix using ($1*"<<(up_lim_x-low_lim_x)/val.size()<<"+"<<low_lim_x<<"):($2*"<<(up_lim_y-low_lim_y)/val.size()<<"+"<<low_lim_x<<"):3 notitle"<<endl;
     for (unsigned int j=0; j<val[0].size(); j++)
     {
         for (unsigned int i=0; i<val.size(); i++)
