@@ -186,6 +186,9 @@ void TDMap::writetofile_GNU(string filename, string pngfilename, string xlabel, 
     file << "show ylabel" << endl;
     file << "set title \"" << title << "\"" << endl;
     file << "show title" << endl;
+    file << "set palette rgb -21,-22,-23" << endl;
+    file << "set logscale cb" << endl;
+    file << "set format cb \"10^{%S}" << endl;
     file << "set pm3d map interpolate 5,5"<<endl;
     file << "splot \"-\" matrix using ($1*"<<(up_lim_x-low_lim_x)/val.size()<<"+"<<low_lim_x<<"):($2*"<<(up_lim_y-low_lim_y)/val.size()<<"+"<<low_lim_x<<"):3 notitle"<<endl;
     for (unsigned int j=0; j<val[0].size(); j++)

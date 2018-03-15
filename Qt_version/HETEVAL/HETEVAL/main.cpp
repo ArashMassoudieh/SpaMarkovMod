@@ -21,6 +21,7 @@ int main(int argc, char *argv[])
     cin>>filename;
     //cout << "reading [" << filename << "]..." << endl;
     filename = "/home/arash/Projects/UpscalingInputfiles/input_test_BTC_log_normal_loop_std1_l_iso_res_corr_s_1.txt";
+    filename = "/home/arash/Projects/UpscalingInputs/test.txt";
     CGrid G(filename);
     cout << "running [" << filename << "]..." << endl;
     G.runcommands_qt();
