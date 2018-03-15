@@ -1665,10 +1665,16 @@ void CGrid::runcommands_qt()
                     show_in_window("No trajectories has been initialized!");
                     return;
                 }
+
                 pairs.writetofile(pathout+commands[i].parameters["filename"]);
                 if (commands[i].parameters.count("dist_filename") > 0)
                 {
                         pairs.BTC[0].distribution(atoi(commands[i].parameters["nbins"].c_str()),0).writefile(pathout+commands[i].parameters["dist_filename"]);
+                }
+                if (commands[i].parameters.count("v_gnu_file"))
+                {
+                    TDMap GNU_out = pairs.get2DMap(atoi(commands[i].parameters["nbins"].c_str()));
+                    GNU_out.writetofile_GNU(pathout + commands[i].parameters["v_gnu_file"],"", "v", "v'", "p(v,v')");
                 }
                 if (commands[i].parameters.count("ranks_filename") > 0)
                 {
@@ -1678,6 +1684,12 @@ void CGrid::runcommands_qt()
                         ranks.BTC[ii] = pairs.BTC[ii].rank_bd(atoi(commands[i].parameters["nbins"].c_str()));
 
                     ranks.writetofile(pathout+commands[i].parameters["ranks_filename"]);
+
+                    if (commands[i].parameters.count("u_gnu_file"))
+                    {
+                        TDMap GNU_out = ranks.get2DMap(atoi(commands[i].parameters["nbins"].c_str()),0,1);
+                        GNU_out.writetofile_GNU(pathout + commands[i].parameters["u_gnu_file"],"", "u", "u'", "p(u,u')");
+                    }
                 }
                 if (commands[i].parameters.count("normal_filename") > 0)
                 {
@@ -1685,6 +1697,12 @@ void CGrid::runcommands_qt()
                     CBTCSet normals(atoi(commands[i].parameters["nsequence"].c_str()));
                     for (int ii=0; ii<atoi(commands[i].parameters["nsequence"].c_str()); ii++)
                         normals.BTC[ii] = pairs.BTC[ii].map_to_standard_normal(atoi(commands[i].parameters["nbins"].c_str()));
+
+                    if (commands[i].parameters.count("w_gnu_file"))
+                    {
+                        TDMap GNU_out = normals.get2DMap(atoi(commands[i].parameters["nbins"].c_str()),-4,4);
+                        GNU_out.writetofile_GNU(pathout + commands[i].parameters["w_gnu_file"],"", "w", "w'", "p(w,w')");
+                    }
 
                     normals.writetofile(pathout + commands[i].parameters["normal_filename"]);
                     if (commands[i].parameters.count("OU_parameters_filename") > 0)
