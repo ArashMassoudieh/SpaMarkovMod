@@ -124,7 +124,7 @@ void TDMap::normalize()
     double s = sum();
     for (unsigned int i=0; i<val.size(); i++)
         for (unsigned int j=0; j<val[i].size(); j++)
-            val[i][j] = val[i][j]/s;
+            val[i][j] = val[i][j]/s*val.size()*val[0].size()/(up_lim_x-low_lim_x)/(up_lim_y-low_lim_y);
 
 }
 
@@ -176,8 +176,8 @@ void TDMap::writetofile_GNU(string filename, string pngfilename, string xlabel, 
     if (pngfilename=="")
         pngfilename = split(filename,'.')[0] + ".png";
     ofstream file(filename);
-    file << "set xrange ["<<low_lim_x<<":"<<up_lim_x<<"]"<<endl;
-    file << "set yrange ["<<low_lim_y<<":"<<up_lim_y<<"]"<<endl;
+    file << "set xrange ["<<low_lim_x+0.5*(up_lim_x-low_lim_x)/val.size()<<":"<<up_lim_x-0.5*(up_lim_x-low_lim_x)/val.size()<<"]"<<endl;
+    file << "set yrange ["<<low_lim_y+0.5*(up_lim_y-low_lim_y)/val[0].size()<<":"<<up_lim_y-0.5*(up_lim_y-low_lim_y)/val[0].size()<<"]"<<endl;
     file << "show xrange" << endl;
     file << "show yrange" << endl;
     file << "set xlabel \"" << xlabel << "\"" << endl;
@@ -190,7 +190,8 @@ void TDMap::writetofile_GNU(string filename, string pngfilename, string xlabel, 
     file << "set logscale cb" << endl;
     file << "set format cb \"10^{%S}" << endl;
     file << "set pm3d map interpolate 5,5"<<endl;
-    file << "splot \"-\" matrix using ($1*"<<(up_lim_x-low_lim_x)/val.size()<<"+"<<low_lim_x<<"):($2*"<<(up_lim_y-low_lim_y)/val.size()<<"+"<<low_lim_x<<"):3 notitle"<<endl;
+    file << "set size square" << endl;
+    file << "splot \"-\" matrix using ($1*"<<(up_lim_x-low_lim_x)/val.size()<<"+"<<low_lim_x+0.5*(up_lim_x-low_lim_x)/val.size()<<"):($2*"<<(up_lim_y-low_lim_y)/val.size()<<"+"<<low_lim_x+0.5*(up_lim_y-low_lim_y)/val.size()<<"):3 notitle"<<endl;
     for (unsigned int j=0; j<val[0].size(); j++)
     {
         for (unsigned int i=0; i<val.size(); i++)

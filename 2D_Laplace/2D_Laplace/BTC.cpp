@@ -1129,7 +1129,7 @@ CTimeSeries CTimeSeries::extract(double t1, double t2)
 }
 
 
-CTimeSeries CTimeSeries::distribution(int n_bins, int limit)
+CTimeSeries CTimeSeries::distribution(int n_bins, double smoothing_span, int limit)
 {
     CTimeSeries out(n_bins+2);
 
@@ -1150,15 +1150,48 @@ CTimeSeries CTimeSeries::distribution(int n_bins, int limit)
         out.C[i+1] = out.C[i];
     }
 
-    if (!weighted)
-    {   for (int i=0; i<C1.num; i++)
-            out.C[int((C1[i]-p_start)/dp)+1] += 1.0/C1.num/dp;
-        return out;
+    if (smoothing_span==0)
+    {
+        if (!weighted)
+        {   for (int i=0; i<C1.num; i++)
+                out.C[int((C1[i]-p_start)/dp)+1] += 1.0/C1.num/dp;
+            return out;
+        }
+        else
+        {   for (int i=0; i<C1.num; i++)
+                out.C[int((C1[i]-p_start)/dp)+1] += 1.0/C1.num/dp*weight[i];
+            return out/out.integrate();
+        }
     }
     else
-    {   for (int i=0; i<C1.num; i++)
-            out.C[int((C1[i]-p_start)/dp)+1] += 1.0/C1.num/dp*weight[i];
-        return out/out.integrate();
+    {
+        int span_count = (p_end-p_start)/dp;
+        if (!weighted)
+        {   for (int i=0; i<C1.num; i++)
+            {
+                int center = int((C1[i]-p_start)/dp)+1;
+                for (int j=max(0,center-3*span_count); j<=min(n_bins,center+3*span_count); j++)
+                {
+                    double l_bracket = p_start + (j-1)*dp;
+                    double r_bracket = p_start + (j)*dp;
+                    out.C[j] += 1.0/C1.num/dp*(exp(C1[i]-r_bracket)/(1+exp(C1[i]-r_bracket)) - exp(C1[i]-l_bracket)/(1+exp(C1[i]-l_bracket)));
+                }
+            }
+            return out/out.integrate();;
+        }
+        else
+        {   for (int i=0; i<C1.num; i++)
+            {
+                int center = int((C1[i]-p_start)/dp)+1;
+                for (int j=max(0,center-3*span_count); j<=min(n_bins,center+3*span_count); j++)
+                    {
+                        double l_bracket = p_start + (j-1)*dp;
+                        double r_bracket = p_start + (j)*dp;
+                        out.C[j] += 1.0/C1.num/dp*(exp(C1[i]-r_bracket)/(1+exp(C1[i]-r_bracket)) - exp(C1[i]-l_bracket)/(1+exp(C1[i]-l_bracket)))*weight[i];
+                    }
+            }
+            return out/out.integrate();
+        }
     }
 
 }
@@ -1450,7 +1483,7 @@ CTimeSeries CTimeSeries::unlog()
 
 }
 
-CTimeSeries CTimeSeries::distribution_fw(int n_bins, int limit, string s)
+CTimeSeries CTimeSeries::distribution_fw(int n_bins, double smoothing_span, int limit, string s)
 {
 	CTimeSeries out(n_bins + 2);
 
@@ -1470,29 +1503,74 @@ CTimeSeries CTimeSeries::distribution_fw(int n_bins, int limit, string s)
 		out.C[i + 1] = out.C[i];
 	}
 
-	if (weight.size()==0)
+    if (smoothing_span==0)
+    {
+
+        if (weight.size()==0)
         {
             for (int i = 0; i < C1.num; i++)
             {
-                    if (s=="log")
-                            out.C[int((C1[i] - p_start) / dp) + 1] += 1.0 / dp*exp(C1[i]);
-                    else
-                            out.C[int((C1[i] - p_start) / dp) + 1] += 1.0 / dp*C1[i];
+                if (s=="log")
+                    out.C[int((C1[i] - p_start) / dp) + 1] += 1.0 / dp*exp(C1[i]);
+                else
+                    out.C[int((C1[i] - p_start) / dp) + 1] += 1.0 / dp*C1[i];
             }
         }
         else
+        {
             for (int i = 0; i < C1.num; i++)
             {
-                    if (s=="log")
-                            out.C[int((C1[i] - p_start) / dp) + 1] += 1.0 / dp*exp(C1[i])*weight[i];
-                    else
-                            out.C[int((C1[i] - p_start) / dp) + 1] += 1.0 / dp*C1[i]*weight[i];
-            }
+                if (s=="log")
+                    out.C[int((C1[i] - p_start) / dp) + 1] += 1.0 / dp*exp(C1[i])*weight[i];
+                else
+                    out.C[int((C1[i] - p_start) / dp) + 1] += 1.0 / dp*C1[i]*weight[i];
 
-	if (s == "log")
-		return (1/C1.Exp().sum())*out;
-	else
-		return (1 / C1.sum())*out;
+            }
+        }
+        if (s == "log")
+            return (1/C1.Exp().sum())*out;
+        else
+            return (1 / C1.sum())*out;
+    }
+    else
+    {
+        int span_count = (p_end-p_start)/dp;
+        if (weight.size()==0)
+            {
+                for (int i = 0; i < C1.num; i++)
+                {
+                    int center = int((C1[i]-p_start)/dp)+1;
+                    for (int j=max(0,center-3*span_count); j<=min(n_bins,center+3*span_count); j++)
+                    {
+                        double l_bracket = p_start + (j-1)*dp;
+                        double r_bracket = p_start + (j)*dp;
+                        if (s=="log")
+                            out.C[int((C1[j] - p_start) / dp) + 1] += 1.0 / dp*exp(C1[i])*(exp(C1[i]-r_bracket)/(1+exp(C1[i]-r_bracket)) - exp(C1[i]-l_bracket)/(1+exp(C1[i]-l_bracket)));
+                        else
+                            out.C[int((C1[j] - p_start) / dp) + 1] += 1.0 / dp*C1[i]*(exp(C1[i]-r_bracket)/(1+exp(C1[i]-r_bracket)) - exp(C1[i]-l_bracket)/(1+exp(C1[i]-l_bracket)));
+                    }
+                }
+            }
+            else
+                for (int i = 0; i < C1.num; i++)
+                {
+                    int center = int((C1[i]-p_start)/dp)+1;
+                    for (int j=max(0,center-3*span_count); j<=min(n_bins,center+3*span_count); j++)
+                    {
+                        double l_bracket = p_start + (j-1)*dp;
+                        double r_bracket = p_start + (j)*dp;
+                        if (s=="log")
+                            out.C[int((C1[j] - p_start) / dp) + 1] += 1.0 / dp*exp(C1[i])*weight[i]*(exp(C1[i]-r_bracket)/(1+exp(C1[i]-r_bracket)) - exp(C1[i]-l_bracket)/(1+exp(C1[i]-l_bracket)));
+                        else
+                            out.C[int((C1[j] - p_start) / dp) + 1] += 1.0 / dp*C1[i]*weight[i]*(exp(C1[i]-r_bracket)/(1+exp(C1[i]-r_bracket)) - exp(C1[i]-l_bracket)/(1+exp(C1[i]-l_bracket)));
+                    }
+                }
+
+        if (s == "log")
+            return (1/C1.Exp().sum())*out;
+        else
+            return (1 / C1.sum())*out;
+    }
 }
 
 CTimeSeries CTimeSeries::make_flux_weighted(string log)
@@ -1510,7 +1588,7 @@ CTimeSeries CTimeSeries::make_flux_weighted(string log)
 	return (1.0/out.integrate())*out;
 }
 
-CTimeSeries CTimeSeries::distribution_log(int n_bins, int limit)
+CTimeSeries CTimeSeries::distribution_log(int n_bins, double smooting_span, int limit)
 {
 	CTimeSeries out(n_bins + 2);
 

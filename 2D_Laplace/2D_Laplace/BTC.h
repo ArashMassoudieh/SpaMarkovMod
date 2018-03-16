@@ -61,7 +61,7 @@ public:
     double average();
     double average(double t);
     double slope(double tt);
-    CTimeSeries distribution(int n_bins = 40, int limit=0);
+    CTimeSeries distribution(int n_bins = 40, double smoothing_span=0, int limit=0);
     void append(double x);
     void append(double tt, double xx, double weight=1);
     void append(CTimeSeries &CC);
@@ -100,9 +100,9 @@ public:
     CTimeSeries map_to_standard_normal(int nintervals);
     CTimeSeries uniform_cummulative(int nintervals=100);
     CTimeSeries unlog();
-    CTimeSeries distribution_fw(int n_bins, int limit, string s="");
+    CTimeSeries distribution_fw(int n_bins, double smoothing_span = 0, int limit=0, string s="");
     CTimeSeries make_flux_weighted(string log);
-    CTimeSeries distribution_log(int n_bins, int limit);
+    CTimeSeries distribution_log(int n_bins, double smoothing_span = 0, int limit=0);
     CTimeSeries standardize();
     vector<double> weight;
     bool weighted = false;
