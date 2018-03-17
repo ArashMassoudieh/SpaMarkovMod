@@ -658,13 +658,13 @@ CTimeSeriesSet CTimeSeriesSet::detivative()
 
 	return out;
 }
-CTimeSeriesSet CTimeSeriesSet::distribution(int n_bins, int n_columns, int limit)
+CTimeSeriesSet CTimeSeriesSet::distribution(int n_bins, int n_columns, int limit, double smoothing_factor)
 {
 
     CTimeSeriesSet A(n_columns);
     for (int i = 0; i < n_columns; i++)
     {
-	A.BTC[i] = BTC[i].distribution(n_bins, limit);
+        A.BTC[i] = BTC[i].distribution(n_bins, (BTC[i].maxC()-BTC[i].minC())*smoothing_factor, limit);
 
     }
 

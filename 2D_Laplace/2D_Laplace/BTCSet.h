@@ -49,7 +49,7 @@ public:
 	CTimeSeriesSet make_uniform(double increment);
 	CTimeSeriesSet getpercentiles(vector<double> percents);
 	CVector out_of_limit(double limit);
-	CTimeSeriesSet distribution(int n_bins, int n_columns, int limit);
+	CTimeSeriesSet distribution(int n_bins, int n_columns, int limit=0, double smoothing_factor=0);
 	CTimeSeriesSet add_noise(vector<double> std, bool logd);
 	void clear();
 	vector<double> max_wiggle();
@@ -60,10 +60,10 @@ public:
 	int lookup(string S);
 	vector<double> getrow(int a);
 	void setname(int i, string name);
-        void append(string name, double time, double c, double weight=1);
+    void append(string name, double time, double c, double weight=1);
 	CVector get_kappa_gamma(double delta_x);
 
-	//Sassan
+
 	bool file_not_found=false;
 	CBTC &operator[](int index);
 	CBTC &operator[](string BTCName);

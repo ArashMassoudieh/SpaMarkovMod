@@ -1140,7 +1140,7 @@ CTimeSeries CTimeSeries::distribution(int n_bins, double smoothing_span, int lim
     double p_start = min(C1);
     double p_end = max(C1)*1.001;
     double dp = abs(p_end - p_start)/n_bins;
-    cout << "low limit: " << p_start << " up limit: " << p_end << " increment: " << dp << std::endl;
+    //cout << "low limit: " << p_start << " up limit: " << p_end << " increment: " << dp << std::endl;
     if (dp == 0) return out;
     out.t[0] = p_start - dp/2;
     out.C[0] = 0;
@@ -1165,7 +1165,7 @@ CTimeSeries CTimeSeries::distribution(int n_bins, double smoothing_span, int lim
     }
     else
     {
-        int span_count = (p_end-p_start)/dp;
+        int span_count = smoothing_span/dp;
         if (!weighted)
         {   for (int i=0; i<C1.num; i++)
             {
@@ -1174,10 +1174,11 @@ CTimeSeries CTimeSeries::distribution(int n_bins, double smoothing_span, int lim
                 {
                     double l_bracket = p_start + (j-1)*dp;
                     double r_bracket = p_start + (j)*dp;
-                    out.C[j] += 1.0/C1.num/dp*(exp(C1[i]-r_bracket)/(1+exp(C1[i]-r_bracket)) - exp(C1[i]-l_bracket)/(1+exp(C1[i]-l_bracket)));
+                    double portion = (exp((C1[i]-l_bracket)/smoothing_span)/(1+exp((C1[i]-l_bracket)/smoothing_span)) - exp((C1[i]-r_bracket)/smoothing_span)/(1+exp((C1[i]-r_bracket)/smoothing_span)));
+                    out.C[j] += 1.0/C1.num/dp*portion;
                 }
             }
-            return out/out.integrate();;
+            return out/out.integrate();
         }
         else
         {   for (int i=0; i<C1.num; i++)
@@ -1187,7 +1188,8 @@ CTimeSeries CTimeSeries::distribution(int n_bins, double smoothing_span, int lim
                     {
                         double l_bracket = p_start + (j-1)*dp;
                         double r_bracket = p_start + (j)*dp;
-                        out.C[j] += 1.0/C1.num/dp*(exp(C1[i]-r_bracket)/(1+exp(C1[i]-r_bracket)) - exp(C1[i]-l_bracket)/(1+exp(C1[i]-l_bracket)))*weight[i];
+                        double portion = (exp((C1[i]-r_bracket)/smoothing_span)/(1+exp((C1[i]-r_bracket)/smoothing_span)) - exp((C1[i]-l_bracket)/smoothing_span)/(1+exp((C1[i]-l_bracket)/smoothing_span)));
+                        out.C[j] += 1.0/C1.num/dp*portion*weight[i];
                     }
             }
             return out/out.integrate();
@@ -1534,7 +1536,8 @@ CTimeSeries CTimeSeries::distribution_fw(int n_bins, double smoothing_span, int 
     }
     else
     {
-        int span_count = (p_end-p_start)/dp;
+        int span_count = smoothing_span/dp;
+        cout<<"span_count"<< span_count<<endl;
         if (weight.size()==0)
             {
                 for (int i = 0; i < C1.num; i++)
@@ -1544,10 +1547,13 @@ CTimeSeries CTimeSeries::distribution_fw(int n_bins, double smoothing_span, int 
                     {
                         double l_bracket = p_start + (j-1)*dp;
                         double r_bracket = p_start + (j)*dp;
+                        //cout << "l:" << l_bracket<< "r:" << r_bracket << endl;
+                        double portion = exp((C1[i]-l_bracket)/smoothing_span)/(1.0+exp((C1[i]-l_bracket)/smoothing_span)) - exp((C1[i]-r_bracket)/smoothing_span)/(1+exp((C1[i]-r_bracket)/smoothing_span));
+                        //cout << "portion:" << portion << endl;
                         if (s=="log")
-                            out.C[int((C1[j] - p_start) / dp) + 1] += 1.0 / dp*exp(C1[i])*(exp(C1[i]-r_bracket)/(1+exp(C1[i]-r_bracket)) - exp(C1[i]-l_bracket)/(1+exp(C1[i]-l_bracket)));
+                            out.C[j] += 1.0 / dp*exp(C1[i])*portion;
                         else
-                            out.C[int((C1[j] - p_start) / dp) + 1] += 1.0 / dp*C1[i]*(exp(C1[i]-r_bracket)/(1+exp(C1[i]-r_bracket)) - exp(C1[i]-l_bracket)/(1+exp(C1[i]-l_bracket)));
+                            out.C[j] += 1.0 / dp*C1[i]*portion;
                     }
                 }
             }

@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
         X.append(getnormalrand(5,3));
 
     CTimeSeries X_dist = X.distribution_fw(400);
-    CTimeSeries X_dist_smooth = X.distribution_fw(400,0.5);
+    CTimeSeries X_dist_smooth = X.distribution_fw(400,0.2);
     X_dist.writefile("X_dist.txt");
     X_dist_smooth.writefile("X_dist_s.txt");
 
