@@ -175,7 +175,7 @@ CBTCSet CPathwaySet::get_pair_v(int increment, int n, int num_seq)
 
 }
 
-CBTC CPathwaySet::get_BTC(double x, int n_bins)
+CBTC CPathwaySet::get_BTC(double x, int n_bins, double smoothing_factor)
 {
     CBTC BTC;
     if (weighted)
@@ -191,7 +191,7 @@ CBTC CPathwaySet::get_BTC(double x, int n_bins)
            BTC.append(i, paths[i].get_cross_time(x));
     }
 
-    return BTC.distribution(n_bins,0);
+    return BTC.distribution(n_bins,(BTC.maxC()-BTC.minC())*smoothing_factor, 0);
 
 }
 

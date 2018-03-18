@@ -621,7 +621,7 @@ CPathwaySet CGrid::gettrajectories_fixed_dx(double dx, double x_end)
 }
 
 
-CBTC CGrid::initialize(int numpoints,double x_0,bool _weighted)
+CBTC CGrid::initialize(int numpoints, double x_0, double smoothing_factor, bool _weighted)
 {
     weighted = _weighted;
     CBTC vels;
@@ -669,7 +669,7 @@ CBTC CGrid::initialize(int numpoints,double x_0,bool _weighted)
         }
         cout<<endl;
     }
-    return vels.distribution(40,(vels.maxC()-vels.minC())*0.025);
+    return vels.distribution(40,(vels.maxC()-vels.minC())*smoothing_factor);
 }
 
 CMatrix_arma_sp CGrid::create_stiffness_matrix_arma()
@@ -927,10 +927,10 @@ CBTC CGrid::get_v_btc(double x, int k)
 
 }
 
-CBTC CGrid::get_v_dist(double x, int k, int nbins)
+CBTC CGrid::get_v_dist(double x, int k, int nbins, double smoothing_factor)
 {
     CBTC v = get_v_btc(x,k);
-    return v.distribution(nbins,(v.maxC()-v.minC())*0.025);
+    return v.distribution(nbins,(v.maxC()-v.minC())*smoothing_factor);
 }
 
 void CGrid::set_inv_K_dist(int ninc)
@@ -1289,7 +1289,7 @@ void CGrid::runcommands_qt()
             if (commands[i].command == "write_breakthrough_curve")
             {
                 show_in_window("Get breakthrough curve at x = " + commands[i].parameters["x"]);
-                CBTC Breakthroughcurve_from_trajs = Traj.get_BTC(atof(commands[i].parameters["x"].c_str()), atoi(commands[i].parameters["nbins"].c_str()));
+                CBTC Breakthroughcurve_from_trajs = Traj.get_BTC(atof(commands[i].parameters["x"].c_str()), atoi(commands[i].parameters["nbins"].c_str()), atof(commands[i].parameters["smoothing_factor"].c_str()));
                 if (All_Breakthroughpoints.lookup("x=" + commands[i].parameters["x"]) == -1)
                 {
                     CBTC BTC = Traj.get_BTC_points(atof(commands[i].parameters["x"].c_str()));
@@ -1305,7 +1305,7 @@ void CGrid::runcommands_qt()
             if (commands[i].command == "write_breakthrough_curves_all")
             {
                 show_in_window("Writing break through curves for all realizations");
-                All_Breakthroughpoints.distribution(atoi(commands[i].parameters["nbins"].c_str()), All_Breakthroughpoints.BTC.size(),0, 0.025).writetofile(pathout + commands[i].parameters["filename"],true);
+                All_Breakthroughpoints.distribution(atoi(commands[i].parameters["nbins"].c_str()), All_Breakthroughpoints.BTC.size(),0, atof(commands[i].parameters["smoothing_factor"].c_str())).writetofile(pathout + commands[i].parameters["filename"],true);
             }
 
 
@@ -1336,9 +1336,9 @@ void CGrid::runcommands_qt()
                 QApplication::processEvents();
                 #endif // QT_version
                 //cout << "Get Velocities distributions" << endl;
-                vx_dist = vx.distribution(atoi(commands[i].parameters["nbins"].c_str()), (vx.maxC()-vx.minC())*0.025);
-                vy_dist = vy.distribution(atoi(commands[i].parameters["nbins"].c_str()), (vy.maxC()-vy.minC())*0.025);
-                v_dist = v_mag.distribution(atoi(commands[i].parameters["nbins"].c_str()), (v_mag.maxC()-v_mag.minC())*0.025);
+                vx_dist = vx.distribution(atoi(commands[i].parameters["nbins"].c_str()), (vx.maxC()-vx.minC())*atof(commands[i].parameters["smoothing_factor"].c_str()));
+                vy_dist = vy.distribution(atoi(commands[i].parameters["nbins"].c_str()), (vy.maxC()-vy.minC())*atof(commands[i].parameters["smoothing_factor"].c_str()));
+                v_dist = v_mag.distribution(atoi(commands[i].parameters["nbins"].c_str()), (v_mag.maxC()-v_mag.minC())*atof(commands[i].parameters["smoothing_factor"].c_str()));
             }
 
             if (commands[i].command == "write_velocity_dist")
@@ -1355,9 +1355,9 @@ void CGrid::runcommands_qt()
             {
                 show_in_window("Writing velocities distributions for all realizations...");
 
-                CBTC vx_dist_all = Allpoints_velocities_eulerian.BTC[0].distribution(atoi(commands[i].parameters["nbins"].c_str()), (Allpoints_velocities_eulerian.BTC[0].maxC()-Allpoints_velocities_eulerian.BTC[0].minC())*0.025);
-                CBTC vy_dist_all = Allpoints_velocities_eulerian.BTC[1].distribution(atoi(commands[i].parameters["nbins"].c_str()), (Allpoints_velocities_eulerian.BTC[1].maxC()-Allpoints_velocities_eulerian.BTC[1].minC())*0.025);
-                CBTC v_mag_dist_all = Allpoints_velocities_eulerian.BTC[2].distribution(atoi(commands[i].parameters["nbins"].c_str()), (Allpoints_velocities_eulerian.BTC[2].maxC()-Allpoints_velocities_eulerian.BTC[2].minC())*0.025);
+                CBTC vx_dist_all = Allpoints_velocities_eulerian.BTC[0].distribution(atoi(commands[i].parameters["nbins"].c_str()), (Allpoints_velocities_eulerian.BTC[0].maxC()-Allpoints_velocities_eulerian.BTC[0].minC())*atof(commands[i].parameters["smoothing_factor"].c_str()));
+                CBTC vy_dist_all = Allpoints_velocities_eulerian.BTC[1].distribution(atoi(commands[i].parameters["nbins"].c_str()), (Allpoints_velocities_eulerian.BTC[1].maxC()-Allpoints_velocities_eulerian.BTC[1].minC())*atof(commands[i].parameters["smoothing_factor"].c_str()));
+                CBTC v_mag_dist_all = Allpoints_velocities_eulerian.BTC[2].distribution(atoi(commands[i].parameters["nbins"].c_str()), (Allpoints_velocities_eulerian.BTC[2].maxC()-Allpoints_velocities_eulerian.BTC[2].minC())*atof(commands[i].parameters["smoothing_factor"].c_str()));
 
                 vx_dist_all.writefile(pathout + commands[i].parameters["filename_x"]);
                 vy_dist_all.writefile(pathout + commands[i].parameters["filename_y"]);
@@ -1369,7 +1369,7 @@ void CGrid::runcommands_qt()
                     #else
                     cout << "Calculating log-transformed distributions" << endl;
                     #endif // QT_version
-                    CBTC vx_dist_all_log = Allpoints_velocities_eulerian.BTC[0].Log().distribution(atoi(commands[i].parameters["nbins"].c_str()), (Allpoints_velocities_eulerian.BTC[0].Log().maxC()-Allpoints_velocities_eulerian.BTC[0].Log().minC())*0.025);
+                    CBTC vx_dist_all_log = Allpoints_velocities_eulerian.BTC[0].Log().distribution(atoi(commands[i].parameters["nbins"].c_str()), (Allpoints_velocities_eulerian.BTC[0].Log().maxC()-Allpoints_velocities_eulerian.BTC[0].Log().minC())*atof(commands[i].parameters["smoothing_factor"].c_str()));
                     #ifdef QT_version
                     qDebug() << "Calculating log-transformed distributions, Done!" << endl;
                     #else
@@ -1386,7 +1386,7 @@ void CGrid::runcommands_qt()
                     #else
                     cout<< "Calculating log-transformed distributions for velocity magnitude" << endl;
                     #endif // QT_version
-                    CBTC v_mag_dist_all_log = Allpoints_velocities_eulerian.BTC[2].Log().distribution(atoi(commands[i].parameters["nbins"].c_str()), (Allpoints_velocities_eulerian.BTC[2].Log().maxC()-Allpoints_velocities_eulerian.BTC[2].Log().minC())*0.025);
+                    CBTC v_mag_dist_all_log = Allpoints_velocities_eulerian.BTC[2].Log().distribution(atoi(commands[i].parameters["nbins"].c_str()), (Allpoints_velocities_eulerian.BTC[2].Log().maxC()-Allpoints_velocities_eulerian.BTC[2].Log().minC())*atof(commands[i].parameters["smoothing_factor"].c_str()));
                     #ifdef QT_version
                     qDebug() << "Calculating log-transformed distributions for velocity magnitude, Done!" << endl;
                     #else
@@ -1404,23 +1404,23 @@ void CGrid::runcommands_qt()
             {
                 show_in_window("Writing velocities distributions for all realizations (flux weighted)...");
 
-                CBTC vx_dist_all = Allpoints_velocities_eulerian.BTC[0].distribution_fw(atoi(commands[i].parameters["nbins"].c_str()), (Allpoints_velocities_eulerian.BTC[0].maxC()-Allpoints_velocities_eulerian.BTC[0].minC())*0.025);
-                CBTC vy_dist_all = Allpoints_velocities_eulerian.BTC[1].distribution_fw(atoi(commands[i].parameters["nbins"].c_str()), (Allpoints_velocities_eulerian.BTC[1].maxC()-Allpoints_velocities_eulerian.BTC[1].minC())*0.025);
-                CBTC v_mag_dist_all = Allpoints_velocities_eulerian.BTC[2].distribution(atoi(commands[i].parameters["nbins"].c_str()), (Allpoints_velocities_eulerian.BTC[2].maxC()-Allpoints_velocities_eulerian.BTC[2].minC())*0.025);
+                CBTC vx_dist_all = Allpoints_velocities_eulerian.BTC[0].distribution_fw(atoi(commands[i].parameters["nbins"].c_str()), (Allpoints_velocities_eulerian.BTC[0].maxC()-Allpoints_velocities_eulerian.BTC[0].minC())*atof(commands[i].parameters["smoothing_factor"].c_str()));
+                CBTC vy_dist_all = Allpoints_velocities_eulerian.BTC[1].distribution_fw(atoi(commands[i].parameters["nbins"].c_str()), (Allpoints_velocities_eulerian.BTC[1].maxC()-Allpoints_velocities_eulerian.BTC[1].minC())*atof(commands[i].parameters["smoothing_factor"].c_str()));
+                CBTC v_mag_dist_all = Allpoints_velocities_eulerian.BTC[2].distribution(atoi(commands[i].parameters["nbins"].c_str()), (Allpoints_velocities_eulerian.BTC[2].maxC()-Allpoints_velocities_eulerian.BTC[2].minC())*atof(commands[i].parameters["smoothing_factor"].c_str()));
                 vx_dist_all.writefile(pathout + commands[i].parameters["filename_x"]);
                 vy_dist_all.writefile(pathout + commands[i].parameters["filename_y"]);
                 v_mag_dist_all.writefile(pathout + commands[i].parameters["filename_mag"]);
                 if (commands[i].parameters.count("filename_x_log") > 0)
                 {
 
-                    CBTC vx_dist_all_log = Allpoints_velocities_eulerian.BTC[0].Log().distribution(atoi(commands[i].parameters["nbins"].c_str()), (Allpoints_velocities_eulerian.BTC[0].Log().maxC()-Allpoints_velocities_eulerian.BTC[0].Log().minC())*0.025).make_flux_weighted("log");
+                    CBTC vx_dist_all_log = Allpoints_velocities_eulerian.BTC[0].Log().distribution(atoi(commands[i].parameters["nbins"].c_str()), (Allpoints_velocities_eulerian.BTC[0].Log().maxC()-Allpoints_velocities_eulerian.BTC[0].Log().minC())*atof(commands[i].parameters["smoothing_factor"].c_str())).make_flux_weighted("log");
                     vx_dist_all_log.writefile(pathout + commands[i].parameters["filename_x_log"]);
                     if (commands[i].parameters.count("filename_log_int") > 0)
                     {
                         vx_dist_all_log.unlog().writefile(pathout + commands[i].parameters["filename_log_int"]);
                     }
 
-                    CBTC v_mag_dist_all_log = Allpoints_velocities_eulerian.BTC[2].Log().distribution(atoi(commands[i].parameters["nbins"].c_str()), (Allpoints_velocities_eulerian.BTC[2].Log().maxC()-Allpoints_velocities_eulerian.BTC[2].Log().minC())*0.025).make_flux_weighted("log");
+                    CBTC v_mag_dist_all_log = Allpoints_velocities_eulerian.BTC[2].Log().distribution(atoi(commands[i].parameters["nbins"].c_str()), (Allpoints_velocities_eulerian.BTC[2].Log().maxC()-Allpoints_velocities_eulerian.BTC[2].Log().minC())*atof(commands[i].parameters["smoothing_factor"].c_str())).make_flux_weighted("log");
                     v_mag_dist_all_log.writefile(pathout + commands[i].parameters["filename_mag_log"]);
                     if (commands[i].parameters.count("filename_log_int_mag") > 0)
                     {
@@ -1437,8 +1437,8 @@ void CGrid::runcommands_qt()
 
                 CBTC vx = get_v_btc(atof(commands[i].parameters["x"].c_str()), 0);
                 CBTC vy = get_v_btc(atof(commands[i].parameters["x"].c_str()), 1);
-                vx_dist = vx.distribution(atoi(commands[i].parameters["nbins"].c_str()), (vx.maxC()-vx.minC())*0.025);
-                vy_dist = vy.distribution(atoi(commands[i].parameters["nbins"].c_str()), (vy.maxC()-vy.minC())*0.025);
+                vx_dist = vx.distribution(atoi(commands[i].parameters["nbins"].c_str()), (vx.maxC()-vx.minC())*atof(commands[i].parameters["smoothing_factor"].c_str()));
+                vy_dist = vy.distribution(atoi(commands[i].parameters["nbins"].c_str()), (vy.maxC()-vy.minC())*atof(commands[i].parameters["smoothing_factor"].c_str()));
                 sect_dist.append(vx_dist, "x=" + commands[i].parameters["x"]);
                 sect_dist.append(vy_dist, "x=" + commands[i].parameters["x"]);
 
@@ -1669,7 +1669,7 @@ void CGrid::runcommands_qt()
                 pairs.writetofile(pathout+commands[i].parameters["filename"]);
                 if (commands[i].parameters.count("dist_filename") > 0)
                 {
-                        pairs.BTC[0].distribution(atoi(commands[i].parameters["nbins"].c_str()),(pairs.BTC[0].maxC()-pairs.BTC[0].minC())*0.025).writefile(pathout+commands[i].parameters["dist_filename"]);
+                        pairs.BTC[0].distribution(atoi(commands[i].parameters["nbins"].c_str()),(pairs.BTC[0].maxC()-pairs.BTC[0].minC())*atof(commands[i].parameters["smoothing_factor"].c_str())).writefile(pathout+commands[i].parameters["dist_filename"]);
                 }
                 if (commands[i].parameters.count("v_gnu_file"))
                 {

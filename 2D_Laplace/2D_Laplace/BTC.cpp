@@ -1174,7 +1174,8 @@ CTimeSeries CTimeSeries::distribution(int n_bins, double smoothing_span, int lim
                 {
                     double l_bracket = p_start + (j-1)*dp;
                     double r_bracket = p_start + (j)*dp;
-                    double portion = (exp((C1[i]-l_bracket)/smoothing_span)/(1+exp((C1[i]-l_bracket)/smoothing_span)) - exp((C1[i]-r_bracket)/smoothing_span)/(1+exp((C1[i]-r_bracket)/smoothing_span)));
+                    double eff_smoothing_span = max(min(min(C[i]-p_start,smoothing_span),p_end-C[i]),dp/10.0);
+                    double portion = (exp((C1[i]-l_bracket)/eff_smoothing_span)/(1+exp((C1[i]-l_bracket)/eff_smoothing_span)) - exp((C1[i]-r_bracket)/eff_smoothing_span)/(1+exp((C1[i]-r_bracket)/eff_smoothing_span)));
                     out.C[j] += 1.0/C1.num/dp*portion;
                 }
             }
@@ -1188,7 +1189,8 @@ CTimeSeries CTimeSeries::distribution(int n_bins, double smoothing_span, int lim
                     {
                         double l_bracket = p_start + (j-1)*dp;
                         double r_bracket = p_start + (j)*dp;
-                        double portion = (exp((C1[i]-r_bracket)/smoothing_span)/(1+exp((C1[i]-r_bracket)/smoothing_span)) - exp((C1[i]-l_bracket)/smoothing_span)/(1+exp((C1[i]-l_bracket)/smoothing_span)));
+                        double eff_smoothing_span = max(min(min(C[i]-p_start,smoothing_span),p_end-C[i]),dp/10.0);
+                        double portion = (exp((C1[i]-r_bracket)/eff_smoothing_span)/(1+exp((C1[i]-r_bracket)/eff_smoothing_span)) - exp((C1[i]-l_bracket)/eff_smoothing_span)/(1+exp((C1[i]-l_bracket)/eff_smoothing_span)));
                         out.C[j] += 1.0/C1.num/dp*portion*weight[i];
                     }
             }
@@ -1543,12 +1545,13 @@ CTimeSeries CTimeSeries::distribution_fw(int n_bins, double smoothing_span, int 
                 for (int i = 0; i < C1.num; i++)
                 {
                     int center = int((C1[i]-p_start)/dp)+1;
-                    for (int j=max(0,center-3*span_count); j<=min(n_bins,center+3*span_count); j++)
+                    for (int j=max(0,center-span_count); j<=min(n_bins,center+span_count); j++)
                     {
                         double l_bracket = p_start + (j-1)*dp;
                         double r_bracket = p_start + (j)*dp;
                         //cout << "l:" << l_bracket<< "r:" << r_bracket << endl;
-                        double portion = exp((C1[i]-l_bracket)/smoothing_span)/(1.0+exp((C1[i]-l_bracket)/smoothing_span)) - exp((C1[i]-r_bracket)/smoothing_span)/(1+exp((C1[i]-r_bracket)/smoothing_span));
+                        double eff_smoothing_span = max(min(min(C[i]-p_start,smoothing_span),p_end-C[i]),dp/10.0);
+                        double portion = exp((C1[i]-l_bracket)/eff_smoothing_span)/(1.0+exp((C1[i]-l_bracket)/eff_smoothing_span)) - exp((C1[i]-r_bracket)/eff_smoothing_span)/(1+exp((C1[i]-r_bracket)/eff_smoothing_span));
                         //cout << "portion:" << portion << endl;
                         if (s=="log")
                             out.C[j] += 1.0 / dp*exp(C1[i])*portion;
@@ -1565,10 +1568,12 @@ CTimeSeries CTimeSeries::distribution_fw(int n_bins, double smoothing_span, int 
                     {
                         double l_bracket = p_start + (j-1)*dp;
                         double r_bracket = p_start + (j)*dp;
+                        double eff_smoothing_span = max(min(min(C[i]-p_start,smoothing_span),p_end-C[i]),dp/10.0);
+                        double portion = exp((C1[i]-l_bracket)/eff_smoothing_span)/(1.0+exp((C1[i]-l_bracket)/eff_smoothing_span)) - exp((C1[i]-r_bracket)/eff_smoothing_span)/(1+exp((C1[i]-r_bracket)/eff_smoothing_span));
                         if (s=="log")
-                            out.C[int((C1[j] - p_start) / dp) + 1] += 1.0 / dp*exp(C1[i])*weight[i]*(exp(C1[i]-r_bracket)/(1+exp(C1[i]-r_bracket)) - exp(C1[i]-l_bracket)/(1+exp(C1[i]-l_bracket)));
+                            out.C[j] += 1.0 / dp*weight[i]*exp(C1[i])*portion;
                         else
-                            out.C[int((C1[j] - p_start) / dp) + 1] += 1.0 / dp*C1[i]*weight[i]*(exp(C1[i]-r_bracket)/(1+exp(C1[i]-r_bracket)) - exp(C1[i]-l_bracket)/(1+exp(C1[i]-l_bracket)));
+                            out.C[j] += 1.0 / dp*C1[i]*weight[i]*portion;
                     }
                 }
 

@@ -149,7 +149,7 @@ public:
 	CPathwaySet gettrajectories_fixed_dx(double dt, double x_end);
 	vector<point> pts;
         bool weighted;
-	CBTC initialize(int numpoints, double x_0, bool weighted=false);
+	CBTC initialize(int numpoints, double x_0, double smoothing_factor=0, bool weighted=false);
 	CMatrix_arma_sp create_stiffness_matrix_arma();
 	CVector_arma create_RHS_arma();
 	CVector create_RHS();
@@ -166,7 +166,7 @@ public:
 	CBTC get_kg_btc(int k);
 	void remap_K(int k);
 	CBTC get_v_btc(double x,int k=0);
-	CBTC get_v_dist(double x, int k=0, int nbins=40);
+	CBTC get_v_dist(double x, int k=0, int nbins=40, double smoothing_factor=0);
     CBTC get_v_mag_btc();
 	vector<_command> commands;
 	void runcommands();
