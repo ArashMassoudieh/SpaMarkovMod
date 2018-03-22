@@ -1674,7 +1674,7 @@ void CGrid::runcommands_qt()
                 if (commands[i].parameters.count("v_gnu_file"))
                 {
                     TDMap GNU_out = pairs.get2DMap(atoi(commands[i].parameters["nbins"].c_str()));
-                    GNU_out.writetofile_GNU(pathout + commands[i].parameters["v_gnu_file"],"", "v", "v'", "p(v,v')");
+                    GNU_out.writetofile_GNU(pathout + commands[i].parameters["v_gnu_file"],"", "v", "v'", "p(v,v')", true);
                 }
                 if (commands[i].parameters.count("ranks_filename") > 0)
                 {

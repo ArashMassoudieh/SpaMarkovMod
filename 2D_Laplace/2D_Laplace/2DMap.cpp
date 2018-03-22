@@ -70,6 +70,14 @@ void TDMap::add_val(unsigned int i, unsigned int j, double value)
     val[i][j] += value;
 }
 
+void TDMap::add_val(double x, double y, double value)
+{
+    int i = int((x-low_lim_x)/(up_lim_x-low_lim_x))*val.size();
+    int j = int((y-low_lim_y)/(up_lim_y-low_lim_y))*val.size();
+    if (i>=0 && j>=0 && i<val.size() && j<val[0].size())
+        val[i][j] += value;
+}
+
 double TDMap::sum()
 {
     double sum = 0;
@@ -171,13 +179,22 @@ void TDMap::writetofile(string filename)
     file.close();
 }
 
-void TDMap::writetofile_GNU(string filename, string pngfilename, string xlabel, string ylabel, string title)
+void TDMap::writetofile_GNU(string filename, string pngfilename, string xlabel, string ylabel, string title, bool logscale)
 {
     if (pngfilename=="")
         pngfilename = split(filename,'.')[0] + ".png";
     ofstream file(filename);
-    file << "set xrange ["<<low_lim_x+0.5*(up_lim_x-low_lim_x)/val.size()<<":"<<up_lim_x-0.5*(up_lim_x-low_lim_x)/val.size()<<"]"<<endl;
-    file << "set yrange ["<<low_lim_y+0.5*(up_lim_y-low_lim_y)/val[0].size()<<":"<<up_lim_y-0.5*(up_lim_y-low_lim_y)/val[0].size()<<"]"<<endl;
+    if (logscale)
+    {
+        file << "set xrange ["<<low_lim_x+0.49*(up_lim_x-low_lim_x)/val.size()<<":"<<up_lim_x-0.49*(up_lim_x-low_lim_x)/val.size()<<"]"<<endl;
+        file << "set yrange ["<<low_lim_y+0.49*(up_lim_y-low_lim_y)/val[0].size()<<":"<<up_lim_y-0.49*(up_lim_y-low_lim_y)/val[0].size()<<"]"<<endl;
+    }
+    else
+    {
+        file << "set xrange ["<<low_lim_x+0*0.5*(up_lim_x-low_lim_x)/val.size()<<":"<<up_lim_x-0*0.5*(up_lim_x-low_lim_x)/val.size()<<"]"<<endl;
+        file << "set yrange ["<<low_lim_y+0*0.5*(up_lim_y-low_lim_y)/val[0].size()<<":"<<up_lim_y-0*0.5*(up_lim_y-low_lim_y)/val[0].size()<<"]"<<endl;
+    }
+
     file << "show xrange" << endl;
     file << "show yrange" << endl;
     file << "set xlabel \"" << xlabel << "\"" << endl;
@@ -188,7 +205,8 @@ void TDMap::writetofile_GNU(string filename, string pngfilename, string xlabel, 
     file << "show title" << endl;
     file << "set palette rgb -21,-22,-23" << endl;
     file << "set logscale cb" << endl;
-    file << "set format cb \"10^{%S}" << endl;
+    if (logscale) file << "set logscale xy" << endl;
+    file << "set format cb \"10^{%T}\"" << endl;
     file << "set pm3d map interpolate 5,5"<<endl;
     file << "set size square" << endl;
     file << "splot \"-\" matrix using ($1*"<<(up_lim_x-low_lim_x)/val.size()<<"+"<<low_lim_x+0.5*(up_lim_x-low_lim_x)/val.size()<<"):($2*"<<(up_lim_y-low_lim_y)/val.size()<<"+"<<low_lim_x+0.5*(up_lim_y-low_lim_y)/val.size()<<"):3 notitle"<<endl;

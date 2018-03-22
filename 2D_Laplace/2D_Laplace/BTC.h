@@ -83,6 +83,7 @@ public:
     double AutoCor1(int i=0);
     bool file_not_found = false;
     CTimeSeries getcummulative();
+    CTimeSeries getcummulative_direct(int number_of_bins);
     CTimeSeries Exp();
     CTimeSeries fabs();
     CTimeSeries derivative();

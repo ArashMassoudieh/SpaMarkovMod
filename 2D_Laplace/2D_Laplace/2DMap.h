@@ -17,6 +17,7 @@ class TDMap
         void reset(unsigned int number_of_bins_x, unsigned int number_of_bins_y, double low_lim_x, double up_lim_x, double low_lim_y, double up_lim_y);
         void set_val(unsigned int i, unsigned int j, double val);
         void add_val(unsigned int i, unsigned int j, double val);
+        void add_val(double x, double y, double val);
         void normalize();
         void normalise_x();
         void normalize_y();
@@ -27,7 +28,7 @@ class TDMap
         vector<double> marginal_x();
         vector<double> marginal_y();
         void writetofile(string filename);
-        void writetofile_GNU(string filename,string pngfilename="", string xlabel="", string ylabel="", string title="");
+        void writetofile_GNU(string filename,string pngfilename="", string xlabel="", string ylabel="", string title="",bool logscale=false);
     protected:
 
     private:

@@ -69,8 +69,8 @@ CTimeSeries CTimeSeries::rank()
 }
 CTimeSeries CTimeSeries::rank_bd(int nintervals)
 {
-	CTimeSeries dist = distribution(nintervals, 0);
-	CTimeSeries X = dist.uniform_cummulative(nintervals);
+	CTimeSeries X = getcummulative_direct(nintervals);
+
 	CTimeSeries out;
         out.weighted = true;
 	if (weight.size())
@@ -1389,6 +1389,31 @@ CTimeSeries CTimeSeries::getcummulative()
 
 	return X;
 }
+
+CTimeSeries CTimeSeries::getcummulative_direct(int number_of_bins)
+{
+	CTimeSeries X(number_of_bins+1);
+	for (int j=0; j<number_of_bins+1; j++)
+        X.t[j] = minC() + j*(maxC()-minC())/(number_of_bins);
+
+	for (int i = 0; i<n; i++)
+        for (int j=number_of_bins; j>=0; j--)
+        {
+            if (C[i]<=X.t[j])
+            {
+                if (weight.size())
+                    X.C[j] += weight[i];
+                else
+                    X.C[j] += 1;
+            }
+            else
+                j=-1;
+        }
+
+	X.structured = true;
+	return X/X.C[number_of_bins];
+}
+
 CTimeSeries CTimeSeries::Exp()
 {
 	CTimeSeries BTC(n);
