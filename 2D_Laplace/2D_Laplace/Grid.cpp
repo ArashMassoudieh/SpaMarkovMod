@@ -545,7 +545,10 @@ CPathway CGrid::gettrajectory_fix_dx(point pp, double dx, double x_end)
 {
     point pt = pp;
     CPathway Trajectory;
-    Trajectory.weight = getvelocity(pt)[0];
+    if (weighted)
+        Trajectory.weight = getvelocity(pt)[0];
+    else
+        Trajectory.weight = 1;
     double t = 0;
 
     bool ex = false;
@@ -624,9 +627,11 @@ CPathwaySet CGrid::gettrajectories_fixed_dx(double dx, double x_end)
 CBTC CGrid::initialize(int numpoints, double x_0, double smoothing_factor, bool _weighted)
 {
     weighted = _weighted;
+    cout << "weighted = " << weighted<<endl;
     CBTC vels;
     if (!_weighted)
     {
+        cout << "weighted = " << weighted<<endl;
         int burnout = 0;
         double v_max = get_v_btc(x_0,0).maxC();
         double y_0 = unitrandom()*GP.dy*(GP.ny-1);
@@ -649,7 +654,7 @@ CBTC CGrid::initialize(int numpoints, double x_0, double smoothing_factor, bool 
 
             set_progress_value(double(i) / double(numpoints));
         }
-        cout<<endl;
+
     }
     else
     {   double y_0 = unitrandom()*GP.dy*(GP.ny-1);
@@ -1262,6 +1267,7 @@ void CGrid::runcommands_qt()
                 cout << "Initializing trajectories ..." << endl;
                 CBTC ini_vel=initialize(atoi(commands[i].parameters["n"].c_str()), atof(commands[i].parameters["x_0"].c_str()),atoi(commands[i].parameters["weighted"].c_str()));
                 weighted = atoi(commands[i].parameters["weighted"].c_str());
+                cout << "weighted = " << weighted;
                 if (commands[i].parameters.count("filename"))
                     ini_vel.writefile(pathout+commands[i].parameters["filename"]);
             }
@@ -1681,8 +1687,14 @@ void CGrid::runcommands_qt()
                     show_in_window("Writing ranks");
                     CBTCSet ranks(atoi(commands[i].parameters["nsequence"].c_str()));
                     for (int ii=0; ii<atoi(commands[i].parameters["nsequence"].c_str()); ii++)
+                    {
+                        cout<<pairs.BTC[ii].n<<endl;
+                        pairs.BTC[ii].getcummulative_direct(atoi(commands[i].parameters["nbins"].c_str())).writefile(pathout+commands[i].parameters["ranks_filename"]+"_"+numbertostring(ii));
+                        cout<<pairs.BTC[ii].n<<endl;
                         ranks.BTC[ii] = pairs.BTC[ii].rank_bd(atoi(commands[i].parameters["nbins"].c_str()));
-
+                        cout<<ranks.BTC[ii].n<<endl;
+                        ranks.BTC[ii].getcummulative_direct(atoi(commands[i].parameters["nbins"].c_str())).writefile(pathout+commands[i].parameters["ranks_filename"]+"_u"+numbertostring(ii));
+                    }
                     ranks.writetofile(pathout+commands[i].parameters["ranks_filename"]);
 
                     if (commands[i].parameters.count("u_gnu_file"))

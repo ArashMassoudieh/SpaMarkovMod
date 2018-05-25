@@ -53,10 +53,10 @@ int main(int argc, char *argv[])
     cout<<"Enter the input file name: ";
     cin>>filename;
     //cout << "reading [" << filename << "]..." << endl;
-    filename = "/home/arash/Projects/Upscaling_outputs/input_test_BTC_log_normal_loop_std1_l_res_corr_s.txt";
-    filename = "/home/arash/Projects/UpscalingInputfiles/input_test_BTC_log_normal_loop_std1_l_res_corr.txt";
+    //filename = "/home/arash/Projects/Upscaling_outputs/input_test_BTC_log_normal_loop_std1_l_res_corr_s.txt";
+    //filename = "/home/arash/Projects/UpscalingInputfiles/input_test_BTC_log_normal_loop_std1_l_res_corr.txt";
 
-    //filename = "/home/arash/Projects/UpscalingInputs/test.txt";
+    filename = "/home/arash/Projects/UpscalingInputs/test.txt";
     CGrid G(filename);
     cout << "running [" << filename << "]..." << endl;
     G.runcommands_qt();

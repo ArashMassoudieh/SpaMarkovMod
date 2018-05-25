@@ -168,7 +168,10 @@ CBTCSet CPathwaySet::get_pair_v(int increment, int n, int num_seq)
 	for (int i = 0; i < n; i++)
 	{
 		CPosition p = get_pair_v_pos(increment, num_seq);
-		out.append(double(i), p.v.vec, p.weight);
+		if (weighted)
+            out.append(double(i), p.v.vec, p.weight);
+        else
+            out.append(double(i), p.v.vec);
 		cout << "\r" << float(i)/float(n)*100 << "%" << std::flush;
 	}
 	return out;

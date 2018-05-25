@@ -46,6 +46,7 @@ public:
     double minC();
     void setnumpoints(int);
     CTimeSeries Log();
+    CTimeSeries XLog();
     CTimeSeries Log(double min);
     double std();
     double mean();
@@ -84,6 +85,7 @@ public:
     bool file_not_found = false;
     CTimeSeries getcummulative();
     CTimeSeries getcummulative_direct(int number_of_bins);
+    bool isweighted();
     CTimeSeries Exp();
     CTimeSeries fabs();
     CTimeSeries derivative();

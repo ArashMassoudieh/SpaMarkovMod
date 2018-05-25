@@ -1135,7 +1135,7 @@ TDMap CTimeSeriesSet::get2DMap(int number_of_bins_x, int number_of_bins_y, doubl
     {
         int i= int((BTC[0].C[k]-low_lim_x)/(up_lim_x-low_lim_x)*number_of_bins_x);
         int j= int((BTC[1].C[k]-low_lim_y)/(up_lim_y-low_lim_y)*number_of_bins_y);
-        if (i>0 && i<number_of_bins_x && j>0 && j<number_of_bins_y)
+        if (i>=0 && i<number_of_bins_x && j>0 && j<number_of_bins_y)
         {
             unsigned int i1 = i;
             unsigned int j1 = j;
@@ -1153,7 +1153,7 @@ TDMap CTimeSeriesSet::get2DMap(int number_of_bins, double low_lim, double up_lim
     {
         int i= int((BTC[0].C[k]-low_lim)/(up_lim-low_lim)*number_of_bins);
         int j= int((BTC[1].C[k]-low_lim)/(up_lim-low_lim)*number_of_bins);
-        if (i>0 && i<number_of_bins && j>0 && j<number_of_bins)
+        if (i>=0 && i<number_of_bins && j>0 && j<number_of_bins)
         {
             unsigned int i1 = i;
             unsigned int j1 = j;

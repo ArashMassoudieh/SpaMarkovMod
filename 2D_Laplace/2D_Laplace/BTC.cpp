@@ -69,19 +69,20 @@ CTimeSeries CTimeSeries::rank()
 }
 CTimeSeries CTimeSeries::rank_bd(int nintervals)
 {
-	CTimeSeries X = getcummulative_direct(nintervals);
+	CTimeSeries X = getcummulative_direct(nintervals).XLog();
+    X.structured = true;
 
 	CTimeSeries out;
         out.weighted = true;
 	if (weight.size())
             for (int i = 0; i < n; i++)
             {
-                out.append(double(i), X.interpol(C[i]),weight[i]);
+                out.append(double(i), X.interpol(log(C[i])),weight[i]);
             }
         else
             for (int i = 0; i < n; i++)
             {
-                out.append(double(i), X.interpol(C[i]),1);
+                out.append(double(i), X.interpol(log(C[i])),1);
             }
 	return out;
 }
@@ -222,6 +223,20 @@ CTimeSeries CTimeSeries::Log()
     }
     return _BTC;
 }
+
+CTimeSeries CTimeSeries::XLog()
+{
+    CTimeSeries _BTC;
+    _BTC.weighted = weighted;
+    for (int i=0; i<n; i++)
+    {
+        if (C[i]>0)
+           _BTC.append(log(t[i]),C[i]);
+
+    }
+    return _BTC;
+}
+
 
 CTimeSeries CTimeSeries::Log(double m)
 {
@@ -1390,19 +1405,30 @@ CTimeSeries CTimeSeries::getcummulative()
 	return X;
 }
 
+bool CTimeSeries::isweighted()
+{
+    if (weight.size())
+        return true;
+    else
+        return false;
+}
+
 CTimeSeries CTimeSeries::getcummulative_direct(int number_of_bins)
 {
 	CTimeSeries X(number_of_bins+1);
 	for (int j=0; j<number_of_bins+1; j++)
-        X.t[j] = minC() + j*(maxC()-minC())/(number_of_bins);
+        X.t[j] = exp(log(minC()) + j*(log(maxC())-log(minC()))/(number_of_bins));
 
 	for (int i = 0; i<n; i++)
         for (int j=number_of_bins; j>=0; j--)
         {
-            if (C[i]<=X.t[j])
+            if (C[i]<X.t[j])
             {
                 if (weight.size())
+                {
                     X.C[j] += weight[i];
+                    //cout<<"weighted "<<n << "  " << weight[i]<<endl;
+                }
                 else
                     X.C[j] += 1;
             }
@@ -1411,6 +1437,7 @@ CTimeSeries CTimeSeries::getcummulative_direct(int number_of_bins)
         }
 
 	X.structured = true;
+	cout<<"inside getcum direct: "<<X.C[number_of_bins]<<","<<X.C[0]<<endl;
 	return X/X.C[number_of_bins];
 }
 
